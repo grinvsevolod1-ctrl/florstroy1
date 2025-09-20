@@ -18,28 +18,22 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
     <>
       <Head>
         <title>{EnvVars.SITE_NAME}</title>
-        <meta name="description" content="FlorStroy — строительные услуги, проекты под ключ, надёжность и качество." />
+        <meta
+          name="description"
+          content="FlorStroy — надёжные строительные решения, проекты под ключ, отзывы клиентов и быстрая заявка."
+        />
       </Head>
-
       <HomepageWrapper>
         <WhiteBackgroundContainer>
           <Hero />
           <Partners />
-
-          <BasicSection id="services" imageUrl="/services.svg" title="Наши услуги" overTitle="Что мы делаем">
+          <BasicSection imageUrl="/demo-illustration-1.svg" title="Наши услуги" overTitle="Что мы предлагаем">
             <p>
               FlorStroy предоставляет полный спектр строительных услуг: от проектирования до сдачи объекта. Мы строим дома, коммерческие здания,
               выполняем ремонт и благоустройство. <Link href="/contact">Свяжитесь с нами</Link> для консультации.
             </p>
-            <ul>
-              <li>Строительство жилых и коммерческих объектов</li>
-              <li>Ремонт и отделка помещений</li>
-              <li>Фасадные и кровельные работы</li>
-              <li>Ландшафтный дизайн и благоустройство</li>
-            </ul>
           </BasicSection>
-
-          <BasicSection id="projects" imageUrl="/projects.svg" title="Реализованные проекты" overTitle="Наш опыт" reversed>
+          <BasicSection imageUrl="/demo-illustration-2.svg" title="Реализованные проекты" overTitle="Наш опыт" reversed>
             <p>
               Мы успешно реализовали десятки проектов по всей Беларуси. Каждый объект — это результат точного планирования, качественных материалов и
               профессиональной команды.
@@ -51,13 +45,12 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
             </ul>
           </BasicSection>
         </WhiteBackgroundContainer>
-
         <DarkerBackgroundContainer>
-          <Cta id="cta" />
+          <Cta />
           <FeaturesGallery />
           <Features />
-          <Testimonials id="testimonials" />
-          <ScrollableBlogPosts posts={posts} id="contacts" />
+          <Testimonials />
+          <ScrollableBlogPosts posts={posts} />
         </DarkerBackgroundContainer>
       </HomepageWrapper>
     </>
