@@ -1,23 +1,16 @@
 import styled from 'styled-components';
-import { Components, TinaMarkdown, TinaMarkdownContent } from 'tinacms/dist/rich-text';
 import { media } from 'utils/media';
 import ArticleImage from './ArticleImage';
 import Code from './Code';
 import Link from './Link';
 import Quote from './Quote';
 
-export default function RichText(props: { content: TinaMarkdownContent | TinaMarkdownContent[] }) {
-  return (
-    <Container>
-      <TinaMarkdown content={props.content} components={components as Components<{}>} />
-    </Container>
-  );
+export default function RichText(props: { content: string }) {
+  return <Container dangerouslySetInnerHTML={{ __html: props.content }} />;
 }
 
 const Container = styled.div`
   display: flex;
-  ${'' /* Opting-out of margin-collapse */}
-
   flex-direction: column;
   width: 100%;
 
@@ -34,11 +27,6 @@ const Container = styled.div`
       width: 100%;
       overflow-x: auto;
     }
-  }
-
-  & > section,
-  .footnotes {
-    ${'' /* content-visibility: auto; */}
   }
 
   ol,
