@@ -2,10 +2,8 @@ import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { staticRequest } from 'tinacms';
 import Container from 'components/Container';
 import MDXRichText from 'components/MDXRichText';
-import { NonNullableChildrenDeep } from 'types';
 import { formatDate } from 'utils/formatDate';
 import { media } from 'utils/media';
 import { getReadTime } from 'utils/readTime';
@@ -14,7 +12,6 @@ import MetadataHead from 'views/SingleArticlePage/MetadataHead';
 import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
 import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
-import { Posts, PostsDocument, Query } from '.tina/__generated__/types';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -49,16 +46,10 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
     }
   }, []);
 
-  const { slug, data } = props;
-  const content = data.getPostsDocument.data.body;
+  const { slug, content, meta } = props;
+  const formattedDate = formatDate(new Date(meta.date));
+  const absoluteImageUrl = meta.imageUrl.replace(/\/+/, '/');
 
-  if (!data) {
-    return null;
-  }
-  const { title, description, date, tags, imageUrl } = data.getPostsDocument.data as NonNullableChildrenDeep<Posts>;
-  const meta = { title, description, date: date, tags, imageUrl, author: '' };
-  const formattedDate = formatDate(new Date(date));
-  const absoluteImageUrl = imageUrl.replace(/\/+/, '/');
   return (
     <>
       <Head>
@@ -70,8 +61,8 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <StructuredDataHead slug={slug} {...meta} />
       <MetadataHead {...meta} />
       <CustomContainer id="content" ref={contentRef}>
-        <ShareWidget title={title} slug={slug} />
-        <Header title={title} formattedDate={formattedDate} imageUrl={absoluteImageUrl} readTime={readTime} />
+        <ShareWidget title={meta.title} slug={slug} />
+        <Header title={meta.title} formattedDate={formattedDate} imageUrl={absoluteImageUrl} readTime={readTime} />
         <MDXRichText content={content} />
       </CustomContainer>
     </>
@@ -79,68 +70,28 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
 }
 
 export async function getStaticPaths() {
-  const postsListData = await staticRequest({
-    query: `
-      query PostsSlugs{
-        getPostsList{
-          edges{
-            node{
-              sys{
-                basename
-              }
-            }
-          }
-        }
-      }
-    `,
-    variables: {},
-  });
-
-  if (!postsListData) {
-    return {
-      paths: [],
-      fallback: false,
-    };
-  }
-
-  type NullAwarePostsList = { getPostsList: NonNullableChildrenDeep<Query['getPostsList']> };
   return {
-    paths: (postsListData as NullAwarePostsList).getPostsList.edges.map((edge) => ({
-      params: { slug: normalizePostName(edge.node.sys.basename) },
-    })),
+    paths: [],
     fallback: false,
   };
 }
 
-function normalizePostName(postName: string) {
-  return postName.replace('.mdx', '');
-}
-
 export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: string }>) {
   const { slug } = params as { slug: string };
-  const variables = { relativePath: `${slug}.mdx` };
-  const query = `
-    query BlogPostQuery($relativePath: String!) {
-      getPostsDocument(relativePath: $relativePath) {
-        data {
-          title
-          description
-          date
-          tags
-          imageUrl
-          body
-        }
-      }
-    }
-  `;
-
-  const data = (await staticRequest({
-    query: query,
-    variables: variables,
-  })) as { getPostsDocument: PostsDocument };
 
   return {
-    props: { slug, variables, query, data },
+    props: {
+      slug,
+      content: '<p>Статья недоступна или ещё не добавлена.</p>',
+      meta: {
+        title: 'Заглушка статьи',
+        description: 'Описание временно отсутствует',
+        date: new Date().toISOString(),
+        tags: [],
+        imageUrl: '/demo-illustration-1.svg',
+        author: '',
+      },
+    },
   };
 }
 
