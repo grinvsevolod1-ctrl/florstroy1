@@ -18,42 +18,46 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
     <>
       <Head>
         <title>{EnvVars.SITE_NAME}</title>
-        <meta
-          name="description"
-          content="Tempor nostrud velit fugiat nostrud duis incididunt Lorem deserunt est tempor aute dolor ad elit."
-        />
+        <meta name="description" content="FlorStroy — строительные услуги, проекты под ключ, надёжность и качество." />
       </Head>
+
       <HomepageWrapper>
         <WhiteBackgroundContainer>
           <Hero />
           <Partners />
-          <BasicSection imageUrl="/demo-illustration-1.svg" title="Lorem ipsum dolor sit amet consectetur." overTitle="sit amet gogo">
+
+          <BasicSection id="services" imageUrl="/services.svg" title="Наши услуги" overTitle="Что мы делаем">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, quidem error incidunt a doloremque voluptatem porro inventore
-              voluptate quo deleniti animi laboriosam.{' '}
-              <Link href="/help-center">Possimus ullam velit rem itaque consectetur, in distinctio?</Link> Lorem ipsum, dolor sit amet
-              consectetur adipisicing elit. Soluta repellendus quia quos obcaecati nihil. Laudantium non accusantium, voluptate eum nesciunt
-              at suscipit quis est soluta?
-            </p>
-          </BasicSection>
-          <BasicSection imageUrl="/demo-illustration-2.svg" title="Lorem ipsum dolor sit." overTitle="lorem ipsum" reversed>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas, quidem error incidunt a doloremque voluptatem porro inventore{' '}
-              <strong>voluptate quo deleniti animi laboriosam</strong>. Possimus ullam velit rem itaque consectetur, in distinctio?
+              FlorStroy предоставляет полный спектр строительных услуг: от проектирования до сдачи объекта. Мы строим дома, коммерческие здания,
+              выполняем ремонт и благоустройство. <Link href="/contact">Свяжитесь с нами</Link> для консультации.
             </p>
             <ul>
-              <li>Professional point 1</li>
-              <li>Professional remark 2</li>
-              <li>Professional feature 3</li>
+              <li>Строительство жилых и коммерческих объектов</li>
+              <li>Ремонт и отделка помещений</li>
+              <li>Фасадные и кровельные работы</li>
+              <li>Ландшафтный дизайн и благоустройство</li>
+            </ul>
+          </BasicSection>
+
+          <BasicSection id="projects" imageUrl="/projects.svg" title="Реализованные проекты" overTitle="Наш опыт" reversed>
+            <p>
+              Мы успешно реализовали десятки проектов по всей Беларуси. Каждый объект — это результат точного планирования, качественных материалов и
+              профессиональной команды.
+            </p>
+            <ul>
+              <li>Коттедж в Дроздах — 250 м²</li>
+              <li>Офисный центр в Минске — 1200 м²</li>
+              <li>Складской комплекс в Борисове — 1800 м²</li>
             </ul>
           </BasicSection>
         </WhiteBackgroundContainer>
+
         <DarkerBackgroundContainer>
-          <Cta />
+          <Cta id="cta" />
           <FeaturesGallery />
           <Features />
-          <Testimonials />
-          <ScrollableBlogPosts posts={posts} />
+          <Testimonials id="testimonials" />
+          <ScrollableBlogPosts posts={posts} id="contacts" />
         </DarkerBackgroundContainer>
       </HomepageWrapper>
     </>
