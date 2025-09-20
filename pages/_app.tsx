@@ -18,13 +18,11 @@ import { NewsletterModalContextProvider, useNewsletterModalContext } from 'conte
 import { NavItems } from 'types';
 
 const navItems: NavItems = [
-  { title: 'Услуги', href: '/#services' },
-  { title: 'Проекты', href: '/#projects' },
-  { title: 'Отзывы', href: '/#testimonials' },
-  { title: 'Контакты', href: '/#contacts' },
-  { title: 'Оставить заявку', href: '/#cta', outlined: true },
+  { title: 'Awesome SaaS Features', href: '/features' },
+  { title: 'Pricing', href: '/pricing' },
+  { title: 'Contact', href: '/contact' },
+  { title: 'Sign up', href: '/sign-up', outlined: true },
 ];
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
