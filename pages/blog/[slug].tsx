@@ -83,14 +83,15 @@ export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: s
     props: {
       slug,
       content: '<p>Статья недоступна или ещё не добавлена.</p>',
-      meta: {
-        title: 'Заглушка статьи',
-        description: 'Описание временно отсутствует',
-        date: new Date().toISOString(),
-        tags: [],
-        imageUrl: '/demo-illustration-1.svg',
-        author: '',
-      },
+     meta: {
+  title: 'Заглушка статьи',
+  description: 'Описание временно отсутствует',
+  date: new Date().toISOString(),
+  tags: '',
+  imageUrl: '/demo-illustration-1.svg',
+  author: '',
+}
+,
     },
   };
 }
