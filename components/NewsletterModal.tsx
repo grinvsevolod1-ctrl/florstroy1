@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import MailchimpSubscribe, { DefaultFormFields } from 'react-mailchimp-subscribe';
 import styled from 'styled-components';
-import { EnvVars } from 'env';
 import useEscClose from 'hooks/useEscKey';
 import { media } from 'utils/media';
 import Button from './Button';
 import CloseIcon from './CloseIcon';
 import Container from './Container';
 import Input from './Input';
-import MailSentState from './MailSentState';
 import Overlay from './Overlay';
 
 export interface NewsletterModalProps {
@@ -16,54 +13,62 @@ export interface NewsletterModalProps {
 }
 
 export default function NewsletterModal({ onClose }: NewsletterModalProps) {
-  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [name, setName] = useState('');
+  const [sent, setSent] = useState(false);
 
   useEscClose({ onClose });
 
-  function onSubmit(event: React.FormEvent<HTMLFormElement>, enrollNewsletter: (props: DefaultFormFields) => void) {
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log({ email });
-    if (email) {
-      enrollNewsletter({ EMAIL: email });
-    }
+
+    const BOT_TOKEN = '7194760789:AAFpsv53YHZfy15mvZgiDoRMTqvDVs_V6gU';
+    const CHAT_ID = '940316027';
+    const text = `Заявка с сайта FlorStroy:\nИмя: ${name}\nТелефон: ${phone}`;
+
+    await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text }),
+    });
+
+    setSent(true);
   }
 
   return (
-    <MailchimpSubscribe
-      url={EnvVars.MAILCHIMP_SUBSCRIBE_URL}
-      render={({ subscribe, status, message }) => {
-        const hasSignedUp = status === 'success';
-        return (
-          <Overlay>
-            <Container>
-              <Card onSubmit={(event: React.FormEvent<HTMLFormElement>) => onSubmit(event, subscribe)}>
-                <CloseIconContainer>
-                  <CloseIcon onClick={onClose} />
-                </CloseIconContainer>
-                {hasSignedUp && <MailSentState />}
-                {!hasSignedUp && (
-                  <>
-                    <Title>Are you ready to enroll to the best newsletter ever?</Title>
-                    <Row>
-                      <CustomInput
-                        value={email}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
-                        placeholder="Enter your email..."
-                        required
-                      />
-                      <CustomButton as="button" type="submit" disabled={hasSignedUp}>
-                        Submit
-                      </CustomButton>
-                    </Row>
-                    {message && <ErrorMessage dangerouslySetInnerHTML={{ __html: message as string }} />}
-                  </>
-                )}
-              </Card>
-            </Container>
-          </Overlay>
-        );
-      }}
-    />
+    <Overlay>
+      <Container>
+        <Card onSubmit={onSubmit}>
+          <CloseIconContainer>
+            <CloseIcon onClick={onClose} />
+          </CloseIconContainer>
+          {sent ? (
+            <Title>Заявка отправлена! Мы свяжемся с вами в ближайшее время.</Title>
+          ) : (
+            <>
+              <Title>Оставьте заявку на бесплатный замер</Title>
+              <Row>
+                <CustomInput
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Ваше имя"
+                  required
+                />
+                <CustomInput
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="Телефон"
+                  required
+                />
+                <CustomButton as="button" type="submit">
+                  Отправить
+                </CustomButton>
+              </Row>
+            </>
+          )}
+        </Card>
+      </Container>
+    </Overlay>
   );
 }
 
@@ -108,43 +113,18 @@ const Title = styled.div`
   }
 `;
 
-const ErrorMessage = styled.p`
-  color: rgb(var(--errorColor));
-  font-size: 1.5rem;
-  margin: 1rem 0;
-  text-align: center;
-`;
-
 const Row = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
+  flex-direction: column;
+  gap: 2rem;
   margin-top: 3rem;
-
-  ${media('<=tablet')} {
-    flex-direction: column;
-  }
 `;
 
 const CustomButton = styled(Button)`
-  height: 100%;
   padding: 1.8rem;
-  margin-left: 1.5rem;
   box-shadow: var(--shadow-lg);
-
-  ${media('<=tablet')} {
-    width: 100%;
-    margin-left: 0;
-    margin-top: 1rem;
-  }
 `;
 
 const CustomInput = styled(Input)`
-  width: 60%;
-
-  ${media('<=tablet')} {
-    width: 100%;
-  }
+  width: 100%;
 `;

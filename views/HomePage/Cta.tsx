@@ -13,21 +13,20 @@ export default function Cta() {
     <CtaWrapper>
       <Container>
         <Stack>
-          <OverTitle>Lorem ipsum dolor sit amet</OverTitle>
-          <SectionTitle>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus delectus?</SectionTitle>
+          <OverTitle>бесплатный замер и консультация</OverTitle>
+          <SectionTitle>Оставьте заявку — мы перезвоним и рассчитаем стоимость бетонного пола</SectionTitle>
           <Description>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda beatae accusamus deleniti nihil quas tempora numquam, vitae
-            culpa.
+            Работаем по Москве и области. Гарантия, договор, соблюдение сроков. Подберём оптимальное решение под ваш объект.
           </Description>
           <ButtonGroup>
-            <NextLink href="#early-access" passHref>
+            <NextLink href="#contact" passHref>
               <Button>
-                Subscribe to the newsletter <span>&rarr;</span>
+                Оставить заявку <span>&rarr;</span>
               </Button>
             </NextLink>
-            <NextLink href="#whitepaper" passHref>
+            <NextLink href="#services" passHref>
               <OutlinedButton transparent>
-                Features <span>&rarr;</span>
+                Услуги <span>&rarr;</span>
               </OutlinedButton>
             </NextLink>
           </ButtonGroup>

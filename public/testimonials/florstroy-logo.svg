@@ -1,0 +1,10 @@
+<svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="10" width="40" height="20" rx="3" fill="#FF6B00" />
+  <rect x="5" y="15" width="30" height="10" rx="2" fill="#FFA64D" />
+  <text x="50" y="25" font-family="Montserrat, sans-serif" font-size="20" fill="#333" font-weight="700">
+    Flor
+  </text>
+  <text x="100" y="25" font-family="Montserrat, sans-serif" font-size="20" fill="#FF6B00" font-weight="700">
+    Stroy
+  </text>
+</svg>

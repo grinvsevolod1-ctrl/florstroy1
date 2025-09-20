@@ -10,33 +10,34 @@ import { media } from 'utils/media';
 
 const TESTIMONIALS = [
   {
-    companyLogoUrl: '/testimonials/company-logo-1.svg',
-    content: `Really good. I am so pleased with this product. I didn't even need training.`,
+    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    content: `Заказали шлифовку бетонного пола в складе 600 м². Работы выполнены точно в срок, поверхность идеально ровная.`,
     author: {
-      name: 'Clyde Edwards',
-      title: 'Very Serious Man',
-      avatarUrl: '/testimonials/author-photo-1.jpeg',
+      name: 'Алексей Петров',
+      title: 'Руководитель склада, МО',
+      avatarUrl: '/testimonials/client-1.jpg',
     },
   },
   {
-    companyLogoUrl: '/testimonials/company-logo-2.svg',
-    content: `It's really wonderful. I use saas product often. Thank You! Saas product has really helped our business.`,
+    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    content: `Бригада FlorStroy делала наливной пол в автосервисе. Всё чётко: замер, договор, результат — супер.`,
     author: {
-      name: 'Jimmy Hunter',
-      title: 'Sigma Male University Graduate',
-      avatarUrl: '/testimonials/author-photo-2.jpeg',
+      name: 'Игорь Смирнов',
+      title: 'Владелец автосервиса, Москва',
+      avatarUrl: '/testimonials/client-2.jpg',
     },
   },
   {
-    companyLogoUrl: '/testimonials/company-logo-3.svg',
-    content: `Since I invested in saas product I made over 100,000 dollars profits. It really saves me time and effort. saas product is exactly what our business has been lacking.`,
+    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    content: `Демонтаж старого покрытия и армирование нового пола на производстве. Работают профессионально, рекомендую.`,
     author: {
-      name: 'Marjorie Morgan',
-      title: 'Chief Chad Officer',
-      avatarUrl: '/testimonials/author-photo-3.jpeg',
+      name: 'Марина Козлова',
+      title: 'Технический директор, Химки',
+      avatarUrl: '/testimonials/client-3.jpg',
     },
   },
 ];
+
 
 export default function Testimonials() {
   return (

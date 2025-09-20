@@ -29,15 +29,15 @@ export default function ScrollableBlogPosts({ posts }: ScrollableBlogPostsProps)
     <Section>
       <Container>
         <Content>
-          <OverTitle>features</OverTitle>
-          <SectionTitle>What are you signing in for?</SectionTitle>
+          <OverTitle>полезные материалы</OverTitle>
+          <SectionTitle>Читайте о технологиях устройства бетонных полов</SectionTitle>
         </Content>
       </Container>
 
       <SwiperContainer ref={ref}>
         {hasMounted && (
           <Swiper modules={[A11y]} slidesPerView={noOfItems} spaceBetween={10} loop>
-            {posts.map((singlePost, idx) => (
+            {posts.map((singlePost) => (
               <SwiperSlide key={singlePost.meta.title}>
                 <ArticleCard
                   title={singlePost.meta.title}
@@ -56,7 +56,6 @@ export default function ScrollableBlogPosts({ posts }: ScrollableBlogPostsProps)
 
 const Content = styled.div`
   position: relative;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,6 +68,7 @@ const Content = styled.div`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
+
   & > *:not(:first-child) {
     margin-top: 1rem;
   }

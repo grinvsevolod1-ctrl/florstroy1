@@ -7,19 +7,19 @@ import Container from 'components/Container';
 import { media } from 'utils/media';
 
 const PARTNER_LOGOS = [
+  'midean-logo.svg',
   'logoipsum-logo-1.svg',
   'logoipsum-logo-2.svg',
   'logoipsum-logo-3.svg',
   'logoipsum-logo-4.svg',
   'logoipsum-logo-5.svg',
   'logoipsum-logo-6.svg',
-  'logoipsum-logo-7.svg',
 ];
 
 export default function Partners() {
   return (
     <PartnersWrapper>
-      <Title>official partners with</Title>
+      <Title>мы работаем с проверенными поставщиками</Title>
       <Swiper
         modules={[Autoplay]}
         slidesPerView={6}

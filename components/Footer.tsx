@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { FacebookIcon, LinkedinIcon, TwitterIcon } from 'react-share';
+import { FacebookIcon, TelegramIcon, WhatsappIcon } from 'react-share';
 import styled from 'styled-components';
 import Container from 'components/Container';
 import { media } from 'utils/media';
@@ -11,37 +11,28 @@ type FooterItems = SingleFooterList[];
 
 const footerItems: FooterItems = [
   {
-    title: 'Company',
+    title: 'Компания',
     items: [
-      { title: 'Privacy Policy', href: '/privacy-policy' },
-      { title: 'Cookies Policy', href: '/cookies-policy' },
+      { title: 'О нас', href: '/about' },
+      { title: 'Контакты', href: '/contact' },
+      { title: 'Политика конфиденциальности', href: '/privacy-policy' },
     ],
   },
   {
-    title: 'Product',
+    title: 'Услуги',
     items: [
-      { title: 'Features', href: '/features' },
-      { title: 'Something', href: '/something' },
-      { title: 'Something else', href: '/something-else' },
-      { title: 'And something else', href: '/and-something-else' },
+      { title: 'Шлифовка полов', href: '/services/grinding' },
+      { title: 'Наливные полы', href: '/services/self-leveling' },
+      { title: 'Армирование', href: '/services/reinforcement' },
+      { title: 'Демонтаж', href: '/services/demolition' },
     ],
   },
   {
-    title: 'Knowledge',
+    title: 'Информация',
     items: [
-      { title: 'Blog', href: '/blog' },
-      { title: 'Contact', href: '/contact' },
-      { title: 'FAQ', href: '/faq' },
-      { title: 'Help Center', href: '/help-center' },
-    ],
-  },
-  {
-    title: 'Something',
-    items: [
-      { title: 'Features2', href: '/features2' },
-      { title: 'Something2', href: '/something2' },
-      { title: 'Something else2', href: '/something-else2' },
-      { title: 'And something else2', href: '/and-something-else2' },
+      { title: 'Вопросы и ответы', href: '/faq' },
+      { title: 'Блог', href: '/blog' },
+      { title: 'Отзывы', href: '/reviews' },
     ],
   },
 ];
@@ -57,25 +48,25 @@ export default function Footer() {
         </ListContainer>
         <BottomBar>
           <ShareBar>
-            <NextLink href="https://www.twitter.com/my-saas-startup" passHref>
+            <NextLink href="https://t.me/florstroy" passHref>
               <a>
-                <TwitterIcon size={50} round={true} />
+                <TelegramIcon size={50} round={true} />
               </a>
             </NextLink>
 
-            <NextLink href="https://www.facebook.com/my-saas-startup" passHref>
+            <NextLink href="https://wa.me/79999999999" passHref>
+              <a>
+                <WhatsappIcon size={50} round={true} />
+              </a>
+            </NextLink>
+
+            <NextLink href="https://www.facebook.com/florstroy" passHref>
               <a>
                 <FacebookIcon size={50} round={true} />
               </a>
             </NextLink>
-
-            <NextLink href="https://www.linkedin.com/my-saas-startup" passHref>
-              <a>
-                <LinkedinIcon size={50} round={true} />
-              </a>
-            </NextLink>
           </ShareBar>
-          <Copyright>&copy; Copyright 2021 My Saas Startup</Copyright>
+          <Copyright>&copy; FlorStroy {new Date().getFullYear()}</Copyright>
         </BottomBar>
       </Container>
     </FooterWrapper>
@@ -102,6 +93,8 @@ function ListItem({ title, href }: SingleFooterListItem) {
     </ListItemWrapper>
   );
 }
+
+// стили остаются без изменений
 
 const FooterWrapper = styled.div`
   padding-top: 10rem;
