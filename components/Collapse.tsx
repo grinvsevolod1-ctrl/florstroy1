@@ -1,5 +1,8 @@
 import { forwardRef, PropsWithChildren } from 'react';
-import AnimateHeight from 'react-animate-height';
+import AnimateHeightBase from 'react-animate-height';
+
+// 👇 Приведение типа для JSX-совместимости
+const AnimateHeight = AnimateHeightBase as unknown as React.FC<any>;
 
 export interface CollapseProps {
   isOpen?: boolean;
@@ -34,7 +37,8 @@ const Collapse = forwardRef<HTMLDivElement, PropsWithChildren<CollapseProps>>(
         animateOpacity={animateOpacity}
         height={isOpen ? endingHeight : startingHeight}
         applyInlineTransitions={false}
-        {...{ onAnimationStart, onAnimationEnd }}
+        onAnimationStart={onAnimationStart}
+        onAnimationEnd={onAnimationEnd}
         style={{
           transition: 'height .3s ease,opacity .3s ease-in-out,transform .3s ease-in-out',
           backfaceVisibility: 'hidden',
