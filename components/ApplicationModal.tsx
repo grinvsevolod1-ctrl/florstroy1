@@ -1,19 +1,19 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 
 export default function ApplicationModal({ onClose }: { onClose: () => void }) {
   const [formData, setFormData] = useState({
     name: '',
-    phone: '',
-    email: '',
+    contactMethod: 'phone',
+    contactValue: '',
     service: '',
     message: '',
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
 
@@ -33,6 +33,31 @@ export default function ApplicationModal({ onClose }: { onClose: () => void }) {
     }
   }
 
+  useEffect(() => {
+    if (status === 'sent') {
+      const timer = setTimeout(() => {
+        onClose();
+        setStatus('idle');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [status, onClose]);
+
+  function getPlaceholder(method: string) {
+    switch (method) {
+      case 'phone':
+        return '+7 (___) ___-__-__';
+      case 'email':
+        return 'example@domain.ru';
+      case 'telegram':
+        return '@username';
+      case 'whatsapp':
+        return '+7XXXXXXXXXX';
+      default:
+        return '';
+    }
+  }
+
   return (
     <Overlay>
       <Modal>
@@ -40,13 +65,29 @@ export default function ApplicationModal({ onClose }: { onClose: () => void }) {
         <Title>Оставить заявку</Title>
         <Form onSubmit={handleSubmit}>
           <Input name="name" placeholder="Ваше имя" onChange={handleChange} required />
-          <Input name="phone" placeholder="Телефон" onChange={handleChange} required />
-          <Input name="email" placeholder="Email" onChange={handleChange} />
+
+          <Select name="contactMethod" value={formData.contactMethod} onChange={handleChange}>
+            <option value="phone">Телефон</option>
+            <option value="email">Email</option>
+            <option value="telegram">Telegram</option>
+            <option value="whatsapp">WhatsApp</option>
+          </Select>
+
+          <Input
+            name="contactValue"
+            placeholder={getPlaceholder(formData.contactMethod)}
+            value={formData.contactValue}
+            onChange={handleChange}
+            required
+          />
+
           <Input name="service" placeholder="Услуга / объект" onChange={handleChange} />
           <Textarea name="message" placeholder="Комментарий" onChange={handleChange} rows={4} />
+
           <SubmitButton type="submit" disabled={status === 'sending'}>
             {status === 'sending' ? 'Отправка...' : 'Отправить'}
           </SubmitButton>
+
           {status === 'sent' && <Success>Заявка отправлена!</Success>}
           {status === 'error' && <Error>Ошибка отправки. Попробуйте позже.</Error>}
         </Form>
@@ -63,42 +104,65 @@ const Overlay = styled.div`
 `;
 
 const Modal = styled.div`
-  max-width: 500px;
+  width: 100%;
+  max-width: 600px;
   margin: 5rem auto;
   background: white;
-  padding: 2rem;
+  padding: 3rem;
   border-radius: 1rem;
   position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 600px) {
+    margin: 2rem;
+    padding: 2rem;
+  }
 `;
 
 const Title = styled.h2`
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
+  margin-bottom: 2rem;
 `;
 
 const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  display: grid;
+  gap: 1.5rem;
 `;
 
 const Input = styled.input`
-  padding: 0.75rem;
-  font-size: 1rem;
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
 `;
 
 const Textarea = styled.textarea`
-  padding: 0.75rem;
-  font-size: 1rem;
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+`;
+
+const Select = styled.select`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
 `;
 
 const SubmitButton = styled.button`
   background: rgb(var(--primary));
   color: white;
-  padding: 0.75rem;
+  padding: 1.25rem;
+  font-size: 1.4rem;
   font-weight: bold;
   border: none;
   border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(var(--primary), 0.9);
+  }
 `;
 
 const CloseButton = styled.button`
@@ -113,10 +177,10 @@ const CloseButton = styled.button`
 
 const Success = styled.div`
   color: green;
-  font-size: 1rem;
+  font-size: 1.4rem;
 `;
 
 const Error = styled.div`
   color: red;
-  font-size: 1rem;
+  font-size: 1.4rem;
 `;

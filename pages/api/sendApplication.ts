@@ -4,20 +4,30 @@ import nodemailer from 'nodemailer';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { name, phone, email, service, message } = req.body;
+  const { name, contactMethod, contactValue, service, message } = req.body;
   const referer = req.headers.referer || 'не указан';
+
+  const contactLabel = {
+    phone: 'Телефон',
+    email: 'Email',
+    telegram: 'Telegram',
+    whatsapp: 'WhatsApp',
+  }[contactMethod] || 'Контакт';
 
   const text = `
 Новая заявка с сайта florstroy.ru:
 Имя: ${name}
-Телефон: ${phone}
-Email: ${email}
+${contactLabel}: ${contactValue}
 Услуга / объект: ${service}
 Комментарий: ${message}
 Источник: ${referer}
   `;
 
   try {
+    console.log('Получены данные:', { name, contactMethod, contactValue, service, message });
+    console.log('SMTP:', process.env.SMTP_USER);
+    console.log('Telegram:', process.env.TELEGRAM_CHAT_ID);
+
     // Отправка в Telegram
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
