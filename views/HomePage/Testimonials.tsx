@@ -10,7 +10,7 @@ import { media } from 'utils/media';
 
 const TESTIMONIALS = [
   {
-    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    companyLogoUrl: '/testimonials/company-logo-1.svg',
     content: `Заказали шлифовку бетонного пола в складе 600 м². Работы выполнены точно в срок, поверхность идеально ровная.`,
     author: {
       name: 'Алексей Петров',
@@ -19,7 +19,7 @@ const TESTIMONIALS = [
     },
   },
   {
-    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    companyLogoUrl: '/testimonials/company-logo-2.svg',
     content: `Бригада FlorStroy делала наливной пол в автосервисе. Всё чётко: замер, договор, результат — супер.`,
     author: {
       name: 'Игорь Смирнов',
@@ -28,7 +28,7 @@ const TESTIMONIALS = [
     },
   },
   {
-    companyLogoUrl: '/testimonials/florstroy-logo.svg',
+    companyLogoUrl: '/testimonials/company-logo-3.svg',
     content: `Демонтаж старого покрытия и армирование нового пола на производстве. Работают профессионально, рекомендую.`,
     author: {
       name: 'Марина Козлова',

@@ -5,34 +5,77 @@ import SectionTitle from 'components/SectionTitle';
 export default function FaqSection() {
   return (
     <Wrapper>
-      <SectionTitle>Frequently asked question</SectionTitle>
-      <Accordion title="Eiusmod eu laboris qui minim incididunt et id in elit veniam Lorem nulla ullamco.">
-        Voluptate ad aliquip in adipisicing incididunt officia. Aliqua consectetur id commodo fugiat sunt dolor minim. Aliqua ut deserunt
-        sit irure tempor esse labore elit commodo pariatur in nisi minim culpa. Exercitation eu in mollit tempor cillum excepteur
-        adipisicing cillum do et dolor est deserunt dolor. Deserunt reprehenderit nulla commodo quis et consectetur deserunt ea eiusmod
-        reprehenderit aliqua. Cupidatat commodo do ad ullamco ad enim sint sint irure amet culpa. Consequat sit Lorem sint culpa.
+      <SectionTitle>Всё о бетонных полах: цены, технологии, материалы</SectionTitle>
+
+      <Accordion title="Какие виды бетонных полов вы предлагаете?">
+        Мы выполняем:
+        <ul>
+          <li>Шлифованные полы — от 1200 ₽/м²</li>
+          <li>Топпинг — от 1500 ₽/м²</li>
+          <li>Эпоксидные покрытия — от 1800 ₽/м²</li>
+          <li>Мозаичные полы — от 800 ₽/м²</li>
+        </ul>
+        Все покрытия адаптируются под нагрузку, влажность и тип эксплуатации.
       </Accordion>
-      <Accordion title="Minim eiusmod aliquip in ea mollit fugiat ullamco veniam enim sint exercitation.">
-        Lorem laboris ullamco labore consectetur duis amet excepteur esse labore sunt pariatur do aliqua amet. Enim exercitation labore
-        nostrud consectetur veniam eiusmod pariatur do commodo dolore pariatur amet veniam. Irure do et ut dolor quis reprehenderit anim
-        aute sint deserunt tempor sunt nostrud. Deserunt et aute non dolor.
+
+      <Accordion title="Из чего состоит стоимость бетонного пола?">
+        Цена формируется из:
+        <ul>
+          <li>Тип основания (грунт, песок, бетон, плита)</li>
+          <li>Толщина слоя (обычно 80–120 мм)</li>
+          <li>Армирование (сетка, фибра, арматура)</li>
+          <li>Доп. работы: гидроизоляция, демпфер, швы, укладка</li>
+        </ul>
+        Пример: шлифованный пол 100 мм на бетонном основании с армированием — ≈ 1450 ₽/м².
       </Accordion>
-      <Accordion title="Commodo officia dolore anim occaecat.">
-        Enim ea cillum pariatur incididunt incididunt sunt ea exercitation nisi aliquip. Cillum deserunt ut esse Lorem non qui labore labore
-        eiusmod magna incididunt ut quis. Nulla excepteur adipisicing ipsum do non occaecat.
+
+      <Accordion title="Какие материалы используются?">
+        Мы применяем:
+        <ul>
+          <li>Бетон B25–B30 с фиброй или сеткой</li>
+          <li>Грунтовки и упрочнители Sika, Ceresit, Litokol</li>
+          <li>Эпоксидные составы — двухкомпонентные, стойкие к химии</li>
+          <li>Гидроизоляция — рулонная или обмазочная</li>
+        </ul>
+        Все материалы сертифицированы и соответствуют ГОСТ.
       </Accordion>
-      <Accordion title="Irure Lorem proident esse enim.">
-        Ipsum laboris sit minim occaecat nisi qui. Tempor eiusmod fugiat occaecat labore. Exercitation do cillum cillum laborum velit
-        laborum ea magna duis laborum in anim. Enim laboris dolore laboris consectetur enim duis deserunt consequat excepteur ipsum
-        excepteur. Non dolor magna et est cillum sint eiusmod sit eiusmod veniam id. Aliqua non non labore amet laborum fugiat ad nostrud ex
-        officia exercitation.
+
+      <Accordion title="Сколько времени занимает устройство пола?">
+        <ul>
+          <li>Подготовка основания — 1 день</li>
+          <li>Заливка и армирование — 1–2 дня</li>
+          <li>Шлифовка и покрытие — 1 день</li>
+        </ul>
+        В среднем: 3–5 дней на объект до 200 м². Возможна работа поэтапно.
       </Accordion>
-      <Accordion title="Ea quis consequat sunt sint aute pariatur aliquip minim voluptate.">
-        Sint eiusmod aute nulla ut esse sunt fugiat nulla exercitation duis pariatur. Magna anim incididunt magna id quis irure laborum sint
-        voluptate tempor esse elit dolore. Elit exercitation pariatur adipisicing aute. Nisi deserunt enim consequat anim adipisicing
-        laborum sint occaecat elit. Consequat officia cupidatat magna incididunt nisi in sunt duis reprehenderit ullamco in amet cillum.
-        Dolor nisi proident ipsum aute velit aliquip magna fugiat reprehenderit. Enim ex aliqua et velit exercitation reprehenderit veniam
-        do eu exercitation ad duis.
+
+      <Accordion title="Какие гарантии вы даёте?">
+        <ul>
+          <li>Гарантия на работы — 3 года</li>
+          <li>На материалы — от 12 до 36 месяцев</li>
+          <li>Договор с прописанными сроками и объёмами</li>
+          <li>Фотофиксация этапов и акты выполненных работ</li>
+        </ul>
+        Мы работаем прозрачно и официально.
+      </Accordion>
+
+      <Accordion title="Можно ли рассчитать стоимость онлайн?">
+        Да. Используйте наш <strong>калькулятор</strong> — он учитывает:
+        <ul>
+          <li>Площадь и толщину</li>
+          <li>Тип основания и покрытия</li>
+          <li>Армирование и доп. работы</li>
+        </ul>
+        После расчёта вы можете сразу оформить заявку и получить консультацию.
+      </Accordion>
+
+      <Accordion title="Работаете ли вы по области или только по Москве?">
+        Мы работаем по всей Московской области, включая:
+        <ul>
+          <li>Балашиха, Химки, Одинцово, Подольск</li>
+          <li>Выезд в соседние регионы — по согласованию</li>
+        </ul>
+        Логистика и доставка материалов — наша забота.
       </Accordion>
     </Wrapper>
   );
@@ -40,7 +83,23 @@ export default function FaqSection() {
 
 const Wrapper = styled.div`
   margin-top: 15rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+
   & > *:not(:first-child) {
     margin-top: 3rem;
+  }
+
+  ul {
+    margin-top: 1rem;
+    padding-left: 2rem;
+    list-style: disc;
+    font-size: 1.5rem;
+    line-height: 1.6;
+  }
+
+  strong {
+    font-weight: 600;
   }
 `;
