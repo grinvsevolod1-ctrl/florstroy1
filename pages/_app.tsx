@@ -16,6 +16,7 @@ import ApplicationModal from 'components/ApplicationModal';
 import CalculatorModal from 'components/CalculatorModal';
 import FeedbackModal from 'components/FeedbackModal';
 import WaveCta from 'components/WaveCta';
+import FloatingContactWidget from 'components/FloatingContactWidget';
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
@@ -44,6 +45,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Modals />
         <Navbar items={navItems} />
         <Component {...pageProps} />
+        <FloatingContactWidget />
         <WaveCta />
         <Footer />
       </Providers>
