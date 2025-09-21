@@ -14,10 +14,12 @@ import Navbar from 'components/Navbar';
 import NavigationDrawer from 'components/NavigationDrawer';
 import ApplicationModal from 'components/ApplicationModal';
 import CalculatorModal from 'components/CalculatorModal';
+import FeedbackModal from 'components/FeedbackModal';
 import WaveCta from 'components/WaveCta';
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
+import { FeedbackModalProvider, useFeedbackModalContext } from 'contexts/feedback-modal.context';
 
 import { NavItems } from 'types';
 
@@ -53,7 +55,9 @@ function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
     <NewsletterModalContextProvider>
       <CalculatorModalProvider>
-        <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+        <FeedbackModalProvider>
+          <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+        </FeedbackModalProvider>
       </CalculatorModalProvider>
     </NewsletterModalContextProvider>
   );
@@ -62,11 +66,13 @@ function Providers<T>({ children }: PropsWithChildren<T>) {
 function Modals() {
   const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
   const { isCalculatorOpened, setIsCalculatorOpened } = useCalculatorModalContext();
+  const { isOpen, setIsOpen } = useFeedbackModalContext();
 
   return (
     <>
       {isModalOpened && <ApplicationModal onClose={() => setIsModalOpened(false)} />}
       {isCalculatorOpened && <CalculatorModal onClose={() => setIsCalculatorOpened(false)} />}
+      {isOpen && <FeedbackModal />}
     </>
   );
 }
