@@ -1,7 +1,10 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
-import { FaInstagram, FaTelegramPlane, FaPhoneAlt, FaCommentDots } from 'react-icons/fa';
-import { SiViber } from 'react-icons/si';
+import { FaInstagram } from 'react-icons/fa/index.js';
+import { FaTelegramPlane } from 'react-icons/fa/index.js';
+import { FaPhoneAlt } from 'react-icons/fa/index.js';
+import { FaCommentDots } from 'react-icons/fa/index.js';
+import { SiViber } from 'react-icons/si/index.js';
 
 export default function FloatingContactWidget() {
   const [visible, setVisible] = useState(true);
