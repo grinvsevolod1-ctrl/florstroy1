@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import SubmitModal from './SubmitModal';
 
 type CoatingType = 'Шлифованный' | 'Эпоксидный' | 'Топпинг';
@@ -18,6 +18,7 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   const [comment, setComment] = useState('');
   const [price, setPrice] = useState<number | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
+  const resultRef = useRef<HTMLDivElement>(null);
 
   const baseRate: Record<CoatingType, number> = {
     Шлифованный: 1200,
@@ -64,6 +65,9 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
       100;
 
     setPrice(Math.round(total));
+    setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -156,7 +160,7 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
             <SubmitButton type="submit">Рассчитать</SubmitButton>
 
             {price !== null && (
-              <>
+              <div ref={resultRef}>
                 <Result>
                   <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽<br />
                   <strong>Объём бетона:</strong> {volume.toFixed(2)} м³<br />
@@ -165,7 +169,7 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
                 <SubmitButton type="button" onClick={() => setShowSubmitModal(true)}>
                   Перейти к оформлению
                 </SubmitButton>
-              </>
+              </div>
             )}
           </Form>
         </Modal>
@@ -232,20 +236,7 @@ const Field = styled.div`
 const Label = styled.label`
   font-size: 1.4rem;
   font-weight: 600;
-`;
-
-const Input = styled.input`
-  padding: 1rem;
-  font-size: 1.6rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: #f9f9f9;
-  transition: border 0.2s;
-
-  &:focus {
-    border-color: rgb(var(--primary));
-    outline: none;
-  }
+  color: #333;
 `;
 
 const Select = styled.select`
