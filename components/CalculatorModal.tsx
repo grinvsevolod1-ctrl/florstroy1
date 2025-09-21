@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import SubmitModal from './SubmitModal';
 
 type CoatingType = 'шлифованный' | 'эпоксидный' | 'топпинг';
 type FoundationType = 'грунт' | 'песок' | 'бетон' | 'плита';
@@ -16,6 +17,7 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   const [extras, setExtras] = useState<ExtraWorkType[]>([]);
   const [comment, setComment] = useState('');
   const [price, setPrice] = useState<number | null>(null);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   const baseRate: Record<CoatingType, number> = {
     шлифованный: 1200,
@@ -69,85 +71,108 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
     calculate();
   }
 
+  const volume = price !== null ? (Number(area) * Number(thickness)) / 1000 : 0;
+  const selectedOptions =
+    price !== null
+      ? [
+          `Основание: ${foundation}`,
+          `Покрытие: ${coating}`,
+          reinforced ? `Армирование: ${reinforcementType}` : 'Без армирования',
+          ...extras,
+        ]
+      : [];
+
+  const calculationText =
+    price !== null
+      ? `Стоимость: ${price.toLocaleString()} ₽\nОбъём: ${volume.toFixed(2)} м³\nОпции: ${selectedOptions.join(', ')}\nКомментарий: ${comment}`
+      : '';
+
   return (
-    <Overlay onClick={onClose}>
-      <Modal onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>×</CloseButton>
-        <Title>Калькулятор стоимости</Title>
-        <Form onSubmit={handleSubmit}>
-          <section>
-            <SectionTitle>Основные параметры</SectionTitle>
-            <Input type="number" placeholder="Площадь, м²" value={area} onChange={(e) => setArea(e.target.value)} required />
-            <Input type="number" placeholder="Толщина слоя, мм" value={thickness} onChange={(e) => setThickness(e.target.value)} required />
-            <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
-              <option value="грунт">Основание: грунт</option>
-              <option value="песок">Основание: песок</option>
-              <option value="бетон">Основание: бетон</option>
-              <option value="плита">Основание: плита</option>
-            </Select>
-            <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
-              <option value="шлифованный">Покрытие: шлифованный бетон</option>
-              <option value="эпоксидный">Покрытие: эпоксидное</option>
-              <option value="топпинг">Покрытие: топпинг</option>
-            </Select>
-          </section>
-
-          <section>
-            <SectionTitle>Армирование</SectionTitle>
-            <CheckboxWrapper>
-              <label>
-                <input type="checkbox" checked={reinforced} onChange={(e) => setReinforced(e.target.checked)} />
-                Армирование
-              </label>
-            </CheckboxWrapper>
-            {reinforced && (
-              <Select value={reinforcementType} onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}>
-                <option value="сетка">Сетка</option>
-                <option value="фибра">Фибра</option>
-                <option value="арматура">Арматура</option>
+    <>
+      <Overlay onClick={onClose}>
+        <Modal onClick={(e) => e.stopPropagation()}>
+          <CloseButton onClick={onClose}>×</CloseButton>
+          <Title>Калькулятор стоимости</Title>
+          <Form onSubmit={handleSubmit}>
+            <section>
+              <SectionTitle>Основные параметры</SectionTitle>
+              <Input type="number" placeholder="Площадь, м²" value={area} onChange={(e) => setArea(e.target.value)} required />
+              <Input type="number" placeholder="Толщина слоя, мм" value={thickness} onChange={(e) => setThickness(e.target.value)} required />
+              <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
+                <option value="грунт">Основание: грунт</option>
+                <option value="песок">Основание: песок</option>
+                <option value="бетон">Основание: бетон</option>
+                <option value="плита">Основание: плита</option>
               </Select>
-            )}
-          </section>
+              <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
+                <option value="шлифованный">Покрытие: шлифованный бетон</option>
+                <option value="эпоксидный">Покрытие: эпоксидное</option>
+                <option value="топпинг">Покрытие: топпинг</option>
+              </Select>
+            </section>
 
-          <section>
-            <SectionTitle>Дополнительные работы</SectionTitle>
-            <ExtrasBlock>
-              {Object.keys(extraWorkCost).map((key) => (
-                <label key={key}>
-                  <input type="checkbox" checked={extras.includes(key as ExtraWorkType)} onChange={() => toggleExtra(key as ExtraWorkType)} />
-                  {key}
+            <section>
+              <SectionTitle>Армирование</SectionTitle>
+              <CheckboxWrapper>
+                <label>
+                  <input type="checkbox" checked={reinforced} onChange={(e) => setReinforced(e.target.checked)} />
+                  Армирование
                 </label>
-              ))}
-            </ExtrasBlock>
-          </section>
+              </CheckboxWrapper>
+              {reinforced && (
+                <Select value={reinforcementType} onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}>
+                  <option value="сетка">Сетка</option>
+                  <option value="фибра">Фибра</option>
+                  <option value="арматура">Арматура</option>
+                </Select>
+              )}
+            </section>
 
-          <section>
-            <SectionTitle>Комментарий</SectionTitle>
-            <Textarea placeholder="Комментарий или объект" value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
-          </section>
+            <section>
+              <SectionTitle>Дополнительные работы</SectionTitle>
+              <ExtrasBlock>
+                {Object.keys(extraWorkCost).map((key) => (
+                  <label key={key}>
+                    <input type="checkbox" checked={extras.includes(key as ExtraWorkType)} onChange={() => toggleExtra(key as ExtraWorkType)} />
+                    {key}
+                  </label>
+                ))}
+              </ExtrasBlock>
+            </section>
 
-          <SubmitButton type="submit">Рассчитать</SubmitButton>
+            <section>
+              <SectionTitle>Комментарий</SectionTitle>
+              <Textarea placeholder="Комментарий или объект" value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
+            </section>
 
-          {price !== null && (
-            <Result>
-              <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽
-              <br />
-              <strong>Объём бетона:</strong> {(Number(area) * Number(thickness) / 1000).toFixed(2)} м³
-              <br />
-              <strong>Выбранные опции:</strong> {[
-                `Основание: ${foundation}`,
-                `Покрытие: ${coating}`,
-                reinforced ? `Армирование: ${reinforcementType}` : 'Без армирования',
-                ...extras,
-              ].join(', ')}
-            </Result>
-          )}
-        </Form>
-      </Modal>
-    </Overlay>
+            <SubmitButton type="submit">Рассчитать</SubmitButton>
+
+            {price !== null && (
+              <>
+                <Result>
+                  <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽
+                  <br />
+                  <strong>Объём бетона:</strong> {volume.toFixed(2)} м³
+                  <br />
+                  <strong>Выбранные опции:</strong> {selectedOptions.join(', ')}
+                </Result>
+                <SubmitButton type="button" onClick={() => setShowSubmitModal(true)}>
+                  Перейти к оформлению
+                </SubmitButton>
+              </>
+            )}
+          </Form>
+        </Modal>
+      </Overlay>
+
+      {showSubmitModal && (
+        <SubmitModal calculation={calculationText} onClose={() => setShowSubmitModal(false)} />
+      )}
+    </>
   );
 }
 
+// Стили
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
@@ -167,16 +192,10 @@ const Modal = styled.div`
   border-radius: 1rem;
   position: relative;
   overflow-y: auto;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 600px) {
     margin: 1rem;
     padding: 2rem;
-  }
-
-  &::-webkit-scrollbar {
-    width: 0;
-    background: transparent;
   }
 `;
 
@@ -189,7 +208,6 @@ const SectionTitle = styled.h3`
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: rgb(var(--text));
 `;
 
 const Form = styled.form`
@@ -200,6 +218,13 @@ const Form = styled.form`
   > section {
     display: grid;
     gap: 1.2rem;
+    max-width: 100%;
+    margin: 0 auto;
+    text-align: left;
+
+    @media (max-width: 600px) {
+      padding: 0 0.5rem;
+    }
   }
 
   > section:not(:last-child) {
@@ -231,6 +256,7 @@ const Textarea = styled.textarea`
 
 const CheckboxWrapper = styled.div`
   font-size: 1.4rem;
+
   label {
     display: flex;
     align-items: center;
@@ -259,6 +285,7 @@ const SubmitButton = styled.button`
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: background 0.3s;
 
   &:hover {
     background: rgb(var(--primary), 0.9);
