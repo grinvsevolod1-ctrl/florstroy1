@@ -67,26 +67,3 @@ const SecondHeading = styled.h2`
   line-height: 3.75rem;
   margin-bottom: 3.75rem;
 `;
-
-const ThirdHeading = styled.h3`
-  font-size: 2.2rem;
-  line-height: 3.4rem;
-  margin-bottom: 3.4rem;
-`;
-
-const Break = styled.br`
-  display: block;
-  content: '';
-  margin: 0;
-  height: 3rem;
-`;
-
-const TextHighlight = styled.code`
-  display: inline-block;
-  padding: 0 0.6rem;
-  color: rgb(var(--textSecondary));
-  border-radius: 0.4rem;
-  background-color: rgba(var(--primary), 0.8);
-  font-size: 1.6rem;
-  font-family: inherit;
-`;
