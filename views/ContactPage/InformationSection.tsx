@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { FaTelegramPlane, FaWhatsapp, FaVk, FaInstagram } from 'react-icons/fa';
 
 export default function InformationSection() {
   return (
@@ -16,23 +17,25 @@ export default function InformationSection() {
           </InfoList>
 
           <Socials>
-            <a href="https://t.me/florstroy" target="_blank">Telegram</a>
-            <a href="https://wa.me/79681868828" target="_blank">WhatsApp</a>
-            <a href="https://vk.com/florstroy" target="_blank">VK</a>
-            <a href="https://instagram.com/florstroy" target="_blank">Instagram</a>
+            <SocialIconLink href="https://t.me/florstroy" target="_blank"><FaTelegramPlane /> Telegram</SocialIconLink>
+            <SocialIconLink href="https://wa.me/79681868828" target="_blank"><FaWhatsapp /> WhatsApp</SocialIconLink>
+            <SocialIconLink href="https://vk.com/florstroy" target="_blank"><FaVk /> VK</SocialIconLink>
+            <SocialIconLink href="https://instagram.com/florstroy" target="_blank"><FaInstagram /> Instagram</SocialIconLink>
           </Socials>
         </Block>
 
         <MapBlock>
           <YMaps>
-            <Map
-              defaultState={{ center: [55.6785, 37.2631], zoom: 15 }}
-              width="100%"
-              height="400px"
-            >
+            <Map defaultState={{ center: [55.6785, 37.2631], zoom: 15 }} width="100%" height="400px">
               <Placemark geometry={[55.6785, 37.2631]} />
             </Map>
           </YMaps>
+          <MapButton
+            href="https://yandex.ru/maps/?ll=37.2631%2C55.6785&z=15&mode=search&text=Можайское%20шоссе%207"
+            target="_blank"
+          >
+            Открыть в Яндекс.Картах
+          </MapButton>
         </MapBlock>
       </Grid>
     </Wrapper>
@@ -92,18 +95,30 @@ const InfoList = styled.ul`
 
 const Socials = styled.div`
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
+  margin-top: 1rem;
+`;
 
-  a {
-    font-size: 1.6rem;
-    color: rgb(var(--primary));
-    text-decoration: none;
-    border-bottom: 1px dashed rgb(var(--primary));
+const SocialIconLink = styled.a`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.6rem;
+  color: rgb(var(--primary));
+  text-decoration: none;
+  padding: 0.6rem 1rem;
+  border: 1px solid rgba(var(--primary), 0.3);
+  border-radius: 0.6rem;
+  transition: all 0.2s ease;
 
-    &:hover {
-      border-bottom: 1px solid rgb(var(--primary));
-    }
+  &:hover {
+    background: rgba(var(--primary), 0.05);
+    border-color: rgb(var(--primary));
+  }
+
+  svg {
+    font-size: 1.8rem;
   }
 `;
 
@@ -111,4 +126,20 @@ const MapBlock = styled.div`
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+`;
+
+const MapButton = styled.a`
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  color: white;
+  background: rgb(var(--primary));
+  padding: 1rem 2rem;
+  border-radius: 0.6rem;
+  text-decoration: none;
+  text-align: center;
+
+  &:hover {
+    background: rgba(var(--primary), 0.85);
+  }
 `;
