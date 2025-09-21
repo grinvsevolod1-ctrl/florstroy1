@@ -1,12 +1,15 @@
 import React from 'react';
-import HighlightBase, { defaultProps, Language } from 'prism-react-renderer';
+import HighlightBase, {
+  defaultProps,
+  Language,
+  RenderProps,
+} from 'prism-react-renderer';
 import styled from 'styled-components';
 import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
 
 // 👇 Приведение типа для JSX-совместимости
 const Highlight = HighlightBase as unknown as React.FC<any>;
-
 
 export interface CodeProps {
   code: string;
@@ -40,7 +43,7 @@ export default function Code({
   return (
     <>
       <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        {({ className, style, tokens, getLineProps, getTokenProps }: RenderProps) => (
           <>
             <CodeWrapper className="code-wrapper" language={language}>
               {withCopyButton && copyButtonMarkup}
@@ -49,10 +52,11 @@ export default function Code({
                   const lineNumber = i + 1;
                   const isSelected = selectedLines.includes(lineNumber);
                   const lineProps = getLineProps({ line, key: i });
-                  const className = lineProps.className + (isSelected ? ' selected-line' : '');
+                  const lineClassName =
+                    lineProps.className + (isSelected ? ' selected-line' : '');
 
                   return (
-                    <Line key={i} {...{ ...lineProps, className }}>
+                    <Line key={i} {...{ ...lineProps, className: lineClassName }}>
                       {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
                       <LineContent>
                         {line.map((token, key) => (
