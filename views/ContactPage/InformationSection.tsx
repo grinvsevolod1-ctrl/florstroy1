@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
-import { FaTelegramPlane, FaWhatsapp, FaVk, FaInstagram } from 'react-icons/fa';
+import {
+  FaTelegramPlane as TelegramIcon,
+  FaWhatsapp as WhatsappIcon,
+  FaVk as VkIcon,
+  FaInstagram as InstagramIcon,
+} from 'react-icons/fa';
 
 export default function InformationSection() {
   return (
@@ -17,10 +22,18 @@ export default function InformationSection() {
           </InfoList>
 
           <Socials>
-            <SocialIconLink href="https://t.me/florstroy" target="_blank"><FaTelegramPlane /> Telegram</SocialIconLink>
-            <SocialIconLink href="https://wa.me/79681868828" target="_blank"><FaWhatsapp /> WhatsApp</SocialIconLink>
-            <SocialIconLink href="https://vk.com/florstroy" target="_blank"><FaVk /> VK</SocialIconLink>
-            <SocialIconLink href="https://instagram.com/florstroy" target="_blank"><FaInstagram /> Instagram</SocialIconLink>
+            <SocialIconLink href="https://t.me/florstroy" target="_blank">
+              {TelegramIcon({})} Telegram
+            </SocialIconLink>
+            <SocialIconLink href="https://wa.me/79681868828" target="_blank">
+              {WhatsappIcon({})} WhatsApp
+            </SocialIconLink>
+            <SocialIconLink href="https://vk.com/florstroy" target="_blank">
+              {VkIcon({})} VK
+            </SocialIconLink>
+            <SocialIconLink href="https://instagram.com/florstroy" target="_blank">
+              {InstagramIcon({})} Instagram
+            </SocialIconLink>
           </Socials>
         </Block>
 
@@ -41,6 +54,7 @@ export default function InformationSection() {
     </Wrapper>
   );
 }
+
 
 const Wrapper = styled.div`
   width: 100%;
