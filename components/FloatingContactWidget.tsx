@@ -1,10 +1,14 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
-import { FaInstagram } from 'react-icons/fa/index.js';
-import { FaTelegramPlane } from 'react-icons/fa/index.js';
-import { FaPhoneAlt } from 'react-icons/fa/index.js';
-import { FaCommentDots } from 'react-icons/fa/index.js';
-import { SiViber } from 'react-icons/si/index.js';
+import React from 'react';
+import dynamic from 'next/dynamic';
+
+// Динамический импорт иконок — обходит ограничения типизации
+const FaInstagram = dynamic(() => import('react-icons/fa').then(mod => mod.FaInstagram), { ssr: false });
+const SiViber = dynamic(() => import('react-icons/si').then(mod => mod.SiViber), { ssr: false });
+const FaTelegramPlane = dynamic(() => import('react-icons/fa').then(mod => mod.FaTelegramPlane), { ssr: false });
+const FaPhoneAlt = dynamic(() => import('react-icons/fa').then(mod => mod.FaPhoneAlt), { ssr: false });
+const FaCommentDots = dynamic(() => import('react-icons/fa').then(mod => mod.FaCommentDots), { ssr: false });
 
 export default function FloatingContactWidget() {
   const [visible, setVisible] = useState(true);
