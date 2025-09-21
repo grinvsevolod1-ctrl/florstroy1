@@ -19,16 +19,17 @@ export default function WaveCta() {
           d="M0,64L80,58.7C160,53,320,43,480,80C640,117,800,203,960,197.3C1120,192,1280,96,1360,48L1440,0L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"
         ></path>
       </svg>
+
       <CtaWrapper>
         <Container>
-          <Title>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Temporibus delectus?</Title>
+          <Title>Оставьте заявку или изучите наши услуги</Title>
           <CustomButtonGroup>
             <Button onClick={() => setIsModalOpened(true)}>
-              Subscribe to the newsletter <span>&rarr;</span>
+              Оставить заявку <span>&rarr;</span>
             </Button>
             <NextLink href="/features" passHref>
               <OutlinedButton transparent>
-                Features <span>&rarr;</span>
+                Все услуги <span>&rarr;</span>
               </OutlinedButton>
             </NextLink>
           </CustomButtonGroup>
@@ -51,6 +52,7 @@ const CtaWrapper = styled.div`
 const Title = styled(SectionTitle)`
   color: rgb(var(--textSecondary));
   margin-bottom: 4rem;
+  text-align: center;
 `;
 
 const OutlinedButton = styled(Button)`
@@ -60,4 +62,6 @@ const OutlinedButton = styled(Button)`
 
 const CustomButtonGroup = styled(ButtonGroup)`
   justify-content: center;
+  flex-wrap: wrap;
+  gap: 2rem;
 `;
