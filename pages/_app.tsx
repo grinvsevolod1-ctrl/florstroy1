@@ -13,9 +13,12 @@ import { GlobalStyle } from 'components/GlobalStyles';
 import Navbar from 'components/Navbar';
 import NavigationDrawer from 'components/NavigationDrawer';
 import ApplicationModal from 'components/ApplicationModal';
-
+import CalculatorModal from 'components/CalculatorModal';
 import WaveCta from 'components/WaveCta';
+
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
+import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
+
 import { NavItems } from 'types';
 
 const navItems: NavItems = [
@@ -23,8 +26,6 @@ const navItems: NavItems = [
   { title: 'Услуги', href: '/pricing' },
   { title: 'Контакты', href: '/contact' },
 ];
-
-
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -51,16 +52,23 @@ function MyApp({ Component, pageProps }: AppProps) {
 function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
     <NewsletterModalContextProvider>
-      <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+      <CalculatorModalProvider>
+        <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+      </CalculatorModalProvider>
     </NewsletterModalContextProvider>
   );
 }
 
 function Modals() {
   const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
-  if (!isModalOpened) return null;
-  return <ApplicationModal onClose={() => setIsModalOpened(false)} />;
-}
+  const { isCalculatorOpened, setIsCalculatorOpened } = useCalculatorModalContext();
 
+  return (
+    <>
+      {isModalOpened && <ApplicationModal onClose={() => setIsModalOpened(false)} />}
+      {isCalculatorOpened && <CalculatorModal onClose={() => setIsCalculatorOpened(false)} />}
+    </>
+  );
+}
 
 export default MyApp;

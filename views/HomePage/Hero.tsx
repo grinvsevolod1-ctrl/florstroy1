@@ -5,11 +5,11 @@ import ButtonGroup from 'components/ButtonGroup';
 import Container from 'components/Container';
 import HeroIllustration from 'components/HeroIllustation';
 import OverTitle from 'components/OverTitle';
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
+import { useCalculatorModalContext } from 'contexts/calculator-modal.context';
 import { media } from 'utils/media';
 
 export default function Hero() {
-  const { setIsModalOpened } = useNewsletterModalContext();
+  const { setIsCalculatorOpened } = useCalculatorModalContext();
 
   return (
     <HeroWrapper>
@@ -20,8 +20,8 @@ export default function Hero() {
           Устройство промышленных бетонных полов, шлифовка, армирование, наливные покрытия. Работаем по Москве и области. Гарантия качества.
         </Description>
         <CustomButtonGroup>
-          <Button onClick={() => setIsModalOpened(true)}>
-            Оставить заявку <span>&rarr;</span>
+          <Button onClick={() => setIsCalculatorOpened(true)}>
+            Рассчитать стоимость <span>&rarr;</span>
           </Button>
           <NextLink href="#services" passHref>
             <Button transparent>
