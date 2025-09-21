@@ -13,7 +13,7 @@ export default function InformationSection() {
     <Wrapper>
       <Grid>
         <Block>
-          <Title>Контакты Мидеан</Title>
+          <Title>Контакты FlorStroy</Title>
           <InfoList>
             <li><strong>ИНН:</strong> 5032258560</li>
             <li><strong>Адрес:</strong> Россия, Московская область, г. Орехово, Можайское шоссе д.7</li>
