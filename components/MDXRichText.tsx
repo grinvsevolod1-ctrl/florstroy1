@@ -90,16 +90,3 @@ const TextHighlight = styled.code`
   font-size: 1.6rem;
   font-family: inherit;
 `;
-
-const components = {
-  h2: SecondHeading,
-  h3: ThirdHeading,
-  p: Paragraph,
-  br: Break,
-  inlineCode: TextHighlight,
-  Image: ArticleImage,
-  Link,
-  Code,
-  Quote,
-  ArticleImage,
-};
