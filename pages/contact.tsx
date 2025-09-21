@@ -1,18 +1,16 @@
 import styled from 'styled-components';
 import Page from 'components/Page';
 import { media } from 'utils/media';
-import FormSection from 'views/ContactPage/FormSection';
 import InformationSection from 'views/ContactPage/InformationSection';
 
 export default function ContactPage() {
   return (
     <Page
       title="Контакты Florstroy"
-      description="Свяжитесь с нами: адрес, телефоны, email, карта. Работаем по Москве и области. Оперативный ответ."
+      description="Адрес, телефоны, email, карта. Работаем по Москве и области. Связь через Telegram, WhatsApp, VK."
     >
       <ContactContainer>
         <InformationSection />
-        <FormSection />
       </ContactContainer>
     </Page>
   );
@@ -20,14 +18,10 @@ export default function ContactPage() {
 
 const ContactContainer = styled.div`
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 4rem;
-  flex-wrap: wrap;
-  margin-top: 6rem;
+  justify-content: center;
+  padding: 6rem 2rem;
 
   ${media('<=tablet')} {
-    flex-direction: column;
-    gap: 3rem;
+    padding: 4rem 1rem;
   }
 `;
