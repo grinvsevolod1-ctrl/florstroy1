@@ -12,7 +12,8 @@ import Footer from 'components/Footer';
 import { GlobalStyle } from 'components/GlobalStyles';
 import Navbar from 'components/Navbar';
 import NavigationDrawer from 'components/NavigationDrawer';
-import NewsletterModal from 'components/NewsletterModal';
+import ApplicationModal from 'components/ApplicationModal';
+
 import WaveCta from 'components/WaveCta';
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { NavItems } from 'types';
@@ -20,7 +21,7 @@ import { NavItems } from 'types';
 const navItems: NavItems = [
   { title: 'Проекты', href: '/features' },
   { title: 'Услуги', href: '/pricing' },
-  { title: 'Контакты', href: '/contact' }
+  { title: 'Контакты', href: '/contact' },
 ];
 
 
@@ -57,10 +58,9 @@ function Providers<T>({ children }: PropsWithChildren<T>) {
 
 function Modals() {
   const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
-  if (!isModalOpened) {
-    return null;
-  }
-  return <NewsletterModal onClose={() => setIsModalOpened(false)} />;
+  if (!isModalOpened) return null;
+  return <ApplicationModal onClose={() => setIsModalOpened(false)} />;
 }
+
 
 export default MyApp;
