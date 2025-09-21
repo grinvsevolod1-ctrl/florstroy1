@@ -5,7 +5,8 @@ import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
 
 // 👇 Приведение типа для JSX-совместимости
-const Highlight = HighlightBase as React.FC<any>;
+const Highlight = HighlightBase as unknown as React.FC<any>;
+
 
 export interface CodeProps {
   code: string;
