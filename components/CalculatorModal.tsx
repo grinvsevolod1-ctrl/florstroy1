@@ -1,44 +1,49 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 
+type CoatingType = 'шлифованный' | 'эпоксидный' | 'топпинг';
+type FoundationType = 'грунт' | 'песок' | 'бетон' | 'плита';
+type ReinforcementType = 'сетка' | 'фибра' | 'арматура';
+type ExtraWorkType = 'гидроизоляция' | 'демпфер' | 'швы' | 'укладка';
+
 export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   const [area, setArea] = useState('');
-  const [foundation, setFoundation] = useState('бетон');
-  const [coating, setCoating] = useState('шлифованный');
+  const [foundation, setFoundation] = useState<FoundationType>('бетон');
+  const [coating, setCoating] = useState<CoatingType>('шлифованный');
   const [thickness, setThickness] = useState('100');
   const [reinforced, setReinforced] = useState(false);
-  const [reinforcementType, setReinforcementType] = useState('сетка');
-  const [extras, setExtras] = useState<string[]>([]);
+  const [reinforcementType, setReinforcementType] = useState<ReinforcementType>('сетка');
+  const [extras, setExtras] = useState<ExtraWorkType[]>([]);
   const [comment, setComment] = useState('');
   const [price, setPrice] = useState<number | null>(null);
 
-  const baseRate = {
+  const baseRate: Record<CoatingType, number> = {
     шлифованный: 1200,
     эпоксидный: 1800,
     топпинг: 1500,
   };
 
-  const foundationFactor = {
+  const foundationFactor: Record<FoundationType, number> = {
     грунт: 1.2,
     песок: 1.1,
     бетон: 1.0,
     плита: 0.9,
   };
 
-  const reinforcementCost = {
+  const reinforcementCost: Record<ReinforcementType, number> = {
     сетка: 300,
     фибра: 200,
     арматура: 500,
   };
 
-  const extraWorkCost = {
+  const extraWorkCost: Record<ExtraWorkType, number> = {
     гидроизоляция: 150,
     демпфер: 100,
     швы: 80,
     укладка: 250,
   };
 
-  function toggleExtra(name: string) {
+  function toggleExtra(name: ExtraWorkType) {
     setExtras((prev) =>
       prev.includes(name) ? prev.filter((e) => e !== name) : [...prev, name]
     );
@@ -79,14 +84,14 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
             required
           />
 
-          <Select value={foundation} onChange={(e) => setFoundation(e.target.value)}>
+          <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
             <option value="грунт">Основание: грунт</option>
             <option value="песок">Основание: песок</option>
             <option value="бетон">Основание: бетон</option>
             <option value="плита">Основание: плита</option>
           </Select>
 
-          <Select value={coating} onChange={(e) => setCoating(e.target.value)}>
+          <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
             <option value="шлифованный">Покрытие: шлифованный бетон</option>
             <option value="эпоксидный">Покрытие: эпоксидное</option>
             <option value="топпинг">Покрытие: топпинг</option>
@@ -114,7 +119,7 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
           {reinforced && (
             <Select
               value={reinforcementType}
-              onChange={(e) => setReinforcementType(e.target.value)}
+              onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}
             >
               <option value="сетка">Сетка</option>
               <option value="фибра">Фибра</option>
@@ -127,8 +132,8 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
               <label key={key}>
                 <input
                   type="checkbox"
-                  checked={extras.includes(key)}
-                  onChange={() => toggleExtra(key)}
+                  checked={extras.includes(key as ExtraWorkType)}
+                  onChange={() => toggleExtra(key as ExtraWorkType)}
                 />
                 {key}
               </label>
