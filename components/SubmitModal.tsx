@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import InputMask from 'react-input-mask';
+import PDFPreview from './PDFPreview';
 
 type ContactMethod = 'Телефон' | 'Email' | 'Telegram' | 'WhatsApp';
 
@@ -15,6 +17,13 @@ export default function SubmitModal({
   const [contactValue, setContactValue] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [region, setRegion] = useState('RU');
+
+  useEffect(() => {
+    const lang = navigator.language;
+    if (lang.startsWith('ru')) setRegion('RU');
+    else if (lang.startsWith('en')) setRegion('INT');
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -62,7 +71,17 @@ export default function SubmitModal({
 
           <Field>
             <Label>{contactMethod}</Label>
-            <Input value={contactValue} onChange={(e) => setContactValue(e.target.value)} required />
+            {contactMethod === 'Телефон' && region === 'RU' ? (
+              <InputMask
+                mask="+7 (999) 999-99-99"
+                value={contactValue}
+                onChange={(e) => setContactValue(e.target.value)}
+              >
+                {(inputProps) => <Input {...inputProps} required />}
+              </InputMask>
+            ) : (
+              <Input value={contactValue} onChange={(e) => setContactValue(e.target.value)} required />
+            )}
           </Field>
 
           <Field>
@@ -76,11 +95,16 @@ export default function SubmitModal({
 
           {status === 'sent' && <Success>Заявка успешно отправлена!</Success>}
           {status === 'error' && <Error>Ошибка отправки. Попробуйте позже.</Error>}
+
+          <PDFPreview calculation={calculation} />
         </Form>
       </Modal>
     </Overlay>
   );
 }
+
+// Стили — те же, что в предыдущем SubmitModal.tsx
+
 
 // Стили
 const Overlay = styled.div`
