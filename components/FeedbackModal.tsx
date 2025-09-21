@@ -42,27 +42,46 @@ export default function FeedbackModal() {
   if (!isOpen) return null;
 
   return (
-    <Overlay>
-      <Modal>
-        <h3>Заявка на услугу: {selectedService}</h3>
+    <Overlay onClick={() => setIsOpen(false)}>
+      <Modal onClick={(e) => e.stopPropagation()}>
+        <Header>
+          <Title>Заявка на услугу</Title>
+          <Close onClick={() => setIsOpen(false)}>×</Close>
+        </Header>
 
-        <Input placeholder="Ваше имя" value={name} onChange={(e) => setName(e.target.value)} />
+        <Subtitle>{selectedService}</Subtitle>
 
-        <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
-          <option>Телефон</option>
-          <option>Email</option>
-          <option>Telegram</option>
-          <option>WhatsApp</option>
-        </Select>
+        <Field>
+          <Label>Имя</Label>
+          <Input value={name} onChange={(e) => setName(e.target.value)} />
+        </Field>
 
-        <Input placeholder={`Ваш ${contactMethod}`} value={contactValue} onChange={(e) => setContactValue(e.target.value)} />
+        <Field>
+          <Label>Способ связи</Label>
+          <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
+            <option>Телефон</option>
+            <option>Email</option>
+            <option>Telegram</option>
+            <option>WhatsApp</option>
+          </Select>
+        </Field>
 
-        <Textarea placeholder="Комментарий" value={message} onChange={(e) => setMessage(e.target.value)} />
+        <Field>
+          <Label>{contactMethod}</Label>
+          <Input value={contactValue} onChange={(e) => setContactValue(e.target.value)} />
+        </Field>
 
-        <Textarea placeholder="Расчёт / параметры объекта" value={calculation} onChange={(e) => setCalculation(e.target.value)} />
+        <Field>
+          <Label>Комментарий</Label>
+          <Textarea value={message} onChange={(e) => setMessage(e.target.value)} />
+        </Field>
 
-        <Button onClick={handleSubmit}>Отправить</Button>
-        <Close onClick={() => setIsOpen(false)}>×</Close>
+        <Field>
+          <Label>Расчёт / параметры объекта</Label>
+          <Textarea value={calculation} onChange={(e) => setCalculation(e.target.value)} />
+        </Field>
+
+        <SubmitButton onClick={handleSubmit}>Отправить заявку</SubmitButton>
       </Modal>
     </Overlay>
   );
@@ -71,58 +90,101 @@ export default function FeedbackModal() {
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.5);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
+  padding: 2rem;
 `;
 
 const Modal = styled.div`
-  background: white;
+  background: #fff;
+  border-radius: 1.2rem;
   padding: 3rem;
-  border-radius: 1rem;
-  position: relative;
   width: 100%;
   max-width: 500px;
+  box-sizing: border-box;
+  position: relative;
+  box-shadow: 0 0 40px rgba(0,0,0,0.1);
+
+  @media (max-width: 600px) {
+    padding: 2rem;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const Title = styled.h3`
+  font-size: 2.4rem;
+  margin: 0;
+`;
+
+const Subtitle = styled.div`
+  font-size: 1.6rem;
+  margin: 1rem 0 2rem;
+  color: rgba(var(--textSecondary), 0.8);
+`;
+
+const Close = styled.div`
+  font-size: 2.4rem;
+  cursor: pointer;
+  line-height: 1;
+`;
+
+const Field = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const Label = styled.label`
+  display: block;
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+  color: rgba(var(--textSecondary), 0.9);
 `;
 
 const Input = styled.input`
   width: 100%;
-  margin-top: 1rem;
   padding: 1rem;
   font-size: 1.6rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.6rem;
 `;
 
 const Select = styled.select`
   width: 100%;
-  margin-top: 1rem;
   padding: 1rem;
   font-size: 1.6rem;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.6rem;
 `;
 
 const Textarea = styled.textarea`
   width: 100%;
-  margin-top: 1rem;
   padding: 1rem;
   font-size: 1.6rem;
-  height: 100px;
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 0.6rem;
+  resize: vertical;
+  min-height: 80px;
 `;
 
-const Button = styled.button`
-  margin-top: 2rem;
-  padding: 1rem 2rem;
-  background: rgb(var(--primary));
-  color: white;
-  border: none;
+const SubmitButton = styled.button`
+  width: 100%;
+  padding: 1.2rem;
   font-size: 1.6rem;
+  background: rgb(var(--primary));
+  color: #fff;
+  border: none;
+  border-radius: 0.6rem;
   cursor: pointer;
-`;
+  transition: background 0.2s ease;
 
-const Close = styled.div`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  cursor: pointer;
+  &:hover {
+    background: rgba(var(--primary), 0.85);
+  }
 `;
