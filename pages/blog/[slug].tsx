@@ -12,7 +12,7 @@ import MetadataHead from 'views/SingleArticlePage/MetadataHead';
 import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
 import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
-import { getAllPosts, getPostBySlug } from 'utils/posts';
+import { getAllPostsSlugs, getSinglePost } from 'utils/postsFetcher';
 import { serialize } from 'next-mdx-remote/serialize';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -64,10 +64,10 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
 }
 
 export async function getStaticPaths() {
-  const posts = getAllPosts();
+  const slugs = getAllPostsSlugs();
 
-  const paths = posts.map((post) => ({
-    params: { slug: post.slug },
+  const paths = slugs.map((slug) => ({
+    params: { slug },
   }));
 
   return {
@@ -76,9 +76,12 @@ export async function getStaticPaths() {
   };
 }
 
+
+import { serialize } from 'next-mdx-remote/serialize';
+
 export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: string }>) {
   const { slug } = params!;
-  const { content, meta } = getPostBySlug(slug);
+  const { content, meta } = await getSinglePost(slug);
   const mdxSource = await serialize(content);
 
   return {
@@ -89,6 +92,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: s
     },
   };
 }
+
 
 const CustomContainer = styled(Container)`
   position: relative;
