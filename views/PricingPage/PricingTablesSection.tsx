@@ -7,37 +7,50 @@ import SectionTitle from 'components/SectionTitle';
 export default function PricingTablesSection() {
   return (
     <Wrapper>
-      <SectionTitle>Flexible pricing for agile teams</SectionTitle>
+      <SectionTitle>Пакеты услуг по устройству бетонных полов</SectionTitle>
       <AutofitGrid>
         <PricingCard
-          title="free"
-          description="Give us a try for free"
-          benefits={['1 seat', '1 active project', 'Ulimited viewers', '10 blocks']}
-        >
-          $0<span>/month</span>
-        </PricingCard>
-        <PricingCard
-          title="Starter"
-          description="Best for individual desginers"
-          benefits={['1 seat', '3 active project', 'Ulimited viewers', '100 blocks', 'CSV Downloader', 'Password protection']}
-          isOutlined
-        >
-          $29<span>/month</span>
-        </PricingCard>
-        <PricingCard
-          title="Premium"
-          description="Get your team together"
+          title="Базовый"
+          description="Для небольших помещений и складов"
           benefits={[
-            '10 seat',
-            '10 active project',
-            'Ulimited viewers',
-            'Unlimited blocks',
-            'CSV Downloader',
-            'Password protection',
-            'Customization',
+            'Шлифованный бетон',
+            'Толщина до 100 мм',
+            'Без армирования',
+            'Подготовка основания',
+            'Гарантия 1 год',
           ]}
         >
-          $79<span>/month</span>
+          от 1200<span> ₽/м²</span>
+        </PricingCard>
+
+        <PricingCard
+          title="Стандарт"
+          description="Оптимально для производственных помещений"
+          benefits={[
+            'Топпинг или эпоксидное покрытие',
+            'Толщина до 120 мм',
+            'Армирование фиброй или сеткой',
+            'Гидроизоляция и демпфер',
+            'Гарантия 3 года',
+          ]}
+          isOutlined
+        >
+          от 1500<span> ₽/м²</span>
+        </PricingCard>
+
+        <PricingCard
+          title="Премиум"
+          description="Для высоких нагрузок и спецобъектов"
+          benefits={[
+            'Эпоксидное покрытие + упрочнитель',
+            'Толщина от 150 мм',
+            'Армирование арматурой',
+            'Полный цикл работ под ключ',
+            'Гарантия 5 лет',
+            'Фотофиксация и акты',
+          ]}
+        >
+          от 1800<span> ₽/м²</span>
         </PricingCard>
       </AutofitGrid>
     </Wrapper>
