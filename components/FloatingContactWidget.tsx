@@ -1,15 +1,20 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
-import React from 'react';
 import { FaInstagram, FaTelegramPlane, FaPhoneAlt, FaCommentDots } from 'react-icons/fa';
 import { SiViber } from 'react-icons/si';
 
-const contactItems = [
-  { href: 'https://instagram.com/florstroy', title: 'Instagram', icon: FaInstagram },
-  { href: 'viber://chat?number=+74956624994', title: 'Viber', icon: SiViber },
-  { href: 'https://t.me/florstroy', title: 'Telegram', icon: FaTelegramPlane },
-  { href: 'tel:+74956624994', title: 'Позвонить: +7 495 662 49 94', icon: FaPhoneAlt },
-  { href: '/contact', title: 'Форма обратной связи', icon: FaCommentDots },
+type ContactItem = {
+  href: string;
+  title: string;
+  icon: JSX.Element;
+};
+
+const contactItems: ContactItem[] = [
+  { href: 'https://instagram.com/florstroy', title: 'Instagram', icon: <FaInstagram /> },
+  { href: 'viber://chat?number=+74956624994', title: 'Viber', icon: <SiViber /> },
+  { href: 'https://t.me/florstroy', title: 'Telegram', icon: <FaTelegramPlane /> },
+  { href: 'tel:+74956624994', title: 'Позвонить: +7 495 662 49 94', icon: <FaPhoneAlt /> },
+  { href: '/contact', title: 'Форма обратной связи', icon: <FaCommentDots /> },
 ];
 
 export default function FloatingContactWidget() {
@@ -29,7 +34,7 @@ export default function FloatingContactWidget() {
     <WidgetWrapper onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
       {contactItems.map(({ href, title, icon }, index) => (
         <IconLink key={index} href={href} target="_blank" title={title}>
-          {React.createElement(icon)}
+          {icon}
         </IconLink>
       ))}
     </WidgetWrapper>
