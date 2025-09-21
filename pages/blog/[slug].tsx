@@ -12,36 +12,30 @@ import MetadataHead from 'views/SingleArticlePage/MetadataHead';
 import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
 import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
+import { getAllPosts, getPostBySlug } from 'utils/posts';
+import { serialize } from 'next-mdx-remote/serialize';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
   const [readTime, setReadTime] = useState('');
 
   useEffect(() => {
-    calculateReadTime();
-    lazyLoadPrismTheme();
-
-    function calculateReadTime() {
-      const currentContent = contentRef.current;
-      if (currentContent) {
-        setReadTime(getReadTime(currentContent.textContent || ''));
-      }
+    const currentContent = contentRef.current;
+    if (currentContent) {
+      setReadTime(getReadTime(currentContent.textContent || ''));
     }
 
-    function lazyLoadPrismTheme() {
-      const prismThemeLinkEl = document.querySelector('link[data-id="prism-theme"]');
-
-      if (!prismThemeLinkEl) {
-        const headEl = document.querySelector('head');
-        if (headEl) {
-          const newEl = document.createElement('link');
-          newEl.setAttribute('data-id', 'prism-theme');
-          newEl.setAttribute('rel', 'stylesheet');
-          newEl.setAttribute('href', '/prism-theme.css');
-          newEl.setAttribute('media', 'print');
-          newEl.setAttribute('onload', "this.media='all'; this.onload=null;");
-          headEl.appendChild(newEl);
-        }
+    const prismThemeLinkEl = document.querySelector('link[data-id="prism-theme"]');
+    if (!prismThemeLinkEl) {
+      const headEl = document.querySelector('head');
+      if (headEl) {
+        const newEl = document.createElement('link');
+        newEl.setAttribute('data-id', 'prism-theme');
+        newEl.setAttribute('rel', 'stylesheet');
+        newEl.setAttribute('href', '/prism-theme.css');
+        newEl.setAttribute('media', 'print');
+        newEl.setAttribute('onload', "this.media='all'; this.onload=null;");
+        headEl.appendChild(newEl);
       }
     }
   }, []);
@@ -70,28 +64,28 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
 }
 
 export async function getStaticPaths() {
+  const posts = getAllPosts();
+
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+
   return {
-    paths: [],
+    paths,
     fallback: false,
   };
 }
 
 export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: string }>) {
-  const { slug } = params as { slug: string };
+  const { slug } = params!;
+  const { content, meta } = getPostBySlug(slug);
+  const mdxSource = await serialize(content);
 
   return {
     props: {
       slug,
-      content: '<p>Статья недоступна или ещё не добавлена.</p>',
-     meta: {
-  title: 'Заглушка статьи',
-  description: 'Описание временно отсутствует',
-  date: new Date().toISOString(),
-  tags: '',
-  imageUrl: '/demo-illustration-1.svg',
-  author: '',
-}
-,
+      content: mdxSource,
+      meta,
     },
   };
 }
