@@ -172,19 +172,25 @@ const ColorSwitcherContainer = styled.div`
 
 const ButtonGroup = styled.div`
   margin-left: 2rem;
+
+  ${media('<desktop')} {
+    display: none;
+  }
 `;
 
 const ContactButton = styled.button`
-  background: none;
+  background: rgb(var(--primary));
+  color: white;
   border: none;
-  font: inherit;
-  color: rgb(var(--text));
-  cursor: pointer;
-  padding: 0.75rem 1.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
   font-weight: 700;
   text-transform: uppercase;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
 
   &:hover {
-    color: rgb(var(--text), 0.9);
+    background: rgb(var(--primary), 0.85);
   }
 `;
