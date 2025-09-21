@@ -336,3 +336,17 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
 `;
+const Input = styled.input`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+`;
+
