@@ -27,7 +27,7 @@ export default function WaveCta() {
             <Button onClick={() => setIsModalOpened(true)}>
               Оставить заявку <span>&rarr;</span>
             </Button>
-            <NextLink href="/features" passHref>
+            <NextLink href="/pricing" passHref>
               <OutlinedButton transparent>
                 Все услуги <span>&rarr;</span>
               </OutlinedButton>
