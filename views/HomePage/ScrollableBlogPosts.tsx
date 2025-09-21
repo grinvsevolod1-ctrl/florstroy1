@@ -29,8 +29,8 @@ export default function ScrollableBlogPosts({ posts }: ScrollableBlogPostsProps)
     <Section>
       <Container>
         <Content>
-          <OverTitle>полезные материалы</OverTitle>
-          <SectionTitle>Читайте о технологиях устройства бетонных полов</SectionTitle>
+          <OverTitle>Наши работы</OverTitle>
+          <SectionTitle>Вы можете ознакомиться с нашими работами</SectionTitle>
         </Content>
       </Container>
 
