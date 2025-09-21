@@ -47,6 +47,7 @@
     "@next/bundle-analyzer": "^13.3.1",
     "@types/nodemailer": "^7.0.1",
     "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
     "@types/react-mailchimp-subscribe": "^2.1.1",
     "@types/styled-components": "^5.1.25",
     "@types/swiper": "^6.0.0",
