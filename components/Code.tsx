@@ -1,9 +1,5 @@
 import React from 'react';
-import HighlightBase, {
-  defaultProps,
-  Language,
-  RenderProps,
-} from 'prism-react-renderer';
+import HighlightBase, { defaultProps, Language } from 'prism-react-renderer';
 import styled from 'styled-components';
 import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
@@ -43,34 +39,44 @@ export default function Code({
   return (
     <>
       <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
-        {({ className, style, tokens, getLineProps, getTokenProps }: RenderProps) => (
-          <>
-            <CodeWrapper className="code-wrapper" language={language}>
-              {withCopyButton && copyButtonMarkup}
-              <Pre className={className} style={style}>
-                {tokens.map((line, i) => {
-                  const lineNumber = i + 1;
-                  const isSelected = selectedLines.includes(lineNumber);
-                  const lineProps = getLineProps({ line, key: i });
-                  const lineClassName =
-                    lineProps.className + (isSelected ? ' selected-line' : '');
+        {(props: {
+          className: string;
+          style: React.CSSProperties;
+          tokens: any[][];
+          getLineProps: (input: any) => any;
+          getTokenProps: (input: any) => any;
+        }) => {
+          const { className, style, tokens, getLineProps, getTokenProps } = props;
 
-                  return (
-                    <Line key={i} {...{ ...lineProps, className: lineClassName }}>
-                      {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
-                      <LineContent>
-                        {line.map((token, key) => (
-                          <span key={key} {...getTokenProps({ token, key })} />
-                        ))}
-                      </LineContent>
-                    </Line>
-                  );
-                })}
-              </Pre>
-            </CodeWrapper>
-            {caption && <Caption>{caption}</Caption>}
-          </>
-        )}
+          return (
+            <>
+              <CodeWrapper className="code-wrapper" language={language}>
+                {withCopyButton && copyButtonMarkup}
+                <Pre className={className} style={style}>
+                  {tokens.map((line, i) => {
+                    const lineNumber = i + 1;
+                    const isSelected = selectedLines.includes(lineNumber);
+                    const lineProps = getLineProps({ line, key: i });
+                    const lineClassName =
+                      lineProps.className + (isSelected ? ' selected-line' : '');
+
+                    return (
+                      <Line key={i} {...{ ...lineProps, className: lineClassName }}>
+                        {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
+                        <LineContent>
+                          {line.map((token, key) => (
+                            <span key={key} {...getTokenProps({ token, key })} />
+                          ))}
+                        </LineContent>
+                      </Line>
+                    );
+                  })}
+                </Pre>
+              </CodeWrapper>
+              {caption && <Caption>{caption}</Caption>}
+            </>
+          );
+        }}
       </Highlight>
     </>
   );
