@@ -1,3 +1,4 @@
+import { media } from 'utils/media';
 import styled from 'styled-components';
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 import {
