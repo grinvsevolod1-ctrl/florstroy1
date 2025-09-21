@@ -22,7 +22,7 @@ import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/cal
 import { NavItems } from 'types';
 
 const navItems: NavItems = [
-  { title: 'Проекты', href: '/features' },
+  { title: 'Проекты', href: '/blog' },
   { title: 'Услуги', href: '/pricing' },
   { title: 'Контакты', href: '/contact' },
 ];
