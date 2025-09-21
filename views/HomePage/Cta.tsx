@@ -19,12 +19,12 @@ export default function Cta() {
             Работаем по Москве и области. Гарантия, договор, соблюдение сроков. Подберём оптимальное решение под ваш объект.
           </Description>
           <ButtonGroup>
-            <NextLink href="#contact" passHref>
+            <NextLink href="/contact" passHref>
               <Button>
-                Оставить заявку <span>&rarr;</span>
+                Где нас найти? <span>&rarr;</span>
               </Button>
             </NextLink>
-            <NextLink href="#services" passHref>
+            <NextLink href="/pricing" passHref>
               <OutlinedButton transparent>
                 Услуги <span>&rarr;</span>
               </OutlinedButton>
