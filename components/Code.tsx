@@ -1,8 +1,11 @@
-import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import React from 'react';
+import HighlightBase, { defaultProps, Language } from 'prism-react-renderer';
 import styled from 'styled-components';
 import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
+
+// 👇 Приведение типа для JSX-совместимости
+const Highlight = HighlightBase as React.FC<any>;
 
 export interface CodeProps {
   code: string;
@@ -21,17 +24,13 @@ export default function Code({
   withLineNumbers,
   caption,
 }: CodeProps) {
-  const { copy, copied } = useClipboard({
-    copiedTimeout: 600,
-  });
+  const { copy, copied } = useClipboard({ copiedTimeout: 600 });
 
-  function handleCopyClick(code: string) {
-    copy(code);
-  }
+  const handleCopyClick = () => copy(code);
 
   const copyButtonMarkup = (
     <ClientOnly>
-      <CopyButton copied={copied} onClick={() => handleCopyClick(code)}>
+      <CopyButton copied={copied} onClick={handleCopyClick}>
         <CopyIcon />
       </CopyButton>
     </ClientOnly>
@@ -104,7 +103,6 @@ const CopyButton = styled.button<{ copied: boolean }>`
   border-radius: 0.3rem;
   color: rgb(var(--text));
   z-index: 1;
-  line-height: 1;
 
   &::after {
     position: absolute;
