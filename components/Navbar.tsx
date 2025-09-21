@@ -79,9 +79,10 @@ export default function Navbar({ items }: NavbarProps) {
           ))}
         </NavItemList>
         <ButtonGroup>
-          <Button outlined onClick={() => setIsModalOpened(true)}>
-            Оставить заявку
-          </Button>
+         <Button transparent onClick={() => setIsModalOpened(true)}>
+  Оставить заявку
+</Button>
+
         </ButtonGroup>
         <ColorSwitcherContainer>
           <ColorSwitcher />
