@@ -2,47 +2,47 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import SubmitModal from './SubmitModal';
 
-type CoatingType = 'шлифованный' | 'эпоксидный' | 'топпинг';
-type FoundationType = 'грунт' | 'песок' | 'бетон' | 'плита';
-type ReinforcementType = 'сетка' | 'фибра' | 'арматура';
-type ExtraWorkType = 'гидроизоляция' | 'демпфер' | 'швы' | 'укладка';
+type CoatingType = 'Шлифованный' | 'Эпоксидный' | 'Топпинг';
+type FoundationType = 'Грунт' | 'Песок' | 'Бетон' | 'Плита';
+type ReinforcementType = 'Сетка' | 'Фибра' | 'Арматура';
+type ExtraWorkType = 'Гидроизоляция' | 'Демпфер' | 'Швы' | 'Укладка';
 
 export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   const [area, setArea] = useState('');
-  const [foundation, setFoundation] = useState<FoundationType>('бетон');
-  const [coating, setCoating] = useState<CoatingType>('шлифованный');
+  const [foundation, setFoundation] = useState<FoundationType>('Бетон');
+  const [coating, setCoating] = useState<CoatingType>('Шлифованный');
   const [thickness, setThickness] = useState('100');
   const [reinforced, setReinforced] = useState(false);
-  const [reinforcementType, setReinforcementType] = useState<ReinforcementType>('сетка');
+  const [reinforcementType, setReinforcementType] = useState<ReinforcementType>('Сетка');
   const [extras, setExtras] = useState<ExtraWorkType[]>([]);
   const [comment, setComment] = useState('');
   const [price, setPrice] = useState<number | null>(null);
   const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   const baseRate: Record<CoatingType, number> = {
-    шлифованный: 1200,
-    эпоксидный: 1800,
-    топпинг: 1500,
+    Шлифованный: 1200,
+    Эпоксидный: 1800,
+    Топпинг: 1500,
   };
 
   const foundationFactor: Record<FoundationType, number> = {
-    грунт: 1.2,
-    песок: 1.1,
-    бетон: 1.0,
-    плита: 0.9,
+    Грунт: 1.2,
+    Песок: 1.1,
+    Бетон: 1.0,
+    Плита: 0.9,
   };
 
   const reinforcementCost: Record<ReinforcementType, number> = {
-    сетка: 300,
-    фибра: 200,
-    арматура: 500,
+    Сетка: 300,
+    Фибра: 200,
+    Арматура: 500,
   };
 
   const extraWorkCost: Record<ExtraWorkType, number> = {
-    гидроизоляция: 150,
-    демпфер: 100,
-    швы: 80,
-    укладка: 250,
+    Гидроизоляция: 150,
+    Демпфер: 100,
+    Швы: 80,
+    Укладка: 250,
   };
 
   function toggleExtra(name: ExtraWorkType) {
@@ -94,66 +94,72 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
           <CloseButton onClick={onClose}>×</CloseButton>
           <Title>Калькулятор стоимости</Title>
           <Form onSubmit={handleSubmit}>
-            <section>
-              <SectionTitle>Основные параметры</SectionTitle>
-              <Input type="number" placeholder="Площадь, м²" value={area} onChange={(e) => setArea(e.target.value)} required />
-              <Input type="number" placeholder="Толщина слоя, мм" value={thickness} onChange={(e) => setThickness(e.target.value)} required />
-              <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
-                <option value="грунт">Основание: грунт</option>
-                <option value="песок">Основание: песок</option>
-                <option value="бетон">Основание: бетон</option>
-                <option value="плита">Основание: плита</option>
-              </Select>
-              <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
-                <option value="шлифованный">Покрытие: шлифованный бетон</option>
-                <option value="эпоксидный">Покрытие: эпоксидное</option>
-                <option value="топпинг">Покрытие: топпинг</option>
-              </Select>
-            </section>
-
-            <section>
-              <SectionTitle>Армирование</SectionTitle>
-              <CheckboxWrapper>
-                <label>
-                  <input type="checkbox" checked={reinforced} onChange={(e) => setReinforced(e.target.checked)} />
-                  Армирование
-                </label>
-              </CheckboxWrapper>
-              {reinforced && (
-                <Select value={reinforcementType} onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}>
-                  <option value="сетка">Сетка</option>
-                  <option value="фибра">Фибра</option>
-                  <option value="арматура">Арматура</option>
+            <Grid>
+              <Field>
+                <Label>Площадь, м²</Label>
+                <Input type="number" value={area} onChange={(e) => setArea(e.target.value)} required />
+              </Field>
+              <Field>
+                <Label>Толщина слоя, мм</Label>
+                <Input type="number" value={thickness} onChange={(e) => setThickness(e.target.value)} required />
+              </Field>
+              <Field>
+                <Label>Тип основания</Label>
+                <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
+                  {Object.keys(foundationFactor).map((key) => (
+                    <option key={key} value={key}>{key}</option>
+                  ))}
                 </Select>
+              </Field>
+              <Field>
+                <Label>Тип покрытия</Label>
+                <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
+                  {Object.keys(baseRate).map((key) => (
+                    <option key={key} value={key}>{key}</option>
+                  ))}
+                </Select>
+              </Field>
+              <Field>
+                <Label>Армирование</Label>
+                <Checkbox>
+                  <input type="checkbox" checked={reinforced} onChange={(e) => setReinforced(e.target.checked)} />
+                  <span>{reinforced ? 'Да' : 'Нет'}</span>
+                </Checkbox>
+              </Field>
+              {reinforced && (
+                <Field>
+                  <Label>Тип армирования</Label>
+                  <Select value={reinforcementType} onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}>
+                    {Object.keys(reinforcementCost).map((key) => (
+                      <option key={key} value={key}>{key}</option>
+                    ))}
+                  </Select>
+                </Field>
               )}
-            </section>
-
-            <section>
-              <SectionTitle>Дополнительные работы</SectionTitle>
-              <ExtrasBlock>
-                {Object.keys(extraWorkCost).map((key) => (
-                  <label key={key}>
-                    <input type="checkbox" checked={extras.includes(key as ExtraWorkType)} onChange={() => toggleExtra(key as ExtraWorkType)} />
-                    {key}
-                  </label>
-                ))}
-              </ExtrasBlock>
-            </section>
-
-            <section>
-              <SectionTitle>Комментарий</SectionTitle>
-              <Textarea placeholder="Комментарий или объект" value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
-            </section>
+              <Field style={{ gridColumn: '1 / -1' }}>
+                <Label>Дополнительные работы</Label>
+                <Extras>
+                  {Object.keys(extraWorkCost).map((key) => (
+                    <label key={key}>
+                      <input type="checkbox" checked={extras.includes(key as ExtraWorkType)} onChange={() => toggleExtra(key as ExtraWorkType)} />
+                      {key}
+                    </label>
+                  ))}
+                </Extras>
+              </Field>
+              <Field style={{ gridColumn: '1 / -1' }}>
+                <Label>Комментарий</Label>
+                <Textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
+              </Field>
+            </Grid>
 
             <SubmitButton type="submit">Рассчитать</SubmitButton>
 
             {price !== null && (
               <>
                 <Result>
-                  <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽
-                  <br />
-                  <strong>Объём бетона:</strong> {volume.toFixed(2)} м³
-                  <br />
+                  <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽<br />
+                  <strong>Объём бетона:</strong> {volume.toFixed(2)} м³<br />
                   <strong>Выбранные опции:</strong> {selectedOptions.join(', ')}
                 </Result>
                 <SubmitButton type="button" onClick={() => setShowSubmitModal(true)}>
@@ -185,7 +191,7 @@ const Overlay = styled.div`
 
 const Modal = styled.div`
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   max-height: 90vh;
   background: white;
   padding: 3rem;
@@ -200,37 +206,32 @@ const Modal = styled.div`
 `;
 
 const Title = styled.h2`
-  font-size: 2rem;
+  font-size: 2.4rem;
   margin-bottom: 2rem;
-`;
-
-const SectionTitle = styled.h3`
-  font-size: 1.6rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  text-align: center;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 2rem;
+`;
 
-  > section {
-    display: grid;
-    gap: 1.2rem;
-    max-width: 100%;
-    margin: 0 auto;
-    text-align: left;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+`;
 
-    @media (max-width: 600px) {
-      padding: 0 0.5rem;
-    }
-  }
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
 
-  > section:not(:last-child) {
-    border-bottom: 1px solid #eee;
-    padding-bottom: 2rem;
-  }
+const Label = styled.label`
+  font-size: 1.4rem;
+  font-weight: 600;
 `;
 
 const Input = styled.input`
@@ -238,6 +239,13 @@ const Input = styled.input`
   font-size: 1.6rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
 `;
 
 const Select = styled.select`
@@ -245,6 +253,13 @@ const Select = styled.select`
   font-size: 1.6rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
 `;
 
 const Textarea = styled.textarea`
@@ -252,50 +267,73 @@ const Textarea = styled.textarea`
   font-size: 1.6rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
-`;
+  background: #f9f9f9;
+  resize: vertical;
+  transition: border 0.2s;
 
-const CheckboxWrapper = styled.div`
-  font-size: 1.4rem;
-
-  label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
   }
 `;
 
-const ExtrasBlock = styled.div`
-  display: grid;
-  gap: 0.5rem;
+const Checkbox = styled.label`
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
   font-size: 1.4rem;
+  font-weight: 500;
+
+  input {
+    width: 1.6rem;
+    height: 1.6rem;
+    accent-color: rgb(var(--primary));
+  }
+`;
+
+const Extras = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
 
   label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    font-size: 1.4rem;
+
+    input {
+      width: 1.4rem;
+      height: 1.4rem;
+      accent-color: rgb(var(--primary));
+    }
   }
 `;
 
 const SubmitButton = styled.button`
   background: rgb(var(--primary));
   color: white;
-  padding: 1.2rem;
-  font-size: 1.4rem;
+  padding: 1.2rem 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   cursor: pointer;
+  align-self: center;
   transition: background 0.3s;
 
   &:hover {
-    background: rgb(var(--primary), 0.9);
+    background: rgb(var(--primary), 0.85);
   }
 `;
 
 const Result = styled.div`
   font-size: 1.6rem;
-  margin-top: 2rem;
   line-height: 1.6;
+  margin-top: 2rem;
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
 `;
 
 const CloseButton = styled.button`
