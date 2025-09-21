@@ -67,7 +67,6 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     calculate();
-    // TODO: отправка в Telegram или API
   }
 
   return (
@@ -76,76 +75,56 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
         <CloseButton onClick={onClose}>×</CloseButton>
         <Title>Калькулятор стоимости</Title>
         <Form onSubmit={handleSubmit}>
-          <Input
-            type="number"
-            placeholder="Площадь, м²"
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-            required
-          />
-
-          <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
-            <option value="грунт">Основание: грунт</option>
-            <option value="песок">Основание: песок</option>
-            <option value="бетон">Основание: бетон</option>
-            <option value="плита">Основание: плита</option>
-          </Select>
-
-          <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
-            <option value="шлифованный">Покрытие: шлифованный бетон</option>
-            <option value="эпоксидный">Покрытие: эпоксидное</option>
-            <option value="топпинг">Покрытие: топпинг</option>
-          </Select>
-
-          <Input
-            type="number"
-            placeholder="Толщина слоя, мм"
-            value={thickness}
-            onChange={(e) => setThickness(e.target.value)}
-            required
-          />
-
-          <CheckboxWrapper>
-            <label>
-              <input
-                type="checkbox"
-                checked={reinforced}
-                onChange={(e) => setReinforced(e.target.checked)}
-              />
-              Армирование
-            </label>
-          </CheckboxWrapper>
-
-          {reinforced && (
-            <Select
-              value={reinforcementType}
-              onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}
-            >
-              <option value="сетка">Сетка</option>
-              <option value="фибра">Фибра</option>
-              <option value="арматура">Арматура</option>
+          <section>
+            <SectionTitle>Основные параметры</SectionTitle>
+            <Input type="number" placeholder="Площадь, м²" value={area} onChange={(e) => setArea(e.target.value)} required />
+            <Input type="number" placeholder="Толщина слоя, мм" value={thickness} onChange={(e) => setThickness(e.target.value)} required />
+            <Select value={foundation} onChange={(e) => setFoundation(e.target.value as FoundationType)}>
+              <option value="грунт">Основание: грунт</option>
+              <option value="песок">Основание: песок</option>
+              <option value="бетон">Основание: бетон</option>
+              <option value="плита">Основание: плита</option>
             </Select>
-          )}
+            <Select value={coating} onChange={(e) => setCoating(e.target.value as CoatingType)}>
+              <option value="шлифованный">Покрытие: шлифованный бетон</option>
+              <option value="эпоксидный">Покрытие: эпоксидное</option>
+              <option value="топпинг">Покрытие: топпинг</option>
+            </Select>
+          </section>
 
-          <ExtrasBlock>
-            {Object.keys(extraWorkCost).map((key) => (
-              <label key={key}>
-                <input
-                  type="checkbox"
-                  checked={extras.includes(key as ExtraWorkType)}
-                  onChange={() => toggleExtra(key as ExtraWorkType)}
-                />
-                {key}
+          <section>
+            <SectionTitle>Армирование</SectionTitle>
+            <CheckboxWrapper>
+              <label>
+                <input type="checkbox" checked={reinforced} onChange={(e) => setReinforced(e.target.checked)} />
+                Армирование
               </label>
-            ))}
-          </ExtrasBlock>
+            </CheckboxWrapper>
+            {reinforced && (
+              <Select value={reinforcementType} onChange={(e) => setReinforcementType(e.target.value as ReinforcementType)}>
+                <option value="сетка">Сетка</option>
+                <option value="фибра">Фибра</option>
+                <option value="арматура">Арматура</option>
+              </Select>
+            )}
+          </section>
 
-          <Textarea
-            placeholder="Комментарий или объект"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            rows={3}
-          />
+          <section>
+            <SectionTitle>Дополнительные работы</SectionTitle>
+            <ExtrasBlock>
+              {Object.keys(extraWorkCost).map((key) => (
+                <label key={key}>
+                  <input type="checkbox" checked={extras.includes(key as ExtraWorkType)} onChange={() => toggleExtra(key as ExtraWorkType)} />
+                  {key}
+                </label>
+              ))}
+            </ExtrasBlock>
+          </section>
+
+          <section>
+            <SectionTitle>Комментарий</SectionTitle>
+            <Textarea placeholder="Комментарий или объект" value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
+          </section>
 
           <SubmitButton type="submit">Рассчитать</SubmitButton>
 
@@ -182,14 +161,22 @@ const Overlay = styled.div`
 const Modal = styled.div`
   width: 100%;
   max-width: 700px;
+  max-height: 90vh;
   background: white;
   padding: 3rem;
   border-radius: 1rem;
   position: relative;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 
   @media (max-width: 600px) {
-    margin: 2rem;
+    margin: 1rem;
     padding: 2rem;
+  }
+
+  &::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
   }
 `;
 
@@ -198,9 +185,27 @@ const Title = styled.h2`
   margin-bottom: 2rem;
 `;
 
+const SectionTitle = styled.h3`
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: rgb(var(--text));
+`;
+
 const Form = styled.form`
-  display: grid;
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+
+  > section {
+    display: grid;
+    gap: 1.2rem;
+  }
+
+  > section:not(:last-child) {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 2rem;
+  }
 `;
 
 const Input = styled.input`
@@ -254,6 +259,10 @@ const SubmitButton = styled.button`
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
+
+  &:hover {
+    background: rgb(var(--primary), 0.9);
+  }
 `;
 
 const Result = styled.div`
