@@ -1,3 +1,4 @@
+import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,12 +7,10 @@ import styled from 'styled-components';
 import { ScrollPositionEffectProps, useScrollPosition } from 'hooks/useScrollPosition';
 import { NavItems, SingleNavItem } from 'types';
 import { media } from 'utils/media';
-import Button from './Button';
 import Container from './Container';
 import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
 
@@ -79,10 +78,7 @@ export default function Navbar({ items }: NavbarProps) {
           ))}
         </NavItemList>
         <ButtonGroup>
-         <Button transparent onClick={() => setIsModalOpened(true)}>
-  Оставить заявку
-</Button>
-
+          <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
         </ButtonGroup>
         <ColorSwitcherContainer>
           <ColorSwitcher />
@@ -176,4 +172,19 @@ const ColorSwitcherContainer = styled.div`
 
 const ButtonGroup = styled.div`
   margin-left: 2rem;
+`;
+
+const ContactButton = styled.button`
+  background: none;
+  border: none;
+  font: inherit;
+  color: rgb(var(--text));
+  cursor: pointer;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+
+  &:hover {
+    color: rgb(var(--text), 0.9);
+  }
 `;
