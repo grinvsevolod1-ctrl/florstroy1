@@ -1,20 +1,38 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 
 export default function ApplicationModal({ onClose }: { onClose: () => void }) {
   const [formData, setFormData] = useState({
     name: '',
     contactMethod: 'phone',
-    contactValue: '',
+    contactValue: '+7',
     service: '',
     message: '',
   });
 
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const nameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    nameInputRef.current?.focus();
+  }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+
+    if (name === 'contactMethod') {
+      let preset = '';
+      if (value === 'phone' || value === 'whatsapp') preset = '+7';
+      if (value === 'telegram') preset = '@';
+      setFormData((prev) => ({
+        ...prev,
+        contactMethod: value,
+        contactValue: preset,
+      }));
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -46,25 +64,30 @@ export default function ApplicationModal({ onClose }: { onClose: () => void }) {
   function getPlaceholder(method: string) {
     switch (method) {
       case 'phone':
-        return '+7 (___) ___-__-__';
+      case 'whatsapp':
+        return '+7XXXXXXXXXX';
       case 'email':
         return 'example@domain.ru';
       case 'telegram':
         return '@username';
-      case 'whatsapp':
-        return '+7XXXXXXXXXX';
       default:
         return '';
     }
   }
 
   return (
-    <Overlay>
-      <Modal>
+    <Overlay onClick={onClose}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>×</CloseButton>
         <Title>Оставить заявку</Title>
         <Form onSubmit={handleSubmit}>
-          <Input name="name" placeholder="Ваше имя" onChange={handleChange} required />
+          <Input
+            ref={nameInputRef}
+            name="name"
+            placeholder="Ваше имя"
+            onChange={handleChange}
+            required
+          />
 
           <Select name="contactMethod" value={formData.contactMethod} onChange={handleChange}>
             <option value="phone">Телефон</option>
@@ -73,13 +96,27 @@ export default function ApplicationModal({ onClose }: { onClose: () => void }) {
             <option value="whatsapp">WhatsApp</option>
           </Select>
 
-          <Input
-            name="contactValue"
-            placeholder={getPlaceholder(formData.contactMethod)}
-            value={formData.contactValue}
-            onChange={handleChange}
-            required
-          />
+          {formData.contactMethod === 'email' ? (
+            <Input
+              type="email"
+              name="contactValue"
+              placeholder={getPlaceholder(formData.contactMethod)}
+              value={formData.contactValue}
+              onChange={handleChange}
+              required
+            />
+          ) : (
+            <Input
+              type="text"
+              name="contactValue"
+              inputMode={formData.contactMethod === 'phone' || formData.contactMethod === 'whatsapp' ? 'tel' : 'text'}
+              pattern={formData.contactMethod === 'phone' || formData.contactMethod === 'whatsapp' ? '\\+?[0-9\\s\\-()]{7,}' : undefined}
+              placeholder={getPlaceholder(formData.contactMethod)}
+              value={formData.contactValue}
+              onChange={handleChange}
+              required
+            />
+          )}
 
           <Input name="service" placeholder="Услуга / объект" onChange={handleChange} />
           <Textarea name="message" placeholder="Комментарий" onChange={handleChange} rows={4} />
@@ -100,13 +137,15 @@ const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Modal = styled.div`
   width: 100%;
   max-width: 600px;
-  margin: 5rem auto;
   background: white;
   padding: 3rem;
   border-radius: 1rem;
