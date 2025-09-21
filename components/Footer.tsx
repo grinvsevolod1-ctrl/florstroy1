@@ -4,48 +4,30 @@ import styled from 'styled-components';
 import Container from 'components/Container';
 import { media } from 'utils/media';
 
-type SingleFooterListItem = { title: string; href: string };
-type FooterListItems = SingleFooterListItem[];
-type SingleFooterList = { title: string; items: FooterListItems };
-type FooterItems = SingleFooterList[];
-
-const footerItems: FooterItems = [
-  {
-    title: 'Компания',
-    items: [
-      { title: 'О нас', href: '/about' },
-      { title: 'Контакты', href: '/contact' },
-      { title: 'Политика конфиденциальности', href: '/privacy-policy' },
-    ],
-  },
-  {
-    title: 'Услуги',
-    items: [
-      { title: 'Шлифовка полов', href: '/services/grinding' },
-      { title: 'Наливные полы', href: '/services/self-leveling' },
-      { title: 'Армирование', href: '/services/reinforcement' },
-      { title: 'Демонтаж', href: '/services/demolition' },
-    ],
-  },
-  {
-    title: 'Информация',
-    items: [
-      { title: 'Вопросы и ответы', href: '/faq' },
-      { title: 'Блог', href: '/blog' },
-      { title: 'Отзывы', href: '/reviews' },
-    ],
-  },
-];
-
 export default function Footer() {
   return (
     <FooterWrapper>
       <Container>
         <ListContainer>
-          {footerItems.map((singleItem) => (
-            <FooterList key={singleItem.title} {...singleItem} />
-          ))}
+          <ListWrapper>
+            <ListHeader>
+              <NextLink href="/blog" passHref>
+                <a>Наши проекты</a>
+              </NextLink>
+            </ListHeader>
+            <ListItem title="Бетонный пол в промышленном ангаре" href="/blog/test-article-4" />
+            <ListItem title="Основание под детскую площадку" href="/blog/test-article-5" />
+            <ListItem title="Полы в холодильном складе" href="/blog/test-article-6" />
+            <ListItem title="Полы для логистического центра" href="/blog/test-article-3" />
+          </ListWrapper>
+
+          <ListWrapper>
+            <ListHeader>Контакты</ListHeader>
+            <ListItem title="Связаться с нами" href="/contact" />
+            <ListItem title="Политика конфиденциальности" href="/privacy-policy" />
+          </ListWrapper>
         </ListContainer>
+
         <BottomBar>
           <ShareBar>
             <NextLink href="https://t.me/florstroy" passHref>
@@ -66,25 +48,20 @@ export default function Footer() {
               </a>
             </NextLink>
           </ShareBar>
-          <Copyright>&copy; FlorStroy {new Date().getFullYear()}</Copyright>
+
+          <Copyright>
+            &copy; FlorStroy {new Date().getFullYear()} <br />
+            <NextLink href="http://netnext.site" passHref>
+              <a>Designed And Developed by NetNext Studio</a>
+            </NextLink>
+          </Copyright>
         </BottomBar>
       </Container>
     </FooterWrapper>
   );
 }
 
-function FooterList({ title, items }: SingleFooterList) {
-  return (
-    <ListWrapper>
-      <ListHeader>{title}</ListHeader>
-      {items.map((singleItem) => (
-        <ListItem key={singleItem.href} {...singleItem} />
-      ))}
-    </ListWrapper>
-  );
-}
-
-function ListItem({ title, href }: SingleFooterListItem) {
+function ListItem({ title, href }: { title: string; href: string }) {
   return (
     <ListItemWrapper>
       <NextLink href={href} passHref>
@@ -114,6 +91,11 @@ const ListHeader = styled.p`
   font-weight: bold;
   font-size: 2.25rem;
   margin-bottom: 2.5rem;
+
+  a {
+    color: rgb(var(--textSecondary));
+    text-decoration: none;
+  }
 `;
 
 const ListWrapper = styled.div`
@@ -155,6 +137,17 @@ const ShareBar = styled.div`
 const Copyright = styled.p`
   font-size: 1.5rem;
   margin-top: 0.5rem;
+  text-align: right;
+
+  a {
+    color: rgba(var(--textSecondary), 0.75);
+    text-decoration: none;
+  }
+
+  ${media('<=tablet')} {
+    text-align: center;
+    margin-top: 2rem;
+  }
 `;
 
 const BottomBar = styled.div`
