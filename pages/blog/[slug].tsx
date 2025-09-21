@@ -16,6 +16,8 @@ import MetadataHead from 'views/SingleArticlePage/MetadataHead';
 import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
 import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
+import ArticleImage from 'components/ArticleImage'; // путь уточни, если другой
+
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -59,7 +61,8 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <CustomContainer id="content" ref={contentRef}>
         <ShareWidget title={meta.title} slug={slug} />
         <Header title={meta.title} formattedDate={formattedDate} imageUrl={absoluteImageUrl} readTime={readTime} />
-        <MDXRemote {...content} />
+        <MDXRemote {...content} components={{ ArticleImage }} />
+
       </CustomContainer>
     </>
   );
