@@ -1,22 +1,8 @@
+import Highlight, { defaultProps, Language } from 'prism-react-renderer';
 import React from 'react';
-import HighlightBase, { defaultProps, Language } from 'prism-react-renderer';
 import styled from 'styled-components';
 import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
-
-// 👇 Приведение типа для JSX-совместимости
-const Highlight = HighlightBase as unknown as React.FC<{
-  children: (props: {
-    className: string;
-    style: React.CSSProperties;
-    tokens: any[][];
-    getLineProps: (input: any) => any;
-    getTokenProps: (input: any) => any;
-  }) => React.ReactNode;
-  code: string;
-  language: Language;
-  theme?: any;
-}>;
 
 export interface CodeProps {
   code: string;
@@ -35,49 +21,54 @@ export default function Code({
   withLineNumbers,
   caption,
 }: CodeProps) {
-  const { copy, copied } = useClipboard({ copiedTimeout: 600 });
+  const { copy, copied } = useClipboard({
+    copiedTimeout: 600,
+  });
 
-  const handleCopyClick = () => copy(code);
+  function handleCopyClick(code: string) {
+    copy(code);
+  }
 
   const copyButtonMarkup = (
     <ClientOnly>
-      <CopyButton copied={copied} onClick={handleCopyClick}>
+      <CopyButton copied={copied} onClick={() => handleCopyClick(code)}>
         <CopyIcon />
       </CopyButton>
     </ClientOnly>
   );
 
   return (
-    <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
-      {({ className, style, tokens, getLineProps, getTokenProps }) => (
-        <>
-          <CodeWrapper className="code-wrapper" language={language}>
-            {withCopyButton && copyButtonMarkup}
-            <Pre className={className} style={style}>
-              {tokens.map((line, i) => {
-                const lineNumber = i + 1;
-                const isSelected = selectedLines.includes(lineNumber);
-                const lineProps = getLineProps({ line, key: i });
-                const lineClassName =
-                  lineProps.className + (isSelected ? ' selected-line' : '');
+    <>
+      <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
+        {({ className, style, tokens, getLineProps, getTokenProps }) => (
+          <>
+            <CodeWrapper className="code-wrapper" language={language}>
+              {withCopyButton && copyButtonMarkup}
+              <Pre className={className} style={style}>
+                {tokens.map((line, i) => {
+                  const lineNumber = i + 1;
+                  const isSelected = selectedLines.includes(lineNumber);
+                  const lineProps = getLineProps({ line, key: i });
+                  const className = lineProps.className + (isSelected ? ' selected-line' : '');
 
-                return (
-                  <Line key={i} {...{ ...lineProps, className: lineClassName }}>
-                    {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
-                    <LineContent>
-                      {line.map((token, key) => (
-                        <span key={key} {...getTokenProps({ token, key })} />
-                      ))}
-                    </LineContent>
-                  </Line>
-                );
-              })}
-            </Pre>
-          </CodeWrapper>
-          {caption && <Caption>{caption}</Caption>}
-        </>
-      )}
-    </Highlight>
+                  return (
+                    <Line key={i} {...{ ...lineProps, className }}>
+                      {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
+                      <LineContent>
+                        {line.map((token, key) => (
+                          <span key={key} {...getTokenProps({ token, key })} />
+                        ))}
+                      </LineContent>
+                    </Line>
+                  );
+                })}
+              </Pre>
+            </CodeWrapper>
+            {caption && <Caption>{caption}</Caption>}
+          </>
+        )}
+      </Highlight>
+    </>
   );
 }
 
@@ -113,6 +104,7 @@ const CopyButton = styled.button<{ copied: boolean }>`
   border-radius: 0.3rem;
   color: rgb(var(--text));
   z-index: 1;
+  line-height: 1;
 
   &::after {
     position: absolute;

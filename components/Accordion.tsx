@@ -12,9 +12,8 @@ interface AccordionProps {
 export default function Accordion({ title, isOpen, children }: PropsWithChildren<AccordionProps>) {
   const [hasCollapsed, setHasCollapsed] = useState(!isOpen);
   const isActive = !hasCollapsed;
-
   return (
-    <AccordionWrapper role="button" onClick={() => setHasCollapsed((prev) => !prev)}>
+    <AccordionWrapper onClick={() => setHasCollapsed((prev) => !prev)}>
       <TitleWrapper>
         <Title>{title}</Title>
         <Icon isActive={isActive}>

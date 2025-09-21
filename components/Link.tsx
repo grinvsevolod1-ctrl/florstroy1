@@ -1,13 +1,15 @@
 import NextLink from 'next/link';
-import { AnchorHTMLAttributes, DetailedHTMLProps } from 'react';
+import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-type AnchorProps = DetailedHTMLProps<AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement>;
+export interface LinkProps {
+  href: string;
+}
 
-export default function Link({ href, children, ...rest }: AnchorProps) {
+export default function Link({ href, children }: PropsWithChildren<LinkProps>) {
   return (
-    <NextLink href={href} passHref legacyBehavior>
-      <Anchor {...rest}>{children}</Anchor>
+    <NextLink href={href} passHref>
+      <Anchor>{children}</Anchor>
     </NextLink>
   );
 }
