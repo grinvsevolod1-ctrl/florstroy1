@@ -72,7 +72,7 @@ export default function FeedbackModal() {
            <Field>
   <Label>{contactMethod}</Label>
   {contactMethod === 'Телефон' ? (
-    <MaskedInput
+    <PhoneInputMasked
       mask="+7 (999) 999-99-99"
       maskChar="_"
       value={contactValue}
@@ -205,7 +205,7 @@ const Input = styled.input`
   }
 `;
 
-const MaskedInput = styled(InputMask)`
+const PhoneInputMasked = styled(InputMask)`
   padding: 1rem;
   font-size: 1.6rem;
   border: 1px solid #ccc;
