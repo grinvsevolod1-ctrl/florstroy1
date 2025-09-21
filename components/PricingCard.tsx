@@ -3,7 +3,8 @@ import styled from 'styled-components';
 import { media } from 'utils/media';
 import Button from './Button';
 import RichText from './RichText';
-import { useCalculatorModalContext } from 'contexts/calculator-modal.context';
+import { useFeedbackModalContext } from 'contexts/feedback-modal.context';
+
 
 const Wrapper = styled.div<{ isOutlined?: boolean }>`
   display: flex;
@@ -87,12 +88,13 @@ export default function PricingCard({
   children,
 }: PropsWithChildren<PricingCardProps>) {
   const isAnyBenefitPresent = benefits?.length;
-  const { setIsCalculatorOpened } = useCalculatorModalContext();
+ const { setIsOpen, setSelectedService } = useFeedbackModalContext();
 
-  const handleClick = () => {
-    setIsCalculatorOpened(true);
-    console.log(`Открыта заявка на услугу: ${title}`);
-  };
+const handleClick = () => {
+  setSelectedService(title);
+  setIsOpen(true);
+};
+
 
   return (
     <Wrapper isOutlined={isOutlined} itemScope itemType="https://schema.org/Service">
