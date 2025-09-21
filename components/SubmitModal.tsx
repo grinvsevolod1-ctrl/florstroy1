@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
-import PDFPreview from './PDFPreview';
+
 
 type ContactMethod = 'Телефон' | 'Email' | 'Telegram' | 'WhatsApp';
 
@@ -99,7 +99,7 @@ export default function SubmitModal({
           {status === 'sent' && <Success>Заявка успешно отправлена!</Success>}
           {status === 'error' && <Error>Ошибка отправки. Попробуйте позже.</Error>}
 
-          <PDFPreview calculation={calculation} />
+          
         </Form>
       </Modal>
     </Overlay>
