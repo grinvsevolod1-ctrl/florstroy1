@@ -20,8 +20,7 @@ import { NavItems } from 'types';
 const navItems: NavItems = [
   { title: 'Проекты', href: '/features' },
   { title: 'Услуги', href: '/pricing' },
-  { title: 'Контакты', href: '/contact' },
-  { title: 'Оставить заявку', href: '/sign-up', outlined: true },
+  { title: 'Контакты', href: '/contact' }
 ];
 
 

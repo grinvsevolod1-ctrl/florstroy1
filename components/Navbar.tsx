@@ -11,6 +11,7 @@ import Container from './Container';
 import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
+import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
 
@@ -21,6 +22,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
   const { toggle } = Drawer.useDrawer();
+  const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
 
   let lastScrollY = useRef(0);
@@ -76,6 +78,11 @@ export default function Navbar({ items }: NavbarProps) {
             <NavItem key={singleItem.href} {...singleItem} />
           ))}
         </NavItemList>
+        <ButtonGroup>
+          <Button outlined onClick={() => setIsModalOpened(true)}>
+            Оставить заявку
+          </Button>
+        </ButtonGroup>
         <ColorSwitcherContainer>
           <ColorSwitcher />
         </ColorSwitcherContainer>
@@ -87,19 +94,9 @@ export default function Navbar({ items }: NavbarProps) {
   );
 }
 
-function NavItem({ href, title, outlined }: SingleNavItem) {
-  if (outlined) {
-    return (
-      <NavItemWrapper outlined={outlined}>
-        <NextLink href={href} passHref>
-          <a>{title}</a>
-        </NextLink>
-      </NavItemWrapper>
-    );
-  }
-
+function NavItem({ href, title }: SingleNavItem) {
   return (
-    <NavItemWrapper outlined={outlined}>
+    <NavItemWrapper>
       <NextLink href={href} passHref>
         <a>{title}</a>
       </NextLink>
@@ -129,21 +126,14 @@ const LogoWrapper = styled.a`
   color: rgb(var(--logoColor));
 `;
 
-const NavItemWrapper = styled.li<Partial<SingleNavItem>>`
-  background-color: ${(p) => (p.outlined ? 'rgb(var(--primary))' : 'transparent')};
-  border-radius: 0.5rem;
+const NavItemWrapper = styled.li`
   font-size: 1.3rem;
   text-transform: uppercase;
   line-height: 2;
 
-  &:hover {
-    background-color: ${(p) => (p.outlined ? 'rgb(var(--primary), 0.8)' : 'transparent')};
-    transition: background-color 0.2s;
-  }
-
   a {
     display: flex;
-    color: ${(p) => (p.outlined ? 'white' : 'rgb(var(--text), 0.75)')};
+    color: rgb(var(--text), 0.75);
     letter-spacing: 0.025em;
     text-decoration: none;
     padding: 0.75rem 1.5rem;
@@ -181,4 +171,8 @@ const Content = styled(Container)`
 const ColorSwitcherContainer = styled.div`
   width: 4rem;
   margin: 0 1rem;
+`;
+
+const ButtonGroup = styled.div`
+  margin-left: 2rem;
 `;
