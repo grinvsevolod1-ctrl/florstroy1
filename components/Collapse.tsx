@@ -1,10 +1,20 @@
-import { forwardRef, PropsWithChildren } from 'react';
+import { forwardRef, PropsWithChildren, HTMLAttributes } from 'react';
 import AnimateHeightBase from 'react-animate-height';
 
 // 👇 Приведение типа для JSX-совместимости
-const AnimateHeight = AnimateHeightBase as unknown as React.FC<any>;
+const AnimateHeight = AnimateHeightBase as unknown as React.FC<{
+  children: React.ReactNode;
+  height: number | string;
+  duration?: number;
+  easing?: string;
+  animateOpacity?: boolean;
+  applyInlineTransitions?: boolean;
+  onAnimationStart?: () => void;
+  onAnimationEnd?: () => void;
+  style?: React.CSSProperties;
+}>;
 
-export interface CollapseProps {
+export interface CollapseProps extends HTMLAttributes<HTMLDivElement> {
   isOpen?: boolean;
   animateOpacity?: boolean;
   onAnimationStart?: () => void;
@@ -26,6 +36,7 @@ const Collapse = forwardRef<HTMLDivElement, PropsWithChildren<CollapseProps>>(
       easing = 'ease',
       startingHeight = 0,
       endingHeight = 'auto',
+      children,
       ...rest
     },
     ref,
@@ -44,7 +55,9 @@ const Collapse = forwardRef<HTMLDivElement, PropsWithChildren<CollapseProps>>(
           backfaceVisibility: 'hidden',
         }}
       >
-        <div ref={ref} {...rest} />
+        <div ref={ref} {...rest}>
+          {children}
+        </div>
       </AnimateHeight>
     );
   },

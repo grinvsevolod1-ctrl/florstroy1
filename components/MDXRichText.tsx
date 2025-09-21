@@ -1,4 +1,5 @@
 import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
+import type { MDXComponents } from 'mdx/types'; // 👈 тип для компонентов
 import styled from 'styled-components';
 import { media } from 'utils/media';
 import ArticleImage from './ArticleImage';
@@ -6,7 +7,7 @@ import Code from './Code';
 import Link from './Link';
 import Quote from './Quote';
 
-const components = {
+const components: MDXComponents = {
   img: ArticleImage,
   code: Code,
   a: Link,
@@ -57,25 +58,4 @@ const Container = styled.div`
       margin-bottom: 2.7rem;
     }
   }
-`;
-
-const Paragraph = styled.p`
-  font-size: 1.8rem;
-  line-height: 2.7rem;
-  hanging-punctuation: first;
-
-  &:not(:last-child) {
-    margin-bottom: 2.7rem;
-  }
-
-  & + ul,
-  & + li {
-    margin-top: -1.5rem !important;
-  }
-`;
-
-const SecondHeading = styled.h2`
-  font-size: 2.5rem;
-  line-height: 3.75rem;
-  margin-bottom: 3.75rem;
 `;

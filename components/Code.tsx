@@ -5,7 +5,18 @@ import ClientOnly from 'components/ClientOnly';
 import { useClipboard } from 'hooks/useClipboard';
 
 // 👇 Приведение типа для JSX-совместимости
-const Highlight = HighlightBase as unknown as React.FC<any>;
+const Highlight = HighlightBase as unknown as React.FC<{
+  children: (props: {
+    className: string;
+    style: React.CSSProperties;
+    tokens: any[][];
+    getLineProps: (input: any) => any;
+    getTokenProps: (input: any) => any;
+  }) => React.ReactNode;
+  code: string;
+  language: Language;
+  theme?: any;
+}>;
 
 export interface CodeProps {
   code: string;
@@ -37,48 +48,36 @@ export default function Code({
   );
 
   return (
-    <>
-      <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
-        {(props: {
-          className: string;
-          style: React.CSSProperties;
-          tokens: any[][];
-          getLineProps: (input: any) => any;
-          getTokenProps: (input: any) => any;
-        }) => {
-          const { className, style, tokens, getLineProps, getTokenProps } = props;
+    <Highlight {...defaultProps} theme={undefined} code={code} language={language}>
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <>
+          <CodeWrapper className="code-wrapper" language={language}>
+            {withCopyButton && copyButtonMarkup}
+            <Pre className={className} style={style}>
+              {tokens.map((line, i) => {
+                const lineNumber = i + 1;
+                const isSelected = selectedLines.includes(lineNumber);
+                const lineProps = getLineProps({ line, key: i });
+                const lineClassName =
+                  lineProps.className + (isSelected ? ' selected-line' : '');
 
-          return (
-            <>
-              <CodeWrapper className="code-wrapper" language={language}>
-                {withCopyButton && copyButtonMarkup}
-                <Pre className={className} style={style}>
-                  {tokens.map((line, i) => {
-                    const lineNumber = i + 1;
-                    const isSelected = selectedLines.includes(lineNumber);
-                    const lineProps = getLineProps({ line, key: i });
-                    const lineClassName =
-                      lineProps.className + (isSelected ? ' selected-line' : '');
-
-                    return (
-                      <Line key={i} {...{ ...lineProps, className: lineClassName }}>
-                        {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
-                        <LineContent>
-                          {line.map((token, key) => (
-                            <span key={key} {...getTokenProps({ token, key })} />
-                          ))}
-                        </LineContent>
-                      </Line>
-                    );
-                  })}
-                </Pre>
-              </CodeWrapper>
-              {caption && <Caption>{caption}</Caption>}
-            </>
-          );
-        }}
-      </Highlight>
-    </>
+                return (
+                  <Line key={i} {...{ ...lineProps, className: lineClassName }}>
+                    {withLineNumbers && <LineNo>{lineNumber}</LineNo>}
+                    <LineContent>
+                      {line.map((token, key) => (
+                        <span key={key} {...getTokenProps({ token, key })} />
+                      ))}
+                    </LineContent>
+                  </Line>
+                );
+              })}
+            </Pre>
+          </CodeWrapper>
+          {caption && <Caption>{caption}</Caption>}
+        </>
+      )}
+    </Highlight>
   );
 }
 
