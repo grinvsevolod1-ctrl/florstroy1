@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useFeedbackModalContext } from 'contexts/feedback-modal.context';
 import { useState } from 'react';
+import InputMask from 'react-input-mask';
 
 export default function FeedbackModal() {
   const { isOpen, setIsOpen, selectedService } = useFeedbackModalContext();
@@ -44,147 +45,233 @@ export default function FeedbackModal() {
   return (
     <Overlay onClick={() => setIsOpen(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
-        <Header>
-          <Title>Заявка на услугу</Title>
-          <Close onClick={() => setIsOpen(false)}>×</Close>
-        </Header>
+        <CloseButton onClick={() => setIsOpen(false)}>×</CloseButton>
+        <Title>Заявка на услугу</Title>
 
-        <Subtitle>{selectedService}</Subtitle>
+        <Form>
+          <Grid>
+            <Field>
+              <Label>Имя</Label>
+              <Input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Ваше имя"
+              />
+            </Field>
 
-        <Field>
-          <Label>Имя</Label>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
-        </Field>
+            <Field>
+              <Label>Способ связи</Label>
+              <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
+                <option>Телефон</option>
+                <option>Email</option>
+                <option>Telegram</option>
+                <option>WhatsApp</option>
+              </Select>
+            </Field>
 
-        <Field>
-          <Label>Способ связи</Label>
-          <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
-            <option>Телефон</option>
-            <option>Email</option>
-            <option>Telegram</option>
-            <option>WhatsApp</option>
-          </Select>
-        </Field>
+           <Field>
+  <Label>{contactMethod}</Label>
+  {contactMethod === 'Телефон' ? (
+    <MaskedInput
+      mask="+7 (999) 999-99-99"
+      maskChar="_"
+      value={contactValue}
+      onChange={(e) => setContactValue(e.target.value)}
+      placeholder="+7 (___) ___-__-__"
+    />
+  ) : (
+    <Input
+      value={contactValue}
+      onChange={(e) => setContactValue(e.target.value)}
+      placeholder={`Ваш ${contactMethod}`}
+    />
+  )}
+</Field>
 
-        <Field>
-          <Label>{contactMethod}</Label>
-          <Input value={contactValue} onChange={(e) => setContactValue(e.target.value)} />
-        </Field>
 
-        <Field>
-          <Label>Комментарий</Label>
-          <Textarea value={message} onChange={(e) => setMessage(e.target.value)} />
-        </Field>
+            <Field>
+              <Label>Услуга / объект</Label>
+              <Input value={selectedService} disabled />
+            </Field>
+          </Grid>
 
-        <Field>
-          <Label>Расчёт / параметры объекта</Label>
-          <Textarea value={calculation} onChange={(e) => setCalculation(e.target.value)} />
-        </Field>
+          <Field>
+            <Label>Комментарий</Label>
+            <Textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Опишите задачу или пожелания"
+            />
+          </Field>
 
-        <SubmitButton onClick={handleSubmit}>Отправить заявку</SubmitButton>
+          <Field>
+            <Label>Расчёт / параметры объекта</Label>
+            <Textarea
+              value={calculation}
+              onChange={(e) => setCalculation(e.target.value)}
+              placeholder="Например: 120 м², толщина 80 мм, армирование сеткой"
+            />
+          </Field>
+
+          <SubmitButton onClick={handleSubmit}>Отправить заявку</SubmitButton>
+        </Form>
       </Modal>
     </Overlay>
   );
 }
 
+// Стили
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999;
-  padding: 2rem;
 `;
 
 const Modal = styled.div`
-  background: #fff;
-  border-radius: 1.2rem;
-  padding: 3rem;
   width: 100%;
-  max-width: 500px;
-  box-sizing: border-box;
+  max-width: 900px;
+  max-height: 90vh;
+  background: white;
+  padding: 3rem;
+  border-radius: 1rem;
   position: relative;
-  box-shadow: 0 0 40px rgba(0,0,0,0.1);
+  overflow-y: auto;
 
   @media (max-width: 600px) {
+    margin: 1rem;
     padding: 2rem;
   }
 `;
 
-const Header = styled.div`
+const Title = styled.h2`
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  text-align: center;
+`;
+
+const Form = styled.form`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: 2rem;
 `;
 
-const Title = styled.h3`
-  font-size: 2.4rem;
-  margin: 0;
-`;
-
-const Subtitle = styled.div`
-  font-size: 1.6rem;
-  margin: 1rem 0 2rem;
-  color: rgba(var(--textSecondary), 0.8);
-`;
-
-const Close = styled.div`
-  font-size: 2.4rem;
-  cursor: pointer;
-  line-height: 1;
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
 `;
 
 const Field = styled.div`
-  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 `;
 
 const Label = styled.label`
-  display: block;
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-  color: rgba(var(--textSecondary), 0.9);
-`;
-
-const Input = styled.input`
-  width: 100%;
-  padding: 1rem;
-  font-size: 1.6rem;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 0.6rem;
+  font-weight: 600;
+  color: #333;
 `;
 
 const Select = styled.select`
-  width: 100%;
   padding: 1rem;
   font-size: 1.6rem;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+`;
+
+const Input = styled.input`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+`;
+
+const MaskedInput = styled(InputMask)`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+  width: 100%;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
 `;
 
 const Textarea = styled.textarea`
-  width: 100%;
   padding: 1rem;
   font-size: 1.6rem;
-  border: 1px solid rgba(0,0,0,0.1);
-  border-radius: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
   resize: vertical;
-  min-height: 80px;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
 `;
 
 const SubmitButton = styled.button`
-  width: 100%;
-  padding: 1.2rem;
-  font-size: 1.6rem;
   background: rgb(var(--primary));
-  color: #fff;
+  color: white;
+  padding: 1.2rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
   border: none;
   border-radius: 0.6rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  align-self: center;
+  transition: background 0.3s;
 
   &:hover {
-    background: rgba(var(--primary), 0.85);
+    background: rgb(var(--primary), 0.85);
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+`;
+const MaskedInput = styled(InputMask)`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: #f9f9f9;
+  transition: border 0.2s;
+  width: 100%;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
   }
 `;
