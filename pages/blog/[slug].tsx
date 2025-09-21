@@ -85,7 +85,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: s
     props: {
       slug,
       content: mdxSource,
-      meta,
+      meta: {
+        ...meta,
+        author: meta.author || 'FlorStroy',
+      },
     },
   };
 }
