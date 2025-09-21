@@ -1,7 +1,22 @@
 import styled, { keyframes } from 'styled-components';
 import { useEffect, useState } from 'react';
+import { IconType } from 'react-icons';
 import { FaInstagram, FaTelegramPlane, FaPhoneAlt, FaCommentDots } from 'react-icons/fa';
 import { SiViber } from 'react-icons/si';
+
+type ContactItem = {
+  href: string;
+  title: string;
+  icon: IconType;
+};
+
+const contactItems: ContactItem[] = [
+  { href: 'https://instagram.com/florstroy', title: 'Instagram', icon: FaInstagram },
+  { href: 'viber://chat?number=+74956624994', title: 'Viber', icon: SiViber },
+  { href: 'https://t.me/florstroy', title: 'Telegram', icon: FaTelegramPlane },
+  { href: 'tel:+74956624994', title: 'Позвонить: +7 495 662 49 94', icon: FaPhoneAlt },
+  { href: '/contact', title: 'Форма обратной связи', icon: FaCommentDots },
+];
 
 export default function FloatingContactWidget() {
   const [visible, setVisible] = useState(true);
@@ -18,21 +33,11 @@ export default function FloatingContactWidget() {
 
   return (
     <WidgetWrapper onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
-      <IconLink href="https://instagram.com/florstroy" target="_blank" title="Instagram">
-        <FaInstagram />
-      </IconLink>
-      <IconLink href="viber://chat?number=+74956624994" target="_blank" title="Viber">
-        <SiViber />
-      </IconLink>
-      <IconLink href="https://t.me/florstroy" target="_blank" title="Telegram">
-        <FaTelegramPlane />
-      </IconLink>
-      <IconLink href="tel:+74956624994" title="Позвонить: +7 495 662 49 94">
-        <FaPhoneAlt />
-      </IconLink>
-      <IconLink href="/contact" title="Форма обратной связи">
-        <FaCommentDots />
-      </IconLink>
+      {contactItems.map(({ href, title, icon: Icon }) => (
+        <IconLink key={title} href={href} target="_blank" title={title}>
+          <Icon />
+        </IconLink>
+      ))}
     </WidgetWrapper>
   );
 }
@@ -71,7 +76,6 @@ const IconLink = styled.a`
   font-size: 2.2rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
-  position: relative;
   cursor: pointer;
 
   &:hover {
