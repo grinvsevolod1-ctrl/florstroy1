@@ -5,11 +5,11 @@ export default function HeroIllustration() {
       data-name="Layer 1"
       xmlns="http://www.w3.org/2000/svg"
       width="1113.8"
-      height="425.71"
+      height="825.71"
       viewBox="0 0 1113.8 825.71"
     >
       <defs>
-        {/* Высококачественная текстура бетона с трещинами и неровностями */}
+        {/* Текстура бетона с трещинами и неровностями */}
         <pattern
           id="concreteTexture"
           patternUnits="userSpaceOnUse"
@@ -90,8 +90,6 @@ export default function HeroIllustration() {
       <circle cx="400" cy="820" r="1" fill="#555" opacity="0.2" />
       <circle cx="600" cy="805" r="2" fill="#555" opacity="0.2" />
       <circle cx="900" cy="815" r="1.8" fill="#555" opacity="0.2" />
-
-      {/* Внутренний стиль — минимализм, чтобы подчеркнуть бетон */}
     </svg>
   );
 }
