@@ -13,7 +13,7 @@ import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
 import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
 import { getAllPostsSlugs, getSinglePost } from 'utils/postsFetcher';
-import { serialize } from 'next-mdx-remote/serialize';
+import { serialize as mdxSerialize } from 'next-mdx-remote/serialize';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -76,13 +76,10 @@ export async function getStaticPaths() {
   };
 }
 
-
-import { serialize } from 'next-mdx-remote/serialize';
-
 export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: string }>) {
   const { slug } = params!;
   const { content, meta } = await getSinglePost(slug);
-  const mdxSource = await serialize(content);
+  const mdxSource = await mdxSerialize(content);
 
   return {
     props: {
@@ -92,7 +89,6 @@ export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: s
     },
   };
 }
-
 
 const CustomContainer = styled(Container)`
   position: relative;
