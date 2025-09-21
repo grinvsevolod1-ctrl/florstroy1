@@ -3,27 +3,39 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { SingleArticle } from 'types';
 
-export async function getAllPosts() {
-  return Promise.all(getAllPostsSlugs().map(getSinglePost));
+export async function getAllPosts(): Promise<Pick<SingleArticle, 'slug' | 'meta'>[]> {
+  const slugs = getAllPostsSlugs();
+  return Promise.all(slugs.map(async (slug) => {
+    const { meta } = await getSinglePost(slug);
+    return { slug, meta };
+  }));
 }
 
-export function getAllPostsSlugs() {
-  return fs.readdirSync(getPostsDirectory()).map(normalizePostName);
+export function getAllPostsSlugs(): string[] {
+  return fs.readdirSync(getPostsDirectory()).filter((f) => f.endsWith('.mdx')).map(normalizePostName);
 }
 
-function normalizePostName(postName: string) {
-  return postName.replace('.mdx', '');
+function normalizePostName(postName: string): string {
+  return postName.replace(/\.mdx$/, '');
 }
 
 export async function getSinglePost(slug: string): Promise<SingleArticle> {
   const filePath = path.join(getPostsDirectory(), slug + '.mdx');
   const contents = fs.readFileSync(filePath, 'utf8');
-  const { data: meta, content } = matter(contents);
+  const { data, content } = matter(contents);
 
-  return { slug, content, meta: meta as SingleArticle['meta'] };
+  const meta: SingleArticle['meta'] = {
+    title: data.title || slug,
+    description: data.description || '',
+    date: data.date?.toString() || '',
+    imageUrl: data.imageUrl || '/demo-illustration-1.svg',
+    tags: Array.isArray(data.tags) ? data.tags : (typeof data.tags === 'string' ? data.tags.split(',') : []),
+    author: data.author || 'FlorStroy',
+  };
+
+  return { slug, content, meta };
 }
 
-export function getPostsDirectory() {
-  let basePath = process.cwd();
-  return path.join(basePath, 'posts');
+function getPostsDirectory(): string {
+  return path.join(process.cwd(), 'posts');
 }
