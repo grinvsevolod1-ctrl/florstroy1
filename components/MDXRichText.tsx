@@ -1,3 +1,4 @@
+import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote';
 import styled from 'styled-components';
 import { media } from 'utils/media';
 import ArticleImage from './ArticleImage';
@@ -5,8 +6,19 @@ import Code from './Code';
 import Link from './Link';
 import Quote from './Quote';
 
-export default function RichText(props: { content: string }) {
-  return <Container dangerouslySetInnerHTML={{ __html: props.content }} />;
+const components = {
+  img: ArticleImage,
+  code: Code,
+  a: Link,
+  blockquote: Quote,
+};
+
+export default function MDXRichText({ content }: { content: MDXRemoteSerializeResult }) {
+  return (
+    <Container>
+      <MDXRemote {...content} components={components} />
+    </Container>
+  );
 }
 
 const Container = styled.div`
