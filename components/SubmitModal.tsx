@@ -77,7 +77,10 @@ export default function SubmitModal({
                 value={contactValue}
                 onChange={(e) => setContactValue(e.target.value)}
               >
-                {(inputProps) => <Input {...inputProps} required />}
+                {(inputProps: React.InputHTMLAttributes<HTMLInputElement>) => (
+  <Input {...inputProps} required />
+)}
+
               </InputMask>
             ) : (
               <Input value={contactValue} onChange={(e) => setContactValue(e.target.value)} required />
