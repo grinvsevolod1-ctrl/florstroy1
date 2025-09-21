@@ -11,8 +11,10 @@ const Wrapper = styled.div<{ isOutlined?: boolean }>`
   padding: 3rem;
   background: rgb(var(--cardBackground));
   box-shadow: ${(p) => (p.isOutlined ? 'var(--shadow-lg)' : 'var(--shadow-md)')};
-  transform: ${(p) => (p.isOutlined ? 'scale(1.1)' : 'scale(1.0)')};
   text-align: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 320px;
 
   & > *:not(:first-child) {
     margin-top: 1rem;
@@ -20,17 +22,17 @@ const Wrapper = styled.div<{ isOutlined?: boolean }>`
 
   ${media('<=desktop')} {
     box-shadow: var(--shadow-md);
-    transform: none;
     order: ${(p) => (p.isOutlined ? -1 : 0)};
   }
 `;
 
 const Title = styled.h3`
-  font-size: 4rem;
+  font-size: 3.2rem;
 `;
 
 const Description = styled.p`
-  font-size: 2.5rem;
+  font-size: 2rem;
+  color: rgba(var(--textSecondary), 0.9);
 `;
 
 const PriceContainer = styled.div`
@@ -45,13 +47,14 @@ const Price = styled.div`
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  font-size: 4rem;
+  font-size: 3.2rem;
   line-height: 1;
   font-weight: bold;
 
   span {
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: normal;
+    margin-left: 0.4rem;
   }
 `;
 
@@ -59,11 +62,14 @@ const CustomRichText = styled(RichText)`
   li {
     margin: auto;
     width: fit-content;
+    font-size: 1.6rem;
+    line-height: 1.6;
   }
 `;
 
 const CustomButton = styled(Button)`
   width: 100%;
+  margin-top: auto;
 `;
 
 interface PricingCardProps {
@@ -96,8 +102,7 @@ export default function PricingCard({
       <PriceContainer>
         <Price itemProp="offers" itemScope itemType="https://schema.org/Offer">
           <meta itemProp="priceCurrency" content="RUB" />
-          <span itemProp="price">{String(children).replace(/\D/g, '')}</span>
-          {children}
+          <span itemProp="price">{children}</span>
         </Price>
 
         {isAnyBenefitPresent && (
