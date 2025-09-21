@@ -7,12 +7,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { name, contactMethod, contactValue, service, message } = req.body;
   const referer = req.headers.referer || 'не указан';
 
-  const contactLabel = {
+  const contactLabels: Record<'phone' | 'email' | 'telegram' | 'whatsapp', string> = {
     phone: 'Телефон',
     email: 'Email',
     telegram: 'Telegram',
     whatsapp: 'WhatsApp',
-  }[contactMethod] || 'Контакт';
+  };
+
+  const contactLabel = contactLabels[contactMethod as keyof typeof contactLabels] || 'Контакт';
 
   const text = `
 Новая заявка с сайта florstroy.ru:
@@ -28,7 +30,6 @@ ${contactLabel}: ${contactValue}
     console.log('SMTP:', process.env.SMTP_USER);
     console.log('Telegram:', process.env.TELEGRAM_CHAT_ID);
 
-    // Отправка в Telegram
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -38,7 +39,6 @@ ${contactLabel}: ${contactValue}
       }),
     });
 
-    // Отправка на почту через SMTP
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
