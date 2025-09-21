@@ -18,6 +18,7 @@ import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
 import ArticleImage from 'components/ArticleImage';
 import Code from 'components/Code';
+import Quote from 'components/Quote';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -61,7 +62,7 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <CustomContainer id="content" ref={contentRef}>
         <ShareWidget title={meta.title} slug={slug} />
         <Header title={meta.title} formattedDate={formattedDate} imageUrl={absoluteImageUrl} readTime={readTime} />
-        <MDXRemote {...content} components={{ ArticleImage, Code }} />
+        <MDXRemote {...content} components={{ ArticleImage, Code, Quote }} />
       </CustomContainer>
     </>
   );
