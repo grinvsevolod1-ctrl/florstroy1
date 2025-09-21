@@ -81,13 +81,11 @@ export default function PricingCard({
   children,
 }: PropsWithChildren<PricingCardProps>) {
   const isAnyBenefitPresent = benefits?.length;
-  const { setIsCalculatorOpened, setSelectedService } = useCalculatorModalContext();
+  const { setIsCalculatorOpened } = useCalculatorModalContext();
 
   const handleClick = () => {
-    setSelectedService?.(title); // если есть поддержка
     setIsCalculatorOpened(true);
     console.log(`Открыта заявка на услугу: ${title}`);
-    // analytics.track('Service Clicked', { service: title }); // если используешь аналитики
   };
 
   return (
