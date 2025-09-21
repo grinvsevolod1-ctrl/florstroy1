@@ -3,16 +3,60 @@ import { useState } from 'react';
 
 export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   const [area, setArea] = useState('');
-  const [type, setType] = useState('basic');
+  const [foundation, setFoundation] = useState('бетон');
+  const [coating, setCoating] = useState('шлифованный');
+  const [thickness, setThickness] = useState('100');
   const [reinforced, setReinforced] = useState(false);
+  const [reinforcementType, setReinforcementType] = useState('сетка');
+  const [extras, setExtras] = useState<string[]>([]);
   const [comment, setComment] = useState('');
   const [price, setPrice] = useState<number | null>(null);
 
+  const baseRate = {
+    шлифованный: 1200,
+    эпоксидный: 1800,
+    топпинг: 1500,
+  };
+
+  const foundationFactor = {
+    грунт: 1.2,
+    песок: 1.1,
+    бетон: 1.0,
+    плита: 0.9,
+  };
+
+  const reinforcementCost = {
+    сетка: 300,
+    фибра: 200,
+    арматура: 500,
+  };
+
+  const extraWorkCost = {
+    гидроизоляция: 150,
+    демпфер: 100,
+    швы: 80,
+    укладка: 250,
+  };
+
+  function toggleExtra(name: string) {
+    setExtras((prev) =>
+      prev.includes(name) ? prev.filter((e) => e !== name) : [...prev, name]
+    );
+  }
+
   function calculate() {
-    const base = type === 'basic' ? 1200 : type === 'epoxy' ? 1800 : 1500;
-    const extra = reinforced ? 300 : 0;
-    const total = Number(area) * (base + extra);
-    setPrice(total);
+    const base = baseRate[coating];
+    const extra = extras.reduce((sum, key) => sum + extraWorkCost[key], 0);
+    const reinforcement = reinforced ? reinforcementCost[reinforcementType] : 0;
+    const factor = foundationFactor[foundation];
+    const total =
+      Number(area) *
+      (base + reinforcement + extra) *
+      factor *
+      Number(thickness) /
+      100;
+
+    setPrice(Math.round(total));
   }
 
   function handleSubmit(e: React.FormEvent) {
@@ -35,11 +79,26 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
             required
           />
 
-          <Select value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="basic">Базовое покрытие</option>
-            <option value="epoxy">Эпоксидное покрытие</option>
-            <option value="polished">Шлифованный бетон</option>
+          <Select value={foundation} onChange={(e) => setFoundation(e.target.value)}>
+            <option value="грунт">Основание: грунт</option>
+            <option value="песок">Основание: песок</option>
+            <option value="бетон">Основание: бетон</option>
+            <option value="плита">Основание: плита</option>
           </Select>
+
+          <Select value={coating} onChange={(e) => setCoating(e.target.value)}>
+            <option value="шлифованный">Покрытие: шлифованный бетон</option>
+            <option value="эпоксидный">Покрытие: эпоксидное</option>
+            <option value="топпинг">Покрытие: топпинг</option>
+          </Select>
+
+          <Input
+            type="number"
+            placeholder="Толщина слоя, мм"
+            value={thickness}
+            onChange={(e) => setThickness(e.target.value)}
+            required
+          />
 
           <CheckboxWrapper>
             <label>
@@ -52,6 +111,30 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
             </label>
           </CheckboxWrapper>
 
+          {reinforced && (
+            <Select
+              value={reinforcementType}
+              onChange={(e) => setReinforcementType(e.target.value)}
+            >
+              <option value="сетка">Сетка</option>
+              <option value="фибра">Фибра</option>
+              <option value="арматура">Арматура</option>
+            </Select>
+          )}
+
+          <ExtrasBlock>
+            {Object.keys(extraWorkCost).map((key) => (
+              <label key={key}>
+                <input
+                  type="checkbox"
+                  checked={extras.includes(key)}
+                  onChange={() => toggleExtra(key)}
+                />
+                {key}
+              </label>
+            ))}
+          </ExtrasBlock>
+
           <Textarea
             placeholder="Комментарий или объект"
             value={comment}
@@ -61,7 +144,20 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
 
           <SubmitButton type="submit">Рассчитать</SubmitButton>
 
-          {price !== null && <Result>Предварительная стоимость: {price.toLocaleString()} ₽</Result>}
+          {price !== null && (
+            <Result>
+              <strong>Предварительная стоимость:</strong> {price.toLocaleString()} ₽
+              <br />
+              <strong>Объём бетона:</strong> {(Number(area) * Number(thickness) / 1000).toFixed(2)} м³
+              <br />
+              <strong>Выбранные опции:</strong> {[
+                `Основание: ${foundation}`,
+                `Покрытие: ${coating}`,
+                reinforced ? `Армирование: ${reinforcementType}` : 'Без армирования',
+                ...extras,
+              ].join(', ')}
+            </Result>
+          )}
         </Form>
       </Modal>
     </Overlay>
@@ -80,7 +176,7 @@ const Overlay = styled.div`
 
 const Modal = styled.div`
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   background: white;
   padding: 3rem;
   border-radius: 1rem;
@@ -132,6 +228,18 @@ const CheckboxWrapper = styled.div`
   }
 `;
 
+const ExtrasBlock = styled.div`
+  display: grid;
+  gap: 0.5rem;
+  font-size: 1.4rem;
+
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+`;
+
 const SubmitButton = styled.button`
   background: rgb(var(--primary));
   color: white;
@@ -145,8 +253,8 @@ const SubmitButton = styled.button`
 
 const Result = styled.div`
   font-size: 1.6rem;
-  font-weight: bold;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  line-height: 1.6;
 `;
 
 const CloseButton = styled.button`
