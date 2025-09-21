@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import NextLink from 'next/link';
 import styled from 'styled-components';
 import Button from 'components/Button';
@@ -12,28 +13,46 @@ export default function Hero() {
   const { setIsCalculatorOpened } = useCalculatorModalContext();
 
   return (
-    <HeroWrapper>
-      <Contents>
-        <CustomOverTitle>строительные услуги</CustomOverTitle>
-        <Heading>Бетонные полы под ключ</Heading>
-        <Description>
-          Устройство промышленных бетонных полов, шлифовка, армирование, наливные покрытия. Работаем по Москве и области. Гарантия качества.
-        </Description>
-        <CustomButtonGroup>
-          <Button onClick={() => setIsCalculatorOpened(true)}>
-            Рассчитать стоимость <span>&rarr;</span>
-          </Button>
-          <NextLink href="/pricing" passHref>
-            <Button transparent>
-              Подробнее <span>&rarr;</span>
+    <>
+      <Head>
+        <title>Бетонные полы под ключ | Florstroy</title>
+        <meta
+          name="description"
+          content="Промышленные бетонные полы, шлифовка, армирование, наливные покрытия. Работаем по Москве и области. Гарантия качества."
+        />
+        <meta property="og:title" content="Бетонные полы под ключ | Florstroy" />
+        <meta
+          property="og:description"
+          content="Промышленные бетонные полы, шлифовка, армирование, наливные покрытия. Работаем по Москве и области."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://florstroy.ru" />
+        <meta property="og:image" content="https://florstroy.ru/preview.jpg" />
+      </Head>
+
+      <HeroWrapper>
+        <Contents>
+          <CustomOverTitle>строительные услуги</CustomOverTitle>
+          <Heading>Бетонные полы под ключ</Heading>
+          <Description>
+            Устройство промышленных бетонных полов, шлифовка, армирование, наливные покрытия. Работаем по Москве и области. Гарантия качества.
+          </Description>
+          <CustomButtonGroup>
+            <Button onClick={() => setIsCalculatorOpened(true)}>
+              Рассчитать стоимость <span>&rarr;</span>
             </Button>
-          </NextLink>
-        </CustomButtonGroup>
-      </Contents>
-      <ImageContainer>
-        <HeroIllustration />
-      </ImageContainer>
-    </HeroWrapper>
+            <NextLink href="/pricing" passHref>
+              <Button transparent>
+                Подробнее <span>&rarr;</span>
+              </Button>
+            </NextLink>
+          </CustomButtonGroup>
+        </Contents>
+        <ImageContainer>
+          <HeroIllustration />
+        </ImageContainer>
+      </HeroWrapper>
+    </>
   );
 }
 
