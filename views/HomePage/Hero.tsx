@@ -23,7 +23,7 @@ export default function Hero() {
           <Button onClick={() => setIsCalculatorOpened(true)}>
             Рассчитать стоимость <span>&rarr;</span>
           </Button>
-          <NextLink href="#pricing" passHref>
+          <NextLink href="/pricing" passHref>
             <Button transparent>
               Подробнее <span>&rarr;</span>
             </Button>
