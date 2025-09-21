@@ -1,3 +1,4 @@
+import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect, useRef } from 'react';
@@ -6,7 +7,6 @@ import { NavItems } from 'types';
 import ClientOnly from './ClientOnly';
 import CloseIcon from './CloseIcon';
 import OriginalDrawer from './Drawer';
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 
 type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
 
