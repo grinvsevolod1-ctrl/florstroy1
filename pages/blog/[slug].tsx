@@ -34,9 +34,9 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <MetadataHead {...meta} />
       <CustomContainer id="content" ref={contentRef}>
         <Header title={meta.title} imageUrl={absoluteImageUrl} readTime="" />
-        <ArticleBody>
+        <StyledArticleBody>
           <MDXRemote {...content} components={{ ArticleImage, Code, Quote }} />
-        </ArticleBody>
+        </StyledArticleBody>
       </CustomContainer>
     </>
   );
@@ -91,22 +91,7 @@ const CustomContainer = styled(Container)`
   }
 `;
 
-const ArticleBody = styled.div`
-  font-size: 1.8rem;
-  line-height: 1.6;
-  color: var(--text-main);
-  margin-top: 4rem;
-
-  ${media('<=tablet')} {
-    font-size: 1.6rem;
-    margin-top: 3rem;
-  }
-
-  & > *:not(:last-child) {
-    margin-bottom: 2.4rem;
-  }
-`;
-const ArticleBody = styled.div`
+const StyledArticleBody = styled.div`
   font-size: 1.8rem;
   line-height: 1.65;
   color: var(--text-main);
