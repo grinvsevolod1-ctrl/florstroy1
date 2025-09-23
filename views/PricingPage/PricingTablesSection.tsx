@@ -99,6 +99,13 @@ const Wrapper = styled.div`
   margin: 0 auto;
   box-sizing: border-box;
   overflow-x: hidden;
+  background-color: var(--background, #ffffff);
+  color: var(--text-main, #222222);
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--background-dark, #121212);
+    color: var(--text-light, #f0f0f0);
+  }
 `;
 
 const ToggleWrapper = styled.div`
@@ -121,6 +128,12 @@ const ToggleButton = styled.button<{ active?: boolean }>`
 
   &:hover {
     background: ${(p) => (p.active ? 'rgba(var(--primary), 0.85)' : 'rgba(var(--primary), 0.05)')};
+  }
+
+  @media (prefers-color-scheme: dark) {
+    border-color: rgba(var(--primary), 0.6);
+    background: ${(p) => (p.active ? 'rgb(var(--primary))' : 'transparent')};
+    color: ${(p) => (p.active ? '#fff' : 'rgb(var(--primary))')};
   }
 `;
 
