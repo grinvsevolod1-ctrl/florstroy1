@@ -182,7 +182,126 @@ export default function CalculatorModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-// Стили
+const Modal = styled.div`
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  background: var(--modal-bg, #ffffff);
+  color: var(--text-main, #222222);
+  padding: 3rem;
+  border-radius: 1rem;
+  position: relative;
+  overflow-y: auto;
+
+  @media (prefers-color-scheme: dark) {
+    background: var(--modal-bg-dark, #1e1e1e);
+    color: var(--text-light, #f0f0f0);
+  }
+
+  @media (max-width: 600px) {
+    margin: 1rem;
+    padding: 2rem;
+  }
+`;
+
+const Label = styled.label`
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: inherit;
+`;
+
+const Input = styled.input`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: var(--input-bg, #f9f9f9);
+  color: inherit;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: #2a2a2a;
+    border-color: #555;
+  }
+`;
+
+const Select = styled.select`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: var(--input-bg, #f9f9f9);
+  color: inherit;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: #2a2a2a;
+    border-color: #555;
+  }
+`;
+
+const Textarea = styled.textarea`
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  background: var(--input-bg, #f9f9f9);
+  color: inherit;
+  resize: vertical;
+  transition: border 0.2s;
+
+  &:focus {
+    border-color: rgb(var(--primary));
+    outline: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background: #2a2a2a;
+    border-color: #555;
+  }
+`;
+
+const Result = styled.div`
+  font-size: 1.6rem;
+  line-height: 1.6;
+  margin-top: 2rem;
+  background: #f5f5f5;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  color: inherit;
+
+  @media (prefers-color-scheme: dark) {
+    background: #2a2a2a;
+  }
+`;
+
+const SubmitButton = styled.button`
+  background: rgb(var(--primary));
+  color: white;
+  padding: 1.2rem 2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  align-self: center;
+  transition: background 0.3s;
+
+  &:hover {
+    background: rgba(var(--primary), 0.85);
+  }
+`;
+
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
@@ -191,22 +310,6 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Modal = styled.div`
-  width: 100%;
-  max-width: 900px;
-  max-height: 90vh;
-  background: white;
-  padding: 3rem;
-  border-radius: 1rem;
-  position: relative;
-  overflow-y: auto;
-
-  @media (max-width: 600px) {
-    margin: 1rem;
-    padding: 2rem;
-  }
 `;
 
 const Title = styled.h2`
@@ -231,41 +334,6 @@ const Field = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-`;
-
-const Label = styled.label`
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #333;
-`;
-
-const Select = styled.select`
-  padding: 1rem;
-  font-size: 1.6rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: #f9f9f9;
-  transition: border 0.2s;
-
-  &:focus {
-    border-color: rgb(var(--primary));
-    outline: none;
-  }
-`;
-
-const Textarea = styled.textarea`
-  padding: 1rem;
-  font-size: 1.6rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: #f9f9f9;
-  resize: vertical;
-  transition: border 0.2s;
-
-  &:focus {
-    border-color: rgb(var(--primary));
-    outline: none;
-  }
 `;
 
 const Checkbox = styled.label`
@@ -301,32 +369,6 @@ const Extras = styled.div`
   }
 `;
 
-const SubmitButton = styled.button`
-  background: rgb(var(--primary));
-  color: white;
-  padding: 1.2rem 2rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  align-self: center;
-  transition: background 0.3s;
-
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
-`;
-
-const Result = styled.div`
-  font-size: 1.6rem;
-  line-height: 1.6;
-  margin-top: 2rem;
-  background: #f5f5f5;
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-`;
-
 const CloseButton = styled.button`
   position: absolute;
   top: 1rem;
@@ -334,19 +376,6 @@ const CloseButton = styled.button`
   font-size: 2rem;
   background: none;
   border: none;
+  color: inherit;
   cursor: pointer;
 `;
-const Input = styled.input`
-  padding: 1rem;
-  font-size: 1.6rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  background: #f9f9f9;
-  transition: border 0.2s;
-
-  &:focus {
-    border-color: rgb(var(--primary));
-    outline: none;
-  }
-`;
-

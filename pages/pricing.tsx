@@ -18,16 +18,7 @@ export default function PricingPage() {
 }
 
 const Wrapper = styled.div`
-  background-color: var(--background, #ffffff);
-  color: var(--text-main, #222222);
-  padding: 4rem 2rem;
-
   & > :last-child {
     margin-bottom: 15rem;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: var(--background-dark, #121212);
-    color: var(--text-light, #f0f0f0);
   }
 `;
