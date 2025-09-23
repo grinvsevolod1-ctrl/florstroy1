@@ -52,7 +52,7 @@ export default function Footer() {
           <Copyright>
             &copy; FlorStroy {new Date().getFullYear()} <br />
             <NextLink href="http://netnext.site" passHref>
-              <a>Designed And Developed by NetNext Studio</a>
+              <a>Designedd And Developed by NetNext Studio</a>
             </NextLink>
           </Copyright>
         </BottomBar>
