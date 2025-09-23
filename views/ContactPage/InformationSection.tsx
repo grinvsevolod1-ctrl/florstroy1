@@ -16,24 +16,22 @@ export default function InformationSection() {
           <Title>Контакты FlorStroy</Title>
           <InfoList>
             <li><strong>ИНН:</strong> 5032258560</li>
-            <li><strong>Адрес:</strong> Россия, Московская область, г. Орехово, Можайское шоссе д.7</li>
+            <li><strong>Адрес:</strong> Россия, Московская область, г. Орехово, Можайское шоссе д.8</li>
             <li><strong>Телефон:</strong> <a href="tel:+74956624994">+7 495 662 49 94</a></li>
             <li><strong>Телефон:</strong> <a href="tel:+79681868828">+7 968 186 88 28</a></li>
-            <li><strong>Email:</strong> <a href="mailto:info@fabrikastroy.ru">info@fabrikastroy.ru</a></li>
+            <li><strong>Email:</strong> <a href="mailto:info@fabrikastroy.ru">info@florstroy.ru</a></li>
           </InfoList>
 
           <Socials>
-            <SocialIconLink href="https://t.me/florstroy" target="_blank">
+            <SocialIconLink href="https://t.me/79681868828" target="_blank">
               {TelegramIcon({})} Telegram
             </SocialIconLink>
             <SocialIconLink href="https://wa.me/79681868828" target="_blank">
               {WhatsappIcon({})} WhatsApp
             </SocialIconLink>
-            <SocialIconLink href="https://vk.com/florstroy" target="_blank">
-              {VkIcon({})} VK
-            </SocialIconLink>
-            <SocialIconLink href="https://instagram.com/florstroy" target="_blank">
-              {InstagramIcon({})} Instagram
+            
+            <SocialIconLink href="viber://chat?number=%2B79681868828" target="_blank">
+              {ViberIcon({})} Viber
             </SocialIconLink>
           </Socials>
         </Block>
@@ -45,7 +43,7 @@ export default function InformationSection() {
             </Map>
           </YMaps>
           <MapButton
-            href="https://yandex.ru/maps/?ll=37.2631%2C55.6785&z=15&mode=search&text=Можайское%20шоссе%207"
+            href="https://yandex.by/maps/10743/odincovo/house/mozhayskoye_shosse_8/Z04YdAFpSkUCQFtvfXp2cHxqYw==/?ll=37.269305%2C55.671097&z=16"
             target="_blank"
           >
             Открыть в Яндекс.Картах
