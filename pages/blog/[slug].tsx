@@ -5,15 +5,13 @@ import { serialize } from 'next-mdx-remote/serialize';
 import { MDXRemote } from 'next-mdx-remote';
 import { GetStaticPropsContext, InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import Container from 'components/Container';
 import { media } from 'utils/media';
-import { getReadTime } from 'utils/readTime';
 import Header from 'views/SingleArticlePage/Header';
 import MetadataHead from 'views/SingleArticlePage/MetadataHead';
 import OpenGraphHead from 'views/SingleArticlePage/OpenGraphHead';
-import ShareWidget from 'views/SingleArticlePage/ShareWidget';
 import StructuredDataHead from 'views/SingleArticlePage/StructuredDataHead';
 import ArticleImage from 'components/ArticleImage';
 import Code from 'components/Code';
@@ -21,29 +19,6 @@ import Quote from 'components/Quote';
 
 export default function SingleArticlePage(props: InferGetStaticPropsType<typeof getStaticProps>) {
   const contentRef = useRef<HTMLDivElement | null>(null);
-  const [readTime, setReadTime] = useState('');
-
-  useEffect(() => {
-    const currentContent = contentRef.current;
-    if (currentContent) {
-      setReadTime(getReadTime(currentContent.textContent || ''));
-    }
-
-    const prismThemeLinkEl = document.querySelector('link[data-id="prism-theme"]');
-    if (!prismThemeLinkEl) {
-      const headEl = document.querySelector('head');
-      if (headEl) {
-        const newEl = document.createElement('link');
-        newEl.setAttribute('data-id', 'prism-theme');
-        newEl.setAttribute('rel', 'stylesheet');
-        newEl.setAttribute('href', '/prism-theme.css');
-        newEl.setAttribute('media', 'print');
-        newEl.setAttribute('onload', "this.media='all'; this.onload=null;");
-        headEl.appendChild(newEl);
-      }
-    }
-  }, []);
-
   const { slug, content, meta } = props;
   const absoluteImageUrl = meta.imageUrl.replace(/\/+/, '/');
 
@@ -58,9 +33,10 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <StructuredDataHead slug={slug} {...meta} />
       <MetadataHead {...meta} />
       <CustomContainer id="content" ref={contentRef}>
-        <ShareWidget title={meta.title} slug={slug} />
-        <Header title={meta.title} imageUrl={absoluteImageUrl} readTime={readTime} />
-        <MDXRemote {...content} components={{ ArticleImage, Code, Quote }} />
+        <Header title={meta.title} imageUrl={absoluteImageUrl} readTime="" />
+        <ArticleBody>
+          <MDXRemote {...content} components={{ ArticleImage, Code, Quote }} />
+        </ArticleBody>
       </CustomContainer>
     </>
   );
@@ -108,9 +84,76 @@ export async function getStaticProps({ params }: GetStaticPropsContext<{ slug: s
 const CustomContainer = styled(Container)`
   position: relative;
   max-width: 90rem;
-  margin: 10rem auto;
+  margin: 6rem auto;
 
   ${media('<=tablet')} {
-    margin: 5rem auto;
+    margin: 4rem auto;
+  }
+`;
+
+const ArticleBody = styled.div`
+  font-size: 1.8rem;
+  line-height: 1.6;
+  color: var(--text-main);
+  margin-top: 4rem;
+
+  ${media('<=tablet')} {
+    font-size: 1.6rem;
+    margin-top: 3rem;
+  }
+
+  & > *:not(:last-child) {
+    margin-bottom: 2.4rem;
+  }
+`;
+const ArticleBody = styled.div`
+  font-size: 1.8rem;
+  line-height: 1.65;
+  color: var(--text-main);
+  margin-top: 4rem;
+
+  ${media('<=tablet')} {
+    font-size: 1.6rem;
+    margin-top: 3rem;
+  }
+
+  & > h1, & > h2, & > h3 {
+    font-weight: 600;
+    margin: 3.2rem 0 1.6rem;
+    line-height: 1.3;
+    color: var(--text-dark);
+  }
+
+  & > p {
+    margin-bottom: 2.4rem;
+    text-align: justify;
+  }
+
+  & > blockquote {
+    font-style: italic;
+    background: var(--background-light);
+    padding: 2rem 3rem;
+    border-left: 4px solid var(--primary);
+    margin: 2.4rem 0;
+  }
+
+  & > ul, & > ol {
+    margin: 2rem 0 2.4rem 2.4rem;
+    padding-left: 1.6rem;
+  }
+
+  & > img {
+    max-width: 100%;
+    margin: 3rem auto;
+    display: block;
+    border-radius: 8px;
+  }
+
+  & > pre {
+    background: #f4f4f4;
+    padding: 2rem;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 2.4rem 0;
   }
 `;
