@@ -4,7 +4,7 @@ import { YMaps, Map, Placemark } from 'react-yandex-maps';
 import {
   FaTelegramPlane as TelegramIcon,
   FaWhatsapp as WhatsappIcon,
-  FaVk as VkIcon,
+  FaViber as ViberIcon,
   FaInstagram as InstagramIcon,
 } from 'react-icons/fa';
 
