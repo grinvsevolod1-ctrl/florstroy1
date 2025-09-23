@@ -5,19 +5,16 @@ import { media } from 'utils/media';
 
 interface HeaderProps {
   title: string;
-  formattedDate: string;
   imageUrl: string;
   readTime: string;
 }
 
-export default function Header({ title, formattedDate, imageUrl, readTime }: HeaderProps) {
+export default function Header({ title, imageUrl, readTime }: HeaderProps) {
   return (
     <HeaderContainer>
       <ArticleImage src={imageUrl} />
       <Title>{title}</Title>
-      <DetailsContainer>
-        {formattedDate} <MidDot /> {readTime}
-      </DetailsContainer>
+      <DetailsContainer>{readTime}</DetailsContainer>
     </HeaderContainer>
   );
 }
@@ -44,12 +41,4 @@ const Title = styled.h1`
 const DetailsContainer = styled.div`
   font-size: 1.6rem;
   color: var(--text-lighter);
-`;
-
-const MidDot = styled.span`
-  &::before {
-    display: inline-block;
-    content: '\x000B7';
-    margin: 0 0.6rem;
-  }
 `;

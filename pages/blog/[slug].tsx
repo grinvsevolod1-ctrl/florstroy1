@@ -8,7 +8,6 @@ import Head from 'next/head';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Container from 'components/Container';
-import { formatDate } from 'utils/formatDate';
 import { media } from 'utils/media';
 import { getReadTime } from 'utils/readTime';
 import Header from 'views/SingleArticlePage/Header';
@@ -46,7 +45,6 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
   }, []);
 
   const { slug, content, meta } = props;
-  const formattedDate = formatDate(new Date(meta.date));
   const absoluteImageUrl = meta.imageUrl.replace(/\/+/, '/');
 
   return (
@@ -61,7 +59,7 @@ export default function SingleArticlePage(props: InferGetStaticPropsType<typeof 
       <MetadataHead {...meta} />
       <CustomContainer id="content" ref={contentRef}>
         <ShareWidget title={meta.title} slug={slug} />
-        <Header title={meta.title} formattedDate={formattedDate} imageUrl={absoluteImageUrl} readTime={readTime} />
+        <Header title={meta.title} imageUrl={absoluteImageUrl} readTime={readTime} />
         <MDXRemote {...content} components={{ ArticleImage, Code, Quote }} />
       </CustomContainer>
     </>
