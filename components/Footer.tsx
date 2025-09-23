@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { FacebookIcon, TelegramIcon, WhatsappIcon } from 'react-share';
+import { ViberIcon, TelegramIcon, WhatsappIcon } from 'react-share';
 import styled from 'styled-components';
 import Container from 'components/Container';
 import { media } from 'utils/media';
@@ -30,21 +30,21 @@ export default function Footer() {
 
         <BottomBar>
           <ShareBar>
-            <NextLink href="https://t.me/florstroy" passHref>
+            <NextLink href="https://t.me/74956624994" passHref>
               <a>
                 <TelegramIcon size={50} round={true} />
               </a>
             </NextLink>
 
-            <NextLink href="https://wa.me/79999999999" passHref>
+            <NextLink href="https://wa.me/74956624994" passHref>
               <a>
                 <WhatsappIcon size={50} round={true} />
               </a>
             </NextLink>
 
-            <NextLink href="https://www.facebook.com/florstroy" passHref>
+            <NextLink href="https://wa.me/74956624994" passHref>
               <a>
-                <FacebookIcon size={50} round={true} />
+                <ViberIcon size={50} round={true} />
               </a>
             </NextLink>
           </ShareBar>
