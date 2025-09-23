@@ -10,12 +10,14 @@ const Wrapper = styled.div<{ isOutlined?: boolean }>`
   display: flex;
   flex-direction: column;
   padding: 3rem;
-  background: rgb(var(--cardBackground));
+  background: rgb(var(--cardBackground, 255, 255, 255));
   box-shadow: ${(p) => (p.isOutlined ? 'var(--shadow-lg)' : 'var(--shadow-md)')};
   text-align: center;
   box-sizing: border-box;
   width: 100%;
   max-width: 320px;
+  border-radius: 1rem;
+  color: var(--text-main, #222);
 
   & > *:not(:first-child) {
     margin-top: 1rem;
@@ -25,15 +27,25 @@ const Wrapper = styled.div<{ isOutlined?: boolean }>`
     box-shadow: var(--shadow-md);
     order: ${(p) => (p.isOutlined ? -1 : 0)};
   }
+
+  @media (prefers-color-scheme: dark) {
+    background: rgb(var(--cardBackgroundDark, 30, 30, 30));
+    color: var(--text-light, #f0f0f0);
+  }
 `;
 
 const Title = styled.h3`
   font-size: 3.2rem;
+  color: inherit;
 `;
 
 const Description = styled.p`
   font-size: 2rem;
-  color: rgba(var(--textSecondary), 0.9);
+  color: rgba(var(--textSecondary, 60, 60, 60), 0.9);
+
+  @media (prefers-color-scheme: dark) {
+    color: rgba(var(--textSecondaryDark, 200, 200, 200), 0.9);
+  }
 `;
 
 const PriceContainer = styled.div`
@@ -51,6 +63,7 @@ const Price = styled.div`
   font-size: 3.2rem;
   line-height: 1;
   font-weight: bold;
+  color: inherit;
 
   span {
     font-size: 1.8rem;
@@ -65,6 +78,7 @@ const CustomRichText = styled(RichText)`
     width: fit-content;
     font-size: 1.6rem;
     line-height: 1.6;
+    color: inherit;
   }
 `;
 
@@ -72,6 +86,7 @@ const CustomButton = styled(Button)`
   width: 100%;
   margin-top: auto;
 `;
+
 
 interface PricingCardProps {
   title: string;
