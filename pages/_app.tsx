@@ -67,9 +67,9 @@ function Providers<T>({ children }: PropsWithChildren<T>) {
 }
 
 function Modals() {
-  const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
-  const { isCalculatorOpened, setIsCalculatorOpened } = useCalculatorModalContext();
-  const { isOpen, setIsOpen } = useFeedbackModalContext();
+  const { isModalOpened } = useNewsletterModalContext();
+  const { isCalculatorOpened } = useCalculatorModalContext();
+  const { isOpen } = useFeedbackModalContext();
 
   return (
     <>
