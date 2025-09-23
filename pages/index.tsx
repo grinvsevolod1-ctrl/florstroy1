@@ -39,9 +39,9 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
               профессиональной команды.
             </p>
             <ul>
-              <li>Коттедж в Дроздах — 250 м²</li>
-              <li>Офисный центр в Минске — 1200 м²</li>
-              <li>Складской комплекс в Борисове — 1800 м²</li>
+              <li>Коттедж под Москвой — 706 м²</li>
+              <li>Офисный центр в Москве — 1200 м²</li>
+              <li>Складской комплекс в Смоленске — 1800 м²</li>
             </ul>
           </BasicSection>
         </WhiteBackgroundContainer>
