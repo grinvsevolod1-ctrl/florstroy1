@@ -27,7 +27,7 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
         <WhiteBackgroundContainer>
           <Hero />
           <Partners />
-          <BasicSection imageUrl="/demo-illustration-1.svg" title="Наши услуги" overTitle="Что мы предлагаем">
+          <BasicSection imageUrl="/15.jpeg" title="Наши услуги" overTitle="Что мы предлагаем">
             <p>
               FlorStroy предоставляет полный спектр строительных услуг: от проектирования до сдачи объекта. Мы строим дома, коммерческие здания,
               выполняем ремонт и благоустройство. <Link href="/contact">Свяжитесь с нами</Link> для консультации.
