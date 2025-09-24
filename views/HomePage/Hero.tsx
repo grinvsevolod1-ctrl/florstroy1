@@ -57,8 +57,27 @@ export default function Hero() {
 }
 
 const HeroWrapper = styled(Container)`
+  position: relative;
   display: flex;
   padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-image: url('/test-article/13.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4); // затемнение, можно убрать или изменить
+    z-index: 0;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+  }
 
   ${media('<=desktop')} {
     padding-top: 1rem;
