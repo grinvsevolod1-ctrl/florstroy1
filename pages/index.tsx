@@ -72,7 +72,8 @@ const DarkerBackgroundContainer = styled.div`
 `;
 
 const WhiteBackgroundContainer = styled.div`
-  background: rgb(var(--secondBackground));
+  background: none;
+  position: relative;
 
   & > :last-child {
     padding-bottom: 15rem;
@@ -81,7 +82,30 @@ const WhiteBackgroundContainer = styled.div`
   & > *:not(:first-child) {
     margin-top: 15rem;
   }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/15.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(8px);
+    z-index: 0;
+  }
+
+  & > * {
+    position: relative;
+    z-index: 1;
+    color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#111')};
+    text-shadow: ${({ theme }) =>
+      theme.mode === 'dark'
+        ? '0 0 10px rgba(0, 0, 0, 0.6)'
+        : '0 0 10px rgba(255, 255, 255, 0.6)'};
+  }
 `;
+
 
 export async function getStaticProps() {
   return {
