@@ -10,7 +10,7 @@ import Features from 'views/HomePage/Features';
 import FeaturesGallery from 'views/HomePage/FeaturesGallery';
 import Hero from 'views/HomePage/Hero';
 import ScrollableBlogPosts from 'views/HomePage/ScrollableBlogPosts';
-import Testimonials from 'views/HomePage/Testimonials';
+
 
 export default function Homepage({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -76,7 +76,7 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
           <Cta />
           <FeaturesGallery />
           <Features />
-          <Testimonials />
+
           <ScrollableBlogPosts posts={posts} />
         </DarkerBackgroundContainer>
       </HomepageWrapper>
