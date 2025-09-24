@@ -66,6 +66,9 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
               <li>Ударостойкость и лёгкость ремонта</li>
               <li>Низкая стоимость обслуживания</li>
             </StyledList>
+             <p>
+              <Link href="/contact">Свяжитесь с нами</Link> для консультации и расчёта стоимости.
+            </p>
           </BasicSection>
         </WhiteBackgroundContainer>
 
