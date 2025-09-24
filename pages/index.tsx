@@ -91,7 +91,7 @@ const WhiteBackgroundContainer = styled.div`
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    filter: blur(8px);
+    filter: blur(10px);
     z-index: 0;
   }
 
@@ -101,11 +101,10 @@ const WhiteBackgroundContainer = styled.div`
     color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#111')};
     text-shadow: ${({ theme }) =>
       theme.mode === 'dark'
-        ? '0 0 10px rgba(0, 0, 0, 0.6)'
-        : '0 0 10px rgba(255, 255, 255, 0.6)'};
+        ? '0 0 12px rgba(0, 0, 0, 0.7)'
+        : '0 0 12px rgba(255, 255, 255, 0.6)'};
   }
 `;
-
 
 export async function getStaticProps() {
   return {
