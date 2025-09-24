@@ -9,7 +9,7 @@ import Cta from 'views/HomePage/Cta';
 import Features from 'views/HomePage/Features';
 import FeaturesGallery from 'views/HomePage/FeaturesGallery';
 import Hero from 'views/HomePage/Hero';
-import Partners from 'views/HomePage/Partners';
+
 import ScrollableBlogPosts from 'views/HomePage/ScrollableBlogPosts';
 import Testimonials from 'views/HomePage/Testimonials';
 
@@ -26,7 +26,7 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
       <HomepageWrapper>
         <WhiteBackgroundContainer>
           <Hero />
-          <Partners />
+        
           <BasicSection imageUrl="/15.jpeg" title="Наши услуги" overTitle="Устройство спортивных покрытий">
             <p>
              Покрытие применяется на открытых игровых спортивных и детстских площадках, школьных стадионах беговых дорожках.
