@@ -1,7 +1,6 @@
 import { InferGetStaticPropsType } from 'next';
 import Head from 'next/head';
 import styled from 'styled-components';
-import BasicSection from 'components/BasicSection';
 import Link from 'components/Link';
 import { EnvVars } from 'env';
 import { getAllPosts } from 'utils/postsFetcher';
@@ -12,6 +11,7 @@ import Hero from 'views/HomePage/Hero';
 import Partners from 'views/HomePage/Partners';
 import ScrollableBlogPosts from 'views/HomePage/ScrollableBlogPosts';
 import Testimonials from 'views/HomePage/Testimonials';
+import { media } from 'utils/media';
 
 export default function Homepage({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
@@ -27,24 +27,26 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
         <WhiteBackgroundContainer>
           <Hero />
           <Partners />
-          <BasicSection imageUrl="/15.jpeg" title="Наши услуги" overTitle="Что мы предлагаем">
-            <p>
-              FlorStroy предоставляет полный спектр строительных услуг: от проектирования до сдачи объекта. Мы строим дома, коммерческие здания,
-              выполняем ремонт и благоустройство. <Link href="/contact">Свяжитесь с нами</Link> для консультации.
-            </p>
-          </BasicSection>
-          <BasicSection imageUrl="/demo-illustration-2.svg" title="Реализованные проекты" overTitle="Наш опыт" reversed>
-            <p>
-              Мы успешно реализовали десятки проектов по всей Беларуси. Каждый объект — это результат точного планирования, качественных материалов и
-              профессиональной команды.
-            </p>
-            <ul>
-              <li>Коттедж под Москвой — 706 м²</li>
-              <li>Офисный центр в Москве — 1200 м²</li>
-              <li>Складской комплекс в Смоленске — 1800 м²</li>
-            </ul>
-          </BasicSection>
+
+          <TwoImageSection>
+            <ImageTop>
+              <img src="/15.jpeg" alt="Наши услуги" />
+            </ImageTop>
+
+            <TextBlock>
+              <h2>Наши услуги</h2>
+              <p>
+                FlorStroy предоставляет полный спектр строительных услуг: от проектирования до сдачи объекта. Мы строим дома, коммерческие здания,
+                выполняем ремонт и благоустройство. <Link href="/contact">Свяжитесь с нами</Link> для консультации.
+              </p>
+            </TextBlock>
+
+            <ImageBottom>
+              <img src="/2.jpeg" alt="Реализованные проекты" />
+            </ImageBottom>
+          </TwoImageSection>
         </WhiteBackgroundContainer>
+
         <DarkerBackgroundContainer>
           <Cta />
           <FeaturesGallery />
@@ -72,8 +74,7 @@ const DarkerBackgroundContainer = styled.div`
 `;
 
 const WhiteBackgroundContainer = styled.div`
-  background: none;
-  position: relative;
+  background: rgb(var(--secondBackground));
 
   & > :last-child {
     padding-bottom: 15rem;
@@ -82,27 +83,60 @@ const WhiteBackgroundContainer = styled.div`
   & > *:not(:first-child) {
     margin-top: 15rem;
   }
+`;
 
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('/15.jpeg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(10px);
-    z-index: 0;
+const TwoImageSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  padding: 10rem 5rem;
+
+  ${media('<=tablet')} {
+    padding: 5rem 2rem;
+  }
+`;
+
+const ImageTop = styled.div`
+  width: 100%;
+  height: 40rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+`;
+
+const ImageBottom = styled.div`
+  width: 100%;
+  height: 40rem;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+  }
+`;
+
+const TextBlock = styled.div`
+  color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#111')};
+  text-shadow: ${({ theme }) =>
+    theme.mode === 'dark'
+      ? '0 0 10px rgba(0,0,0,0.6)'
+      : '0 0 10px rgba(255,255,255,0.4)'};
+
+  h2 {
+    font-size: 3.6rem;
+    margin-bottom: 2rem;
   }
 
-  & > * {
-    position: relative;
-    z-index: 1;
-    color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#111')};
-    text-shadow: ${({ theme }) =>
-      theme.mode === 'dark'
-        ? '0 0 12px rgba(0, 0, 0, 0.7)'
-        : '0 0 12px rgba(255, 255, 255, 0.6)'};
+  p {
+    font-size: 1.8rem;
+    line-height: 1.6;
   }
 `;
 
