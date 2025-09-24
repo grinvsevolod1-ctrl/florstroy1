@@ -70,13 +70,22 @@ const HeroWrapper = styled(Container)`
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4); // затемнение, можно убрать или изменить
+    background: ${({ theme }) =>
+      theme.mode === 'dark'
+        ? 'rgba(0, 0, 0, 0.65)'
+        : 'rgba(255, 255, 255, 0.4)'};
     z-index: 0;
+    transition: background 0.3s ease;
   }
 
   & > * {
     position: relative;
     z-index: 1;
+    color: ${({ theme }) => (theme.mode === 'dark' ? '#fff' : '#111')};
+    text-shadow: ${({ theme }) =>
+      theme.mode === 'dark'
+        ? '0 0 10px rgba(0, 0, 0, 0.6)'
+        : '0 0 10px rgba(255, 255, 255, 0.6)'};
   }
 
   ${media('<=desktop')} {
@@ -85,6 +94,7 @@ const HeroWrapper = styled(Container)`
     align-items: center;
   }
 `;
+
 
 const Contents = styled.div`
   flex: 1;
