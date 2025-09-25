@@ -8,6 +8,7 @@ export default function PricingTablesSection() {
   const { setIsOpen, setSelectedService } = useFeedbackModalContext();
 
   const handleOpenModal = (serviceTitle: string) => {
+    console.log(`Открыта форма для: ${serviceTitle}`);
     setSelectedService(serviceTitle);
     setIsOpen(true);
   };
@@ -37,13 +38,15 @@ export default function PricingTablesSection() {
                 ))}
               </BenefitsList>
             </CardContent>
-            <CardPrice>
-              <span>{withMaterials ? card.priceWith : card.priceWithout}</span>
-              <Currency>₽/м²</Currency>
+            <CardPriceRow>
+              <CardPrice>
+                <span>{withMaterials ? card.priceWith : card.priceWithout}</span>
+                <Currency>₽/м²</Currency>
+              </CardPrice>
               <FeedbackButton onClick={() => handleOpenModal(card.title)}>
                 Оставить заявку
               </FeedbackButton>
-            </CardPrice>
+            </CardPriceRow>
           </Card>
         ))}
       </CardsWrapper>
@@ -190,32 +193,39 @@ const BenefitItem = styled.li`
   }
 `;
 
+const CardPriceRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+`;
+
 const CardPrice = styled.div`
   display: flex;
   align-items: baseline;
-  justify-content: flex-start;
   gap: 0.6rem;
   font-size: 2rem;
   font-weight: 600;
   color: rgb(var(--primary));
-  margin-top: auto;
 `;
 
 const Currency = styled.span`
   font-size: 1.4rem;
   color: rgb(var(--text));
 `;
+
 const FeedbackButton = styled.button`
   padding: 0.6rem 1.2rem;
   font-size: 1.4rem;
-  background: rgb(var(--primary));
+  background: linear-gradient(135deg, rgb(var(--primary)) 0%, #4e7fff 100%);
   color: #fff;
   border: none;
   border-radius: 0.4rem;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
-    background: rgba(var(--primary), 0.85);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary), 0.3);
   }
 `;
