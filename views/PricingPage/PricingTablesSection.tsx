@@ -101,7 +101,7 @@ const ToggleButton = styled.button<{ active?: boolean }>`
   font-size: 1.6rem;
   border: 1px solid rgba(var(--primary), 0.4);
   background: ${(p) => (p.active ? 'rgb(var(--primary))' : 'transparent')};
-  color: ${(p) => (p.active ? '#fff' : 'rgb(var(--primary))')};
+  color: ${(p) => (p.active ? '#142756ff' : 'rgb(var(--primary))')};
   border-radius: 0.6rem;
   cursor: pointer;
   transition: all 0.2s ease;
