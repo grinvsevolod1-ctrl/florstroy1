@@ -15,10 +15,14 @@ export default function Footer() {
                 <a>Наши проекты</a>
               </NextLink>
             </ListHeader>
-            <ListItem title="Бетонный пол в промышленном ангаре" href="/blog/test-article-4" />
-            <ListItem title="Основание под детскую площадку" href="/blog/test-article-5" />
-            <ListItem title="Полы в холодильном складе" href="/blog/test-article-6" />
-            <ListItem title="Полы для логистического центра" href="/blog/test-article-3" />
+            <ListItem title="Монолитная бетонная плита с армированием" href="/blog/test-article-11" />
+            <ListItem title="Устройство бетонной площадки" href="/blog/test-article-12" />
+            <ListItem title="Устройство бетонной плиты в аграрном объекте" href="/blog/test-article-13" />
+            <ListItem title="Устройство бетонного основания в помещении" href="/blog/test-article-14" />
+            <ListItem title="Устройство спортивного покрытия в крытом комплексе" href="/blog/test-article-17" />
+            <ListItem title="Устройство бетонного пола в складском комплексе" href="/blog/test-article-18" />
+            <ListItem title="Устройство резинового покрытия на игровой площадке" href="/blog/test-article-20" />
+            <ListItem title="Механизированная укладка бетонной плиты" href="/blog/test-article-21" />
           </ListWrapper>
 
           <ListWrapper>
