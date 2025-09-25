@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import PricingCard from 'components/PricingCard';
 import SectionTitle from 'components/SectionTitle';
 
 export default function PricingTablesSection() {
@@ -21,16 +20,19 @@ export default function PricingTablesSection() {
 
       <CardsWrapper>
         {cards.map((card, index) => (
-          <PricingCard
-            key={index}
-            title={card.title}
-            description={card.description}
-            benefits={card.benefits}
-            isOutlined={card.isOutlined}
-          >
-            {withMaterials ? card.priceWith : card.priceWithout}
-            <span> ₽/м²</span>
-          </PricingCard>
+          <Card key={index} isOutlined={card.isOutlined}>
+            <CardTitle>{card.title}</CardTitle>
+            <CardDescription>{card.description}</CardDescription>
+            <BenefitsList>
+              {card.benefits.map((item, i) => (
+                <BenefitItem key={i}>{item}</BenefitItem>
+              ))}
+            </BenefitsList>
+            <CardPrice>
+              {withMaterials ? card.priceWith : card.priceWithout}
+              <span> ₽/м²</span>
+            </CardPrice>
+          </Card>
         ))}
       </CardsWrapper>
     </Wrapper>
@@ -117,4 +119,57 @@ const CardsWrapper = styled.div`
   gap: 4rem;
   justify-content: center;
   align-items: stretch;
+`;
+
+const Card = styled.div<{ isOutlined?: boolean }>`
+  flex: 1 1 300px;
+  padding: 3rem;
+  border-radius: 1rem;
+  background: rgb(var(--cardBackground));
+  border: ${(p) => (p.isOutlined ? '2px solid rgba(var(--primary), 0.4)' : 'none')};
+  box-shadow: var(--shadow-md);
+`;
+
+const CardTitle = styled.h3`
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: rgb(var(--text));
+  margin-bottom: 1rem;
+`;
+
+const CardDescription = styled.p`
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: rgb(var(--text));
+  margin-bottom: 2rem;
+`;
+
+const BenefitsList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+`;
+
+const BenefitItem = styled.li`
+  position: relative;
+  padding-left: 2.4rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: rgb(var(--text));
+
+  &::before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: rgb(var(--primary));
+    font-size: 1.4rem;
+    line-height: 1.6rem;
+  }
+`;
+
+const CardPrice = styled.div`
+  font-size: 2rem;
+  font-weight: 600;
+  color: rgb(var(--primary));
 `;
