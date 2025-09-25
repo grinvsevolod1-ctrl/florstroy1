@@ -15,14 +15,19 @@ export default function Footer() {
                 <a>Наши проекты</a>
               </NextLink>
             </ListHeader>
-            <ListItem title="Монолитная бетонная плита с армированием" href="/blog/test-article-11" />
-            <ListItem title="Устройство бетонной площадки" href="/blog/test-article-12" />
-            <ListItem title="Устройство бетонной плиты в аграрном объекте" href="/blog/test-article-13" />
-            <ListItem title="Устройство бетонного основания в помещении" href="/blog/test-article-14" />
-            <ListItem title="Устройство спортивного покрытия в крытом комплексе" href="/blog/test-article-17" />
-            <ListItem title="Устройство бетонного пола в складском комплексе" href="/blog/test-article-18" />
-            <ListItem title="Устройство резинового покрытия на игровой площадке" href="/blog/test-article-20" />
-            <ListItem title="Механизированная укладка бетонной плиты" href="/blog/test-article-21" />
+
+            <ProjectColumns>
+              <Column>
+                {projectLinks.slice(0, 4).map((item) => (
+                  <ListItem key={item.href} title={item.title} href={item.href} />
+                ))}
+              </Column>
+              <Column>
+                {projectLinks.slice(4).map((item) => (
+                  <ListItem key={item.href} title={item.title} href={item.href} />
+                ))}
+              </Column>
+            </ProjectColumns>
           </ListWrapper>
 
           <ListWrapper>
@@ -75,7 +80,18 @@ function ListItem({ title, href }: { title: string; href: string }) {
   );
 }
 
-// стили остаются без изменений
+const projectLinks = [
+  { title: 'Монолитная бетонная плита с армированием', href: '/blog/test-article-11' },
+  { title: 'Устройство бетонной площадки', href: '/blog/test-article-12' },
+  { title: 'Устройство бетонной плиты в аграрном объекте', href: '/blog/test-article-13' },
+  { title: 'Устройство бетонного основания в помещении', href: '/blog/test-article-14' },
+  { title: 'Устройство спортивного покрытия в крытом комплексе', href: '/blog/test-article-17' },
+  { title: 'Устройство бетонного пола в складском комплексе', href: '/blog/test-article-18' },
+  { title: 'Устройство резинового покрытия на игровой площадке', href: '/blog/test-article-20' },
+  { title: 'Механизированная укладка бетонной плиты', href: '/blog/test-article-21' },
+];
+
+// Стили
 
 const FooterWrapper = styled.div`
   padding-top: 10rem;
@@ -108,10 +124,6 @@ const ListWrapper = styled.div`
   margin-bottom: 5rem;
   margin-right: 5rem;
 
-  & > *:not(:first-child) {
-    margin-top: 1rem;
-  }
-
   ${media('<=tablet')} {
     flex: 0 40%;
     margin-right: 1.5rem;
@@ -120,6 +132,26 @@ const ListWrapper = styled.div`
   ${media('<=phone')} {
     flex: 0 100%;
     margin-right: 0rem;
+  }
+`;
+
+const ProjectColumns = styled.div`
+  display: flex;
+  gap: 4rem;
+  flex-wrap: wrap;
+
+  ${media('<=tablet')} {
+    flex-direction: column;
+    gap: 2rem;
+  }
+`;
+
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > *:not(:first-child) {
+    margin-top: 1rem;
   }
 `;
 
