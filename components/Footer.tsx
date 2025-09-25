@@ -12,7 +12,7 @@ export default function Footer() {
           <ListWrapper>
             <ListHeader>
               <NextLink href="/blog" passHref>
-                <a>Наши проекты</a>
+                <a>Наши выполненные проекты</a>
               </NextLink>
             </ListHeader>
 
