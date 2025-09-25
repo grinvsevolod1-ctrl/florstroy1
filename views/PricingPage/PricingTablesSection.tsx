@@ -20,17 +20,19 @@ export default function PricingTablesSection() {
 
       <CardsWrapper>
         {cards.map((card, index) => (
-          <Card key={index} isOutlined={card.isOutlined}>
-            <CardTitle>{card.title}</CardTitle>
-            <CardDescription>{card.description}</CardDescription>
-            <BenefitsList>
-              {card.benefits.map((item, i) => (
-                <BenefitItem key={i}>{item}</BenefitItem>
-              ))}
-            </BenefitsList>
+          <Card key={index}>
+            <CardContent>
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription>{card.description}</CardDescription>
+              <BenefitsList>
+                {card.benefits.map((item, i) => (
+                  <BenefitItem key={i}>{item}</BenefitItem>
+                ))}
+              </BenefitsList>
+            </CardContent>
             <CardPrice>
-              {withMaterials ? card.priceWith : card.priceWithout}
-              <span> ₽/м²</span>
+              <span>{withMaterials ? card.priceWith : card.priceWithout}</span>
+              <Currency>₽/м²</Currency>
             </CardPrice>
           </Card>
         ))}
@@ -71,7 +73,6 @@ const cards = [
     description: 'Финишное покрытие для коммерческих помещений',
     priceWith: 'от 2000',
     priceWithout: 'от 1500',
-    isOutlined: true,
     benefits: [
       'Бесшовность и герметичность',
       'Устойчивость к агрессивным средам',
@@ -121,14 +122,25 @@ const CardsWrapper = styled.div`
   align-items: stretch;
 `;
 
-const Card = styled.div<{ isOutlined?: boolean }>`
+const Card = styled.div`
   flex: 1 1 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 3rem;
   border-radius: 1rem;
   background: rgb(var(--cardBackground));
-  border: ${(p) => (p.isOutlined ? '2px solid rgba(var(--primary), 0.4)' : 'none')};
+  border: 2px solid rgba(var(--primary), 0.4);
   box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+  }
 `;
+
+const CardContent = styled.div``;
 
 const CardTitle = styled.h3`
   font-size: 2.2rem;
@@ -169,7 +181,17 @@ const BenefitItem = styled.li`
 `;
 
 const CardPrice = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 0.6rem;
   font-size: 2rem;
   font-weight: 600;
   color: rgb(var(--primary));
+  margin-top: auto;
+`;
+
+const Currency = styled.span`
+  font-size: 1.4rem;
+  color: rgb(var(--text));
 `;
