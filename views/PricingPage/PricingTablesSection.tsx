@@ -201,18 +201,24 @@ const CardPriceRow = styled.div`
 `;
 
 const CardPrice = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: baseline;
-  gap: 0.6rem;
+  gap: 0.4rem;
   font-size: 2rem;
   font-weight: 600;
   color: rgb(var(--primary));
+  white-space: nowrap;
+  flex-shrink: 0;
 `;
 
 const Currency = styled.span`
   font-size: 1.4rem;
   color: rgb(var(--text));
+  line-height: 1;
+  position: relative;
+  top: -1px;
 `;
+
 
 const FeedbackButton = styled.button`
   padding: 0.6rem 1.2rem;
