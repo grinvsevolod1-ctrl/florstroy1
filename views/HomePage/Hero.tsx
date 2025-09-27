@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import Button from 'components/Button';
 import ButtonGroup from 'components/ButtonGroup';
 import Container from 'components/Container';
-import HeroIllustration from 'components/HeroIllustation';
 import OverTitle from 'components/OverTitle';
 import { useCalculatorModalContext } from 'contexts/calculator-modal.context';
 import { media } from 'utils/media';
@@ -48,9 +47,7 @@ export default function Hero() {
             </NextLink>
           </CustomButtonGroup>
         </Contents>
-        <ImageContainer>
-          <HeroIllustration />
-        </ImageContainer>
+        <ImageContainer />
       </HeroWrapper>
     </>
   );
@@ -61,6 +58,10 @@ const HeroWrapper = styled(Container)`
   display: flex;
   padding-top: 5rem;
   padding-bottom: 5rem;
+  background-image: url('/test-article/13.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
   &::before {
     content: '';
@@ -110,16 +111,9 @@ const ImageContainer = styled.div`
   justify-content: flex-end;
   align-items: flex-start;
 
-  svg {
-    max-width: 45rem;
-  }
-
   ${media('<=desktop')} {
     margin-top: 2rem;
     justify-content: center;
-    svg {
-      max-width: 80%;
-    }
   }
 `;
 
