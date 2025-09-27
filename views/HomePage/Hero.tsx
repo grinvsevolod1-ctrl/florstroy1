@@ -35,7 +35,7 @@ export default function Hero() {
           <CustomOverTitle>строительные услуги</CustomOverTitle>
           <Heading>Промышленные и полимерные полы</Heading>
           <Description>
-           Наливные полы — идеальное покрытие для сложных условий эксплуатации, которые встречаются на промышленных объектах. Мы специализируемся на устройстве наливных полов. Наши методы работы позволяют выполнять работу по устройству полов оперативно и с оптимальным соотношением ≪цена/качество≫
+            Наливные полы — идеальное покрытие для сложных условий эксплуатации, которые встречаются на промышленных объектах. Мы специализируемся на устройстве наливных полов. Наши методы работы позволяют выполнять работу по устройству полов оперативно и с оптимальным соотношением ≪цена/качество≫
           </Description>
           <CustomButtonGroup>
             <Button onClick={() => setIsCalculatorOpened(true)}>
@@ -61,10 +61,6 @@ const HeroWrapper = styled(Container)`
   display: flex;
   padding-top: 5rem;
   padding-bottom: 5rem;
-  background-image: url('/test-article/13.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 
   &::before {
     content: '';
@@ -94,7 +90,6 @@ const HeroWrapper = styled(Container)`
     align-items: center;
   }
 `;
-
 
 const Contents = styled.div`
   flex: 1;
