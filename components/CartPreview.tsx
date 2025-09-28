@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
+import { useCartContext } from 'context/CartContext';
 import Link from 'next/link';
 
 export default function CartPreview() {
-  const { cart, totalPrice } = useCart();
+  const { cart, totalPrice } = useCartContext();
 
   if (cart.length === 0) return null;
 
