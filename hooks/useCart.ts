@@ -20,8 +20,7 @@ function loadCart(): CartItem[] {
   try {
     const parsed = JSON.parse(stored || '[]');
     return Array.isArray(parsed) ? parsed : [];
-  } catch (e) {
-    console.error('Ошибка парсинга корзины:', e);
+  } catch {
     return [];
   }
 }
@@ -36,17 +35,36 @@ export function useCart() {
   const [cart, setCart] = useState<CartItem[]>(typeof window !== 'undefined' ? loadCart() : []);
   const [addedItem, setAddedItem] = useState<CartItem | null>(null);
 
+  // Загрузка при инициализации
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setCart(loadCart());
     }
   }, []);
 
+  // Сохранение при изменении
   useEffect(() => {
     if (typeof window !== 'undefined') {
       saveCart(cart);
     }
   }, [cart]);
+
+  // Синхронизация между вкладками
+  useEffect(() => {
+    function syncCart(event: StorageEvent) {
+      if (event.key === STORAGE_KEY && event.newValue) {
+        try {
+          const parsed = JSON.parse(event.newValue);
+          if (Array.isArray(parsed)) setCart(parsed);
+        } catch {
+          // ignore
+        }
+      }
+    }
+
+    window.addEventListener('storage', syncCart);
+    return () => window.removeEventListener('storage', syncCart);
+  }, []);
 
   function addToCart(item: Omit<CartItem, 'quantity'>) {
     setCart((prev) => {
