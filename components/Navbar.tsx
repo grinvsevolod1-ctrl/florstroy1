@@ -104,10 +104,10 @@ export default function Navbar({ items }: NavbarProps) {
           <IconCircle>
             <ColorSwitcher />
           </IconCircle>
-          <IconCircle>
+          <IconCircle offsetX="-2px" offsetY="-2px">
             <CartIcon />
           </IconCircle>
-          <IconCircle onClick={toggle}>
+          <IconCircle offsetY="2px" onClick={toggle}>
             <HamburgerIcon aria-label="Toggle menu" />
           </IconCircle>
         </IconGroup>
@@ -253,7 +253,7 @@ const IconGroup = styled.div`
   gap: 1rem;
 `;
 
-const IconCircle = styled.div`
+const IconCircle = styled.div<{ offsetX?: string; offsetY?: string }>`
   width: 3.6rem;
   height: 3.6rem;
   border-radius: 50%;
@@ -263,6 +263,7 @@ const IconCircle = styled.div`
   justify-content: center;
   cursor: pointer;
   transition: background 0.3s;
+  position: relative;
 
   &:hover {
     background: rgba(var(--primary), 0.1);
@@ -272,5 +273,8 @@ const IconCircle = styled.div`
     width: 2.4rem;
     height: 2.4rem;
     fill: rgb(var(--text));
+    position: relative;
+    top: ${(p) => p.offsetY || '0'};
+    left: ${(p) => p.offsetX || '0'};
   }
 `;
