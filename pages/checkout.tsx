@@ -1,95 +1,103 @@
-import { useCart } from 'hooks/useCart';
 import styled from 'styled-components';
+import { useCart } from 'hooks/useCart';
 import { useState } from 'react';
 
 export default function CheckoutPage() {
-  const { cart, updateQuantity, removeFromCart, clearCart, totalPrice } = useCart();
+  const { cart, totalPrice, clearCart } = useCart();
   const [name, setName] = useState('');
-  const [contactMethod, setContactMethod] = useState('Телефон');
+  const [contactMethod, setContactMethod] = useState<'Телефон' | 'Email' | 'Telegram'>('Телефон');
   const [contactValue, setContactValue] = useState('');
   const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
+  const [submitted, setSubmitted] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus('sending');
 
-    await fetch('/api/sendOrder', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        cart,
-        name,
-        contactMethod,
-        contactValue,
-        email,
-        comment,
-      }),
-    });
+    try {
+      await fetch('/api/sendOrder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cart,
+          name,
+          contactMethod,
+          contactValue,
+          email,
+          comment,
+        }),
+      });
 
-    setStatus('sent');
-    clearCart();
+      clearCart();
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Ошибка отправки:', error);
+    }
+  }
+
+  if (submitted) {
+    return (
+      <Wrapper>
+        <Title>Спасибо за заказ!</Title>
+        <Text>Мы свяжемся с вами в ближайшее время.</Text>
+      </Wrapper>
+    );
   }
 
   return (
     <Wrapper>
-      <h1>Оформление заказа</h1>
+      <Title>Оформление заказа</Title>
       {cart.length === 0 ? (
-        <p>Корзина пуста.</p>
+        <Text>Ваша корзина пуста.</Text>
       ) : (
         <>
-          <CartList>
+          <ItemList>
             {cart.map((item) => (
-              <CartItem key={item.id}>
-                <ImagePreview src={item.image} alt={item.title} />
-                <strong>{item.title}</strong> — {item.price} ₽ ×
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
-                  min={1}
-                />
-                <RemoveButton onClick={() => removeFromCart(item.id)}>✖</RemoveButton>
-              </CartItem>
+              <Item key={item.id}>
+                <span>{item.title}</span>
+                <span>{item.quantity} × {item.price} ₽</span>
+              </Item>
             ))}
-          </CartList>
+          </ItemList>
           <Total>Итого: {totalPrice} ₽</Total>
           <Form onSubmit={handleSubmit}>
-            <input
+            <Input
               type="text"
               placeholder="Ваше имя"
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
             />
-            <select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
+
+            <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value as any)}>
               <option value="Телефон">Телефон</option>
+              <option value="Email">Email</option>
               <option value="Telegram">Telegram</option>
-            </select>
-            <input
+            </Select>
+
+            <Input
               type="text"
-              placeholder={`Ваш ${contactMethod}`}
+              placeholder={`Ваш ${contactMethod.toLowerCase()}`}
               value={contactValue}
               onChange={(e) => setContactValue(e.target.value)}
               required
             />
-            <input
+
+            <Input
               type="email"
-              placeholder="Email для подтверждения"
+              placeholder="Email для подтверждения (необязательно)"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <textarea
+
+            <Textarea
               placeholder="Комментарий к заказу"
               value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
-            <button type="submit" disabled={status === 'sending'}>
-              {status === 'sending' ? 'Отправка...' : 'Отправить заказ'}
-            </button>
+
+            <SubmitButton type="submit">Подтвердить заказ</SubmitButton>
           </Form>
-          {status === 'sent' && <Success>✅ Заказ успешно отправлен!</Success>}
         </>
       )}
     </Wrapper>
@@ -97,47 +105,34 @@ export default function CheckoutPage() {
 }
 
 const Wrapper = styled.div`
-  max-width: 60rem;
-  margin: 5rem auto;
+  max-width: 600px;
+  margin: 4rem auto;
   padding: 2rem;
 `;
 
-const CartList = styled.ul`
+const Title = styled.h1`
+  font-size: 2.4rem;
   margin-bottom: 2rem;
-  list-style: none;
-  padding: 0;
 `;
 
-const CartItem = styled.li`
-  margin-bottom: 1rem;
+const Text = styled.p`
+  font-size: 1.6rem;
+  color: rgb(var(--text), 0.7);
+`;
+
+const ItemList = styled.div`
+  margin-bottom: 2rem;
+`;
+
+const Item = styled.div`
   display: flex;
-  align-items: center;
-  gap: 1rem;
-
-  input {
-    width: 4rem;
-    padding: 0.4rem;
-    font-size: 1.2rem;
-  }
-`;
-
-const ImagePreview = styled.img`
-  width: 4rem;
-  height: 4rem;
-  object-fit: cover;
-  border-radius: 0.4rem;
-`;
-
-const RemoveButton = styled.button`
-  background: transparent;
-  border: none;
+  justify-content: space-between;
   font-size: 1.4rem;
-  color: red;
-  cursor: pointer;
+  margin-bottom: 0.5rem;
 `;
 
 const Total = styled.div`
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 2rem;
 `;
@@ -146,37 +141,41 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-
-  input, select, textarea {
-    font-size: 1.4rem;
-    padding: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 0.5rem;
-  }
-
-  textarea {
-    min-height: 8rem;
-    resize: vertical;
-  }
-
-  button {
-    background: rgb(var(--primary));
-    color: white;
-    font-size: 1.4rem;
-    padding: 1rem;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-
-    &:hover {
-      background: rgb(var(--primary), 0.85);
-    }
-  }
 `;
 
-const Success = styled.p`
-  margin-top: 2rem;
+const Input = styled.input`
+  padding: 1rem;
   font-size: 1.4rem;
-  color: green;
-  font-weight: bold;
+  border: 1px solid rgba(var(--text), 0.2);
+  border-radius: 0.5rem;
+`;
+
+const Textarea = styled.textarea`
+  padding: 1rem;
+  font-size: 1.4rem;
+  border: 1px solid rgba(var(--text), 0.2);
+  border-radius: 0.5rem;
+  resize: vertical;
+  min-height: 6rem;
+`;
+
+const Select = styled.select`
+  padding: 1rem;
+  font-size: 1.4rem;
+  border: 1px solid rgba(var(--text), 0.2);
+  border-radius: 0.5rem;
+`;
+
+const SubmitButton = styled.button`
+  background: rgb(var(--primary));
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgb(var(--primary), 0.85);
+  }
 `;
