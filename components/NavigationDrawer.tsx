@@ -7,15 +7,12 @@ import { NavItems } from 'types';
 import ClientOnly from './ClientOnly';
 import CloseIcon from './CloseIcon';
 import OriginalDrawer from './Drawer';
-import { useCart } from 'hooks/useCart';
-import OrderModal from 'components/OrderModal';
 
 type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
 
 export default function NavigationDrawer({ children, items }: NavigationDrawerProps) {
   const { setIsModalOpened } = useNewsletterModalContext();
   const { close } = OriginalDrawer.useDrawer();
-  const [isOrderOpen, setIsOrderOpen] = useState(false);
 
   function handleContactClick() {
     close();
@@ -32,10 +29,6 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
                 <DrawerCloseButton />
                 <NavItemsList items={items} />
                 <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
-                <MiniCart>
-                  <MiniCartContent />
-                  {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />}
-                </MiniCart>
               </div>
             </div>
           </OriginalDrawer.Target>
@@ -44,28 +37,6 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
       {children}
     </OriginalDrawer.Drawer>
   );
-
-  function MiniCartContent() {
-    const { cart, removeFromCart, finalPrice } = useCart();
-
-    if (cart.length === 0) return null;
-
-    return (
-      <>
-        <h3>🛒 Корзина</h3>
-        <ul>
-          {cart.map((item) => (
-            <li key={item.id}>
-              <strong>{item.title}</strong> × {item.quantity}
-              <Remove onClick={() => removeFromCart(item.id)}>✖</Remove>
-            </li>
-          ))}
-        </ul>
-        <Total>Итого: {finalPrice} ₽</Total>
-        <CheckoutButton onClick={() => setIsOrderOpen(true)}>Оформить заказ</CheckoutButton>
-      </>
-    );
-  }
 }
 
 function NavItemsList({ items }: { items: NavItems }) {
@@ -250,57 +221,4 @@ const ContactButton = styled.button`
   border-radius: 0.6rem;
   font-weight: bold;
   cursor: pointer;
-`;
-
-const MiniCart = styled.div`
-  width: 100%;
-  padding: 2rem;
-  border-top: 1px solid rgba(var(--text), 0.1);
-  text-align: center;
-
-  h3 {
-    font-size: 1.6rem;
-    margin-bottom: 1rem;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin-bottom: 1rem;
-
-    li {
-      font-size: 1.4rem;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-  }
-`;
-
-const Remove = styled.button`
-  background: transparent;
-  border: none;
-  color: red;
-  font-size: 1.2rem;
-  cursor: pointer;
-`;
-
-const Total = styled.div`
-  font-weight: bold;
-  margin-bottom: 1rem;
-`;
-
-const CheckoutButton = styled.button`
-  background: rgb(var(--primary));
-  color: white;
-  border: none;
-  padding: 0.8rem 1.2rem;
-  font-size: 1.3rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  width: 100%;
-
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
 `;
