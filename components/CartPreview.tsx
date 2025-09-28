@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function CartPreview() {
-  const { cart, totalPrice } = useCartContext();
+  const { cart, totalPrice, updateQuantity, removeFromCart } = useCartContext();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -18,18 +18,26 @@ export default function CartPreview() {
 
   return isMobile ? (
     <MobileOverlay>
-      <MobileHeader>Корзина</MobileHeader>
-      <MobileList>
-        {cart.map((item) => (
-          <li key={item.id}>
-            {item.title} × {item.quantity}
-          </li>
-        ))}
-      </MobileList>
-      <MobileTotal>Итого: {totalPrice} ₽</MobileTotal>
-      <Link href="/checkout" passHref>
-        <MobileButton>Оформить заказ</MobileButton>
-      </Link>
+      <MobileCard>
+        <MobileHeader>Корзина</MobileHeader>
+        <MobileList>
+          {cart.map((item) => (
+            <MobileItem key={item.id}>
+              <span>{item.title}</span>
+              <QuantityControls>
+                <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                <span>{item.quantity}</span>
+                <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+              </QuantityControls>
+              <RemoveButton onClick={() => removeFromCart(item.id)}>✕</RemoveButton>
+            </MobileItem>
+          ))}
+        </MobileList>
+        <MobileTotal>Итого: {totalPrice} ₽</MobileTotal>
+        <Link href="/checkout" passHref>
+          <MobileButton>Оформить заказ</MobileButton>
+        </Link>
+      </MobileCard>
     </MobileOverlay>
   ) : (
     <Preview>
@@ -85,9 +93,20 @@ const CheckoutButton = styled.a`
 const MobileOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgb(var(--background));
+  background: rgba(0, 0, 0, 0.5);
   z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const MobileCard = styled.div`
+  background: white;
+  width: 90%;
+  max-width: 400px;
   padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
 `;
@@ -105,10 +124,48 @@ const MobileList = styled.ul`
   margin: 0;
 `;
 
+const MobileItem = styled.li`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const QuantityControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  button {
+    background: rgb(var(--primary));
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+
+  span {
+    font-size: 1.2rem;
+    min-width: 2rem;
+    text-align: center;
+  }
+`;
+
+const RemoveButton = styled.button`
+  background: transparent;
+  border: none;
+  color: rgb(var(--accent));
+  font-size: 1.2rem;
+  cursor: pointer;
+`;
+
 const MobileTotal = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
-  margin: 2rem 0;
+  margin: 2rem 0 1rem;
 `;
 
 const MobileButton = styled.a`
