@@ -39,7 +39,7 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
   );
 }
 
-function NavItemsList({ items }: NavigationDrawerProps) {
+function NavItemsList({ items }: { items: NavItems }) {
   const { close } = OriginalDrawer.useDrawer();
   const router = useRouter();
 
@@ -54,10 +54,33 @@ function NavItemsList({ items }: NavigationDrawerProps) {
 
   return (
     <ul>
-      {items.map((singleItem, idx) => {
+      {items.map((item, idx) => {
+        if (item.submenu) {
+          return (
+            <NavItem key={idx}>
+              <span>{item.title}</span>
+              <Submenu>
+                {item.submenu.map((sub, subIdx) => (
+                  sub.href ? (
+                    <li key={subIdx}>
+                      <NextLink href={sub.href} passHref>
+                        <a>{sub.title}</a>
+                      </NextLink>
+                    </li>
+                  ) : null
+                ))}
+              </Submenu>
+            </NavItem>
+          );
+        }
+
+        if (!item.href) return null;
+
         return (
           <NavItem key={idx}>
-            <NextLink href={singleItem.href}>{singleItem.title}</NextLink>
+            <NextLink href={item.href} passHref>
+              <a>{item.title}</a>
+            </NextLink>
           </NavItem>
         );
       })}
@@ -125,7 +148,9 @@ const Wrapper = styled.div`
 `;
 
 const NavItem = styled.li`
-  a {
+  text-align: center;
+
+  > a, > span {
     font-size: 3rem;
     text-transform: uppercase;
     display: block;
@@ -133,7 +158,22 @@ const NavItem = styled.li`
     text-decoration: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
-    text-align: center;
+  }
+`;
+
+const Submenu = styled.ul`
+  margin-top: 1rem;
+  list-style: none;
+  padding: 0;
+
+  li {
+    margin: 0.5rem 0;
+
+    a {
+      font-size: 2rem;
+      color: rgb(var(--text));
+      text-decoration: none;
+    }
   }
 `;
 
