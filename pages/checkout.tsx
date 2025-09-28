@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 export default function CheckoutPage() {
-  const { cart, clearCart } = useCart();
+  const { cart, updateQuantity, removeFromCart, clearCart, totalPrice } = useCart();
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [comment, setComment] = useState('');
@@ -31,12 +31,20 @@ export default function CheckoutPage() {
       ) : (
         <>
           <CartList>
-            {cart.map((item, idx) => (
-              <li key={idx}>
-                <strong>{item.title}</strong> — {item.price} ₽
-              </li>
+            {cart.map((item) => (
+              <CartItem key={item.id}>
+                <strong>{item.title}</strong> — {item.price} ₽ ×
+                <input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value))}
+                  min={1}
+                />
+                <RemoveButton onClick={() => removeFromCart(item.id)}>✖</RemoveButton>
+              </CartItem>
             ))}
           </CartList>
+          <Total>Итого: {totalPrice} ₽</Total>
           <Form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -78,10 +86,33 @@ const CartList = styled.ul`
   margin-bottom: 2rem;
   list-style: none;
   padding: 0;
+`;
 
-  li {
-    margin-bottom: 1rem;
+const CartItem = styled.li`
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    width: 4rem;
+    padding: 0.4rem;
+    font-size: 1.2rem;
   }
+`;
+
+const RemoveButton = styled.button`
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  color: red;
+  cursor: pointer;
+`;
+
+const Total = styled.div`
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
 `;
 
 const Form = styled.form`
