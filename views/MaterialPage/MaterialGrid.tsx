@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
+import { useCartContext } from 'context/CartContext';
 import { useState } from 'react';
 
 type MaterialItem = {
@@ -35,7 +35,7 @@ const materials: MaterialItem[] = [
 ];
 
 export default function MaterialGrid() {
-  const { addToCart } = useCart();
+  const { addToCart } = useCartContext();
   const [animateId, setAnimateId] = useState<string | null>(null);
 
   function handleAdd(item: MaterialItem) {
