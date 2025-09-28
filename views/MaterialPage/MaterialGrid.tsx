@@ -30,7 +30,7 @@ export default function MaterialGrid() {
   const { addToCart } = useCart();
   const [animateId, setAnimateId] = useState<string | null>(null);
 
-  function handleAdd(item) {
+  function handleAdd(item: YourItemType) {
     addToCart(item);
     setAnimateId(item.id);
     setTimeout(() => setAnimateId(null), 300);
