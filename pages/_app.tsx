@@ -25,11 +25,16 @@ import { NavItems } from 'types';
 
 const navItems: NavItems = [
   { title: 'Проекты', href: '/blog' },
-  { title: 'Услуги', href: '/pricing' },
-  { title: 'Материалы', href: '/material' },
-  { title: 'Оборудование', href: '/equipment' },
+  {
+    title: 'Услуги',
+    submenu: [
+      { title: 'Виды работ', href: '/pricing' },
+      { title: 'Материалы', href: '/material' },
+      { title: 'Оборудование', href: '/equipment' },
+    ],
+  },
   { title: 'Контакты', href: '/contact' },
-{ title: '📞 +7 (965) 168-63-58', href: 'tel:+79651686358' },
+  { title: '📞 +7 965 168-63-58', href: 'tel:+79651686358' },
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
