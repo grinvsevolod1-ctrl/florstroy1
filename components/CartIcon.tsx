@@ -3,14 +3,13 @@ import styled from 'styled-components';
 import { useCart } from 'hooks/useCart';
 
 export default function CartIcon() {
-  const { cart } = useCart();
-  const count = cart.length;
+  const { totalItems } = useCart();
 
   return (
     <Link href="/checkout" passHref>
       <IconWrapper>
         🛒
-        {count > 0 && <Badge>{count}</Badge>}
+        {totalItems > 0 && <Badge>{totalItems}</Badge>}
       </IconWrapper>
     </Link>
   );
