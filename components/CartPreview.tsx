@@ -3,6 +3,7 @@ import { useCartContext } from 'context/CartContext';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useRouter } from 'next/router';
 
 type Props = {
   isOpen: boolean;
@@ -12,11 +13,20 @@ type Props = {
 export default function CartPreview({ isOpen, onClose }: Props) {
   const { cart, totalPrice, updateQuantity, removeFromCart } = useCartContext();
   const [mounted, setMounted] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
     if (isOpen) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [isOpen]);
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      if (url.includes('/checkout')) onClose();
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+    return () => router.events.off('routeChangeStart', handleRouteChange);
+  }, []);
 
   if (!mounted || !isOpen) return null;
 
@@ -33,7 +43,7 @@ export default function CartPreview({ isOpen, onClose }: Props) {
             <List>
               {cart.map((item) => (
                 <Item key={item.id}>
-                  <span>{item.title}</span>
+                  <Title>{item.title}</Title>
                   <Controls>
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
                     <span>{item.quantity}</span>
@@ -109,8 +119,14 @@ const Item = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-bottom: 1rem;
+`;
+
+const Title = styled.span`
+  flex: 1;
+  font-size: 1.3rem;
+  word-break: break-word;
 `;
 
 const Controls = styled.div`
