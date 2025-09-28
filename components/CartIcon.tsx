@@ -1,25 +1,28 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { useCart } from 'hooks/useCart';
+import { useState } from 'react';
+import CartPreview from './CartPreview';
 
 export default function CartIcon() {
   const { totalItems } = useCart();
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <Link href="/checkout" passHref>
-      <IconWrapper>
-        🛒
-        {totalItems > 0 && <Badge>{totalItems}</Badge>}
-      </IconWrapper>
-    </Link>
+    <CartWrapper onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <Icon>🛒{totalItems > 0 && <Badge>{totalItems}</Badge>}</Icon>
+      {hovered && <CartPreview />}
+    </CartWrapper>
   );
 }
 
-const IconWrapper = styled.a`
+const CartWrapper = styled.div`
   position: relative;
+`;
+
+const Icon = styled.div`
   font-size: 2.4rem;
-  text-decoration: none;
-  color: rgb(var(--text));
+  cursor: pointer;
 `;
 
 const Badge = styled.span`
