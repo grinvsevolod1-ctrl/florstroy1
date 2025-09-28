@@ -4,15 +4,46 @@ import { useState } from 'react';
 
 export default function CheckoutPage() {
   const { cart, totalPrice, clearCart } = useCartContext();
+  const contactOptions = ['Телефон', 'Telegram', 'Viber', 'WhatsApp'];
+  const [contactIndex, setContactIndex] = useState(0);
   const [name, setName] = useState('');
-  const [contactMethod, setContactMethod] = useState<'Телефон' | 'Email' | 'Telegram'>('Телефон');
   const [contactValue, setContactValue] = useState('');
-  const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+
+  const contactMethod = contactOptions[contactIndex];
+
+  function validateContact(value: string): boolean {
+    if (contactMethod === 'Телефон') {
+      return /^[\d\s+()-]{6,}$/.test(value);
+    }
+    return /^@?[a-zA-Z0-9_]{3,}$/.test(value);
+  }
+
+  function handleContactChange(e: React.ChangeEvent<HTMLInputElement>) {
+    let value = e.target.value;
+
+    if (contactMethod === 'Телефон') {
+      value = value.replace(/[^\d+()\s-]/g, ''); // разрешаем стереть +7
+    }
+
+    if (['Telegram', 'Viber', 'WhatsApp'].includes(contactMethod)) {
+      if (value.length === 0) value = '@';
+      if (!value.startsWith('@')) value = '@' + value.replace(/^@+/, '');
+    }
+
+    setContactValue(value);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError('');
+
+    if (!validateContact(contactValue)) {
+      setError(`Неверный формат для ${contactMethod.toLowerCase()}`);
+      return;
+    }
 
     try {
       await fetch('/api/sendOrder', {
@@ -23,7 +54,6 @@ export default function CheckoutPage() {
           name,
           contactMethod,
           contactValue,
-          email,
           comment,
         }),
       });
@@ -69,26 +99,44 @@ export default function CheckoutPage() {
               required
             />
 
-            <Select value={contactMethod} onChange={(e) => setContactMethod(e.target.value as any)}>
-              <option value="Телефон">Телефон</option>
-              <option value="Email">Email</option>
-              <option value="Telegram">Telegram</option>
-            </Select>
+            <ContactMethod>
+              <button
+                type="button"
+                onClick={() => setContactIndex((i) => (i > 0 ? i - 1 : contactOptions.length - 1))}
+              >
+                ←
+              </button>
+              <IconLabel>
+                {contactMethod === 'Телефон' && '📞'}
+                {contactMethod === 'Telegram' && '📲'}
+                {contactMethod === 'Viber' && '💬'}
+                {contactMethod === 'WhatsApp' && '🟢'}
+              </IconLabel>
+              <span>{contactMethod}</span>
+              <button
+                type="button"
+                onClick={() => setContactIndex((i) => (i < contactOptions.length - 1 ? i + 1 : 0))}
+              >
+                →
+              </button>
+            </ContactMethod>
 
             <Input
               type="text"
               placeholder={`Ваш ${contactMethod.toLowerCase()}`}
               value={contactValue}
-              onChange={(e) => setContactValue(e.target.value)}
+              onChange={handleContactChange}
               required
             />
 
-            <Input
-              type="email"
-              placeholder="Email для подтверждения (необязательно)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <Hint>
+              {contactMethod === 'Телефон' && 'Введите номер в любом формате, например: +7 (999) 123-45-67'}
+              {contactMethod === 'Telegram' && 'Введите имя пользователя, например: @username'}
+              {contactMethod === 'Viber' && 'Введите имя или номер, например: @vibername'}
+              {contactMethod === 'WhatsApp' && 'Введите номер или имя, например: @whatsappuser'}
+            </Hint>
+
+            {error && <ErrorText>{error}</ErrorText>}
 
             <Textarea
               placeholder="Комментарий к заказу"
@@ -159,11 +207,44 @@ const Textarea = styled.textarea`
   min-height: 6rem;
 `;
 
-const Select = styled.select`
-  padding: 1rem;
+const ContactMethod = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   font-size: 1.4rem;
-  border: 1px solid rgba(var(--text), 0.2);
-  border-radius: 0.5rem;
+
+  button {
+    background: rgb(var(--primary));
+    color: white;
+    border: none;
+    padding: 0.4rem 1rem;
+    font-size: 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+  }
+
+  span {
+    font-weight: bold;
+    min-width: 8rem;
+    text-align: center;
+  }
+`;
+
+const IconLabel = styled.div`
+  font-size: 1.6rem;
+`;
+
+const Hint = styled.div`
+  font-size: 1.2rem;
+  color: rgb(var(--text), 0.6);
+  margin-top: -1rem;
+`;
+
+const ErrorText = styled.div`
+  color: red;
+  font-size: 1.2rem;
+  margin-top: -1rem;
 `;
 
 const SubmitButton = styled.button`
