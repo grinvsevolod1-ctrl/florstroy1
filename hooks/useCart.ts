@@ -12,19 +12,18 @@ export type CartItem = {
 const STORAGE_KEY = 'flor-cart';
 
 function loadCart(): CartItem[] {
+  if (typeof window === 'undefined') return [];
   const cookieData = Cookies.get(STORAGE_KEY);
   const localData = localStorage.getItem(STORAGE_KEY);
   const stored = cookieData && cookieData.length > 2 ? cookieData : localData;
 
-  if (stored) {
-    try {
-      const parsed = JSON.parse(stored);
-      if (Array.isArray(parsed)) return parsed;
-    } catch (e) {
-      console.error('Ошибка парсинга корзины:', e);
-    }
+  try {
+    const parsed = JSON.parse(stored || '[]');
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (e) {
+    console.error('Ошибка парсинга корзины:', e);
+    return [];
   }
-  return [];
 }
 
 function saveCart(cart: CartItem[]) {
@@ -34,15 +33,19 @@ function saveCart(cart: CartItem[]) {
 }
 
 export function useCart() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(typeof window !== 'undefined' ? loadCart() : []);
   const [addedItem, setAddedItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
-    setCart(loadCart());
+    if (typeof window !== 'undefined') {
+      setCart(loadCart());
+    }
   }, []);
 
   useEffect(() => {
-    saveCart(cart);
+    if (typeof window !== 'undefined') {
+      saveCart(cart);
+    }
   }, [cart]);
 
   function addToCart(item: Omit<CartItem, 'quantity'>) {
