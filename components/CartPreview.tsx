@@ -21,36 +21,36 @@ export default function CartPreview({ isOpen, onClose }: Props) {
   if (!mounted || !isOpen) return null;
 
   return createPortal(
-    <MobileOverlay onClick={onClose}>
-      <MobileCard onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>✕</CloseButton>
-        <MobileHeader>Корзина</MobileHeader>
+    <Overlay onClick={onClose}>
+      <Card onClick={(e) => e.stopPropagation()}>
+        <Close onClick={onClose}>✕</Close>
+        <Header>Корзина</Header>
 
         {cart.length === 0 ? (
-          <EmptyText>Ваша корзина пуста</EmptyText>
+          <Empty>Ваша корзина пуста</Empty>
         ) : (
           <>
-            <MobileList>
+            <List>
               {cart.map((item) => (
-                <MobileItem key={item.id}>
+                <Item key={item.id}>
                   <span>{item.title}</span>
-                  <QuantityControls>
+                  <Controls>
                     <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
                     <span>{item.quantity}</span>
                     <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-                  </QuantityControls>
-                  <RemoveButton onClick={() => removeFromCart(item.id)}>✕</RemoveButton>
-                </MobileItem>
+                  </Controls>
+                  <Remove onClick={() => removeFromCart(item.id)}>✕</Remove>
+                </Item>
               ))}
-            </MobileList>
-            <MobileTotal>Итого: {totalPrice} ₽</MobileTotal>
+            </List>
+            <Total>Итого: {totalPrice} ₽</Total>
             <Link href="/checkout" passHref>
-              <MobileButton>Оформить заказ</MobileButton>
+              <Checkout>Оформить заказ</Checkout>
             </Link>
           </>
         )}
-      </MobileCard>
-    </MobileOverlay>,
+      </Card>
+    </Overlay>,
     document.body
   );
 }
@@ -60,7 +60,7 @@ const fadeIn = keyframes`
   to { opacity: 1; transform: translateY(0); }
 `;
 
-const MobileOverlay = styled.div`
+const Overlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
@@ -70,7 +70,7 @@ const MobileOverlay = styled.div`
   justify-content: center;
 `;
 
-const MobileCard = styled.div`
+const Card = styled.div`
   background: rgb(var(--background));
   color: rgb(var(--text));
   width: 90%;
@@ -84,20 +84,20 @@ const MobileCard = styled.div`
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
-const MobileHeader = styled.h2`
+const Header = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
 `;
 
-const EmptyText = styled.div`
+const Empty = styled.div`
   font-size: 1.4rem;
   text-align: center;
   padding: 2rem 0;
   color: rgb(var(--text), 0.6);
 `;
 
-const MobileList = styled.ul`
+const List = styled.ul`
   flex-grow: 1;
   font-size: 1.4rem;
   list-style: none;
@@ -105,7 +105,7 @@ const MobileList = styled.ul`
   margin: 0;
 `;
 
-const MobileItem = styled.li`
+const Item = styled.li`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -113,7 +113,7 @@ const MobileItem = styled.li`
   margin-bottom: 1rem;
 `;
 
-const QuantityControls = styled.div`
+const Controls = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -135,7 +135,7 @@ const QuantityControls = styled.div`
   }
 `;
 
-const RemoveButton = styled.button`
+const Remove = styled.button`
   background: transparent;
   border: none;
   color: rgb(var(--accent));
@@ -143,14 +143,14 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
-const MobileTotal = styled.div`
+const Total = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
   margin: 2rem 0 1rem;
   text-align: center;
 `;
 
-const MobileButton = styled.a`
+const Checkout = styled.a`
   background: rgb(var(--primary));
   color: white;
   text-align: center;
@@ -160,7 +160,7 @@ const MobileButton = styled.a`
   font-size: 1.4rem;
 `;
 
-const CloseButton = styled.button`
+const Close = styled.button`
   position: absolute;
   top: 1rem;
   right: 1rem;
