@@ -15,7 +15,7 @@ export default function InformationSection() {
         <Block>
           <Title>Контакты FlorStroy</Title>
           <InfoList>
-            <li><strong>ИНН:</strong> 5032258560</li>
+            <li><strong>ИНН:</strong> 5032389646 </li>
             <li><strong>Адрес:</strong> Россия, Московская область, Одинцово, Можайское шоссе д.8</li>
             <li><strong>Телефон:</strong> <a href="tel:+74956624994">+7 495 662 49 94</a></li>
             <li><strong>Телефон:</strong> <a href="tel:+79681868828">+7 968 186 88 28</a></li>
