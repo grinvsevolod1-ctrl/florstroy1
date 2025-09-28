@@ -16,6 +16,7 @@ import ApplicationModal from 'components/ApplicationModal';
 import CalculatorModal from 'components/CalculatorModal';
 import FeedbackModal from 'components/FeedbackModal';
 import WaveCta from 'components/WaveCta';
+import CartToast from 'components/CartToast'; // ✅ добавлено
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
@@ -34,7 +35,7 @@ const navItems: NavItems = [
     ],
   },
   { title: 'Контакты', href: '/contact' },
-  { title: '📞 +7 965 168-63-58', href: 'tel:+79651686358' },
+  { title: '📞 +7 965 168-63-58', href: 'tel:+79651686358' },
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -50,6 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
       <Providers>
         <Modals />
+        <CartToast /> {/* ✅ вставлено уведомление */}
         <Navbar items={navItems} />
         <Component {...pageProps} />
         <WaveCta />
