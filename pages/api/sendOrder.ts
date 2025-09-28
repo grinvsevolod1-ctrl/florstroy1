@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { cart, name, phone, comment } = req.body;
+  const { cart, name, contactMethod, contactValue, email, comment } = req.body;
   const referer = req.headers.referer || 'не указан';
 
   if (!cart || !Array.isArray(cart) || cart.length === 0) {
@@ -17,11 +17,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  const contactLabels: Record<string, string> = {
+    Телефон: '📞 Телефон',
+    Email: '📧 Email',
+    Telegram: '💬 Telegram',
+  };
+
+  const contactLabel = contactLabels[contactMethod] || 'Контакт';
+
   const text = `
 🛒 Новый заказ с сайта florstroy.ru:
 
 👤 Имя: ${name}
-📞 Контакт: ${phone}
+${contactLabel}: ${contactValue}
+📧 Email для подтверждения: ${email || 'не указан'}
 💬 Комментарий: ${comment}
 🌐 Источник: ${referer}
 
@@ -32,7 +41,7 @@ ${itemsText}
   `;
 
   try {
-    console.log('Заказ получен:', { name, phone, comment, cart });
+    console.log('Заказ получен:', { name, contactMethod, contactValue, email, comment, cart });
 
     // Telegram
     await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
@@ -55,6 +64,7 @@ ${itemsText}
       },
     });
 
+    // Письмо тебе
     await transporter.sendMail({
       from: `"Florstroy Заказ" <${process.env.SMTP_USER}>`,
       to: 'info@florstroy.ru',
@@ -64,10 +74,10 @@ ${itemsText}
     });
 
     // Автоответ клиенту
-    if (phone.includes('@')) {
+    if (email && email.includes('@')) {
       await transporter.sendMail({
         from: `"Florstroy" <${process.env.SMTP_USER}>`,
-        to: phone,
+        to: email,
         subject: 'Ваш заказ принят',
         text: `Здравствуйте, ${name}!\n\nМы получили ваш заказ на сумму ${totalPrice} ₽.\nМенеджер свяжется с вами в ближайшее время.`,
         html: `<p>Здравствуйте, ${name}!</p><p>Мы получили ваш заказ на сумму <strong>${totalPrice} ₽</strong>.</p><p>Менеджер свяжется с вами в ближайшее время.</p><p>С уважением,<br/>команда Florstroy</p>`
