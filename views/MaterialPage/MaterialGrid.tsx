@@ -2,7 +2,15 @@ import styled from 'styled-components';
 import { useCart } from 'hooks/useCart';
 import { useState } from 'react';
 
-const materials = [
+type MaterialItem = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  image: string;
+};
+
+const materials: MaterialItem[] = [
   {
     id: 'top-001',
     title: 'Топпинг упрочняющий',
@@ -30,7 +38,7 @@ export default function MaterialGrid() {
   const { addToCart } = useCart();
   const [animateId, setAnimateId] = useState<string | null>(null);
 
-  function handleAdd(item: YourItemType) {
+  function handleAdd(item: MaterialItem) {
     addToCart(item);
     setAnimateId(item.id);
     setTimeout(() => setAnimateId(null), 300);
