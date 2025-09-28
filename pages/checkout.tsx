@@ -5,7 +5,9 @@ import { useState } from 'react';
 export default function CheckoutPage() {
   const { cart, updateQuantity, removeFromCart, clearCart, totalPrice } = useCart();
   const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
+  const [contactMethod, setContactMethod] = useState('Телефон');
+  const [contactValue, setContactValue] = useState('');
+  const [email, setEmail] = useState('');
   const [comment, setComment] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent'>('idle');
 
@@ -16,7 +18,14 @@ export default function CheckoutPage() {
     await fetch('/api/sendOrder', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ cart, name, phone, comment }),
+      body: JSON.stringify({
+        cart,
+        name,
+        contactMethod,
+        contactValue,
+        email,
+        comment,
+      }),
     });
 
     setStatus('sent');
@@ -33,6 +42,7 @@ export default function CheckoutPage() {
           <CartList>
             {cart.map((item) => (
               <CartItem key={item.id}>
+                <ImagePreview src={item.image} alt={item.title} />
                 <strong>{item.title}</strong> — {item.price} ₽ ×
                 <input
                   type="number"
@@ -53,12 +63,22 @@ export default function CheckoutPage() {
               onChange={(e) => setName(e.target.value)}
               required
             />
+            <select value={contactMethod} onChange={(e) => setContactMethod(e.target.value)}>
+              <option value="Телефон">Телефон</option>
+              <option value="Telegram">Telegram</option>
+            </select>
             <input
-              type="tel"
-              placeholder="Телефон или Email"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              type="text"
+              placeholder={`Ваш ${contactMethod}`}
+              value={contactValue}
+              onChange={(e) => setContactValue(e.target.value)}
               required
+            />
+            <input
+              type="email"
+              placeholder="Email для подтверждения"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <textarea
               placeholder="Комментарий к заказу"
@@ -101,6 +121,13 @@ const CartItem = styled.li`
   }
 `;
 
+const ImagePreview = styled.img`
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: 0.4rem;
+`;
+
 const RemoveButton = styled.button`
   background: transparent;
   border: none;
@@ -120,7 +147,7 @@ const Form = styled.form`
   flex-direction: column;
   gap: 1.5rem;
 
-  input, textarea {
+  input, select, textarea {
     font-size: 1.4rem;
     padding: 1rem;
     border: 1px solid #ccc;
