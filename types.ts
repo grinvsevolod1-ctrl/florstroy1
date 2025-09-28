@@ -1,4 +1,9 @@
-export type SingleNavItem = { title: string; href: string; outlined?: boolean };
+export type SingleNavItem = {
+  title: string;
+  href?: string;
+  outlined?: boolean;
+  submenu?: SingleNavItem[]; // 👈 добавлено для вложенного меню
+};
 
 export type NavItems = SingleNavItem[];
 
