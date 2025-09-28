@@ -100,15 +100,17 @@ export default function Navbar({ items }: NavbarProps) {
         <ButtonGroup>
           <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
         </ButtonGroup>
-        <ColorSwitcherContainer>
-          <ColorSwitcher />
-        </ColorSwitcherContainer>
-        <CartIconWrapper>
-          <CartIcon />
-        </CartIconWrapper>
-        <HamburgerMenuWrapper>
-          <HamburgerIcon aria-label="Toggle menu" onClick={toggle} />
-        </HamburgerMenuWrapper>
+        <IconGroup>
+          <IconWrapper>
+            <ColorSwitcher />
+          </IconWrapper>
+          <IconWrapper>
+            <CartIcon />
+          </IconWrapper>
+          <IconWrapper onClick={toggle}>
+            <HamburgerIcon aria-label="Toggle menu" />
+          </IconWrapper>
+        </IconGroup>
       </Content>
     </NavbarContainer>
   );
@@ -218,12 +220,6 @@ const LogoWrapper = styled.a`
   color: rgb(var(--logoColor));
 `;
 
-const HamburgerMenuWrapper = styled.div`
-  ${media('>=desktop')} {
-    display: none;
-  }
-`;
-
 const ButtonGroup = styled.div`
   margin-left: 2rem;
   display: flex;
@@ -251,20 +247,28 @@ const ContactButton = styled.button`
   }
 `;
 
-const ColorSwitcherContainer = styled.div`
-  width: 4rem;
-  margin: 0 1rem;
-`;
-
-const CartIconWrapper = styled.div`
-  margin-left: 1rem;
-  cursor: pointer;
+const IconGroup = styled.div`
   display: flex;
   align-items: center;
+  gap: 1rem;
+`;
+
+const IconWrapper = styled.div`
+  width: 2.8rem;
+  height: 2.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 
   svg {
+    width: 100%;
+    height: 100%;
+    fill: rgb(var(--text));
+  }
+
+  @media (max-width: 768px) {
     width: 2.4rem;
     height: 2.4rem;
-    fill: rgb(var(--text));
   }
 `;
