@@ -41,7 +41,8 @@ export default function Navbar({ items }: NavbarProps) {
     }
 
     const currentScrollY = currPos.y;
-    const isScrollingUp = currentScrollY > lastScroll = Math.abs(lastScrollY.current - currentScrollY);
+    const scrollDifference = Math.abs(lastScrollY.current - currentScrollY);
+const isScrollingUp = currentScrollY > lastScrollY.current;
     const hasScrolledWholeStep = scrollDifference >= stepSize.current;
     const isInNonCollapsibleArea = lastScrollY.current > -50;
 
