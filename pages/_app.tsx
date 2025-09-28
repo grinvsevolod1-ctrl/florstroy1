@@ -6,7 +6,7 @@ import 'swiper/css/autoplay';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import Head from 'next/head';
 import { ColorModeScript } from 'nextjs-color-mode';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 
 import Footer from 'components/Footer';
 import { GlobalStyle } from 'components/GlobalStyles';
@@ -16,7 +16,8 @@ import ApplicationModal from 'components/ApplicationModal';
 import CalculatorModal from 'components/CalculatorModal';
 import FeedbackModal from 'components/FeedbackModal';
 import WaveCta from 'components/WaveCta';
-import CartToast from 'components/CartToast'; // ✅ добавлено
+import CartToast from 'components/CartToast';
+import OrderModal from 'components/OrderModal'; // ✅ добавлено
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
@@ -39,6 +40,8 @@ const navItems: NavItems = [
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const [isOrderOpen, setIsOrderOpen] = useState(false); // ✅ состояние модалки
+
   return (
     <>
       <Head>
@@ -50,8 +53,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
 
       <Providers>
-        <Modals />
-        <CartToast /> {/* ✅ вставлено уведомление */}
+        <Modals isOrderOpen={isOrderOpen} setIsOrderOpen={setIsOrderOpen} />
+        <CartToast />
         <Navbar items={navItems} />
         <Component {...pageProps} />
         <WaveCta />
@@ -73,7 +76,12 @@ function Providers<T>({ children }: PropsWithChildren<T>) {
   );
 }
 
-function Modals() {
+type ModalsProps = {
+  isOrderOpen: boolean;
+  setIsOrderOpen: (v: boolean) => void;
+};
+
+function Modals({ isOrderOpen, setIsOrderOpen }: ModalsProps) {
   const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
   const { isCalculatorOpened, setIsCalculatorOpened } = useCalculatorModalContext();
   const { isOpen, setIsOpen } = useFeedbackModalContext();
@@ -83,6 +91,7 @@ function Modals() {
       {isModalOpened && <ApplicationModal onClose={() => setIsModalOpened(false)} />}
       {isCalculatorOpened && <CalculatorModal onClose={() => setIsCalculatorOpened(false)} />}
       {isOpen && <FeedbackModal />}
+      {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />} {/* ✅ модалка заказа */}
     </>
   );
 }
