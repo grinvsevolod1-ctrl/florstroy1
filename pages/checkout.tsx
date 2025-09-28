@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
+import { useCartContext } from 'context/CartContext';
 import { useState } from 'react';
 
 export default function CheckoutPage() {
-  const { cart, totalPrice, clearCart } = useCart();
+  const { cart, totalPrice, clearCart } = useCartContext();
   const [name, setName] = useState('');
   const [contactMethod, setContactMethod] = useState<'Телефон' | 'Email' | 'Telegram'>('Телефон');
   const [contactValue, setContactValue] = useState('');
