@@ -35,6 +35,10 @@ const Preview = styled.div`
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   z-index: 100;
   width: 22rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const Total = styled.div`
