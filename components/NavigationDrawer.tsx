@@ -1,7 +1,7 @@
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { NavItems } from 'types';
 import ClientOnly from './ClientOnly';
@@ -42,6 +42,7 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
 function NavItemsList({ items }: { items: NavItems }) {
   const { close } = OriginalDrawer.useDrawer();
   const router = useRouter();
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
     function handleRouteChangeComplete() {
@@ -55,21 +56,28 @@ function NavItemsList({ items }: { items: NavItems }) {
   return (
     <ul>
       {items.map((item, idx) => {
+        const isOpen = openIndex === idx;
+
         if (item.submenu) {
           return (
             <NavItem key={idx}>
-              <span>{item.title}</span>
-              <Submenu>
-                {item.submenu.map((sub, subIdx) => (
-                  sub.href ? (
-                    <li key={subIdx}>
-                      <NextLink href={sub.href} passHref>
-                        <a>{sub.title}</a>
-                      </NextLink>
-                    </li>
-                  ) : null
-                ))}
-              </Submenu>
+              <DropdownToggle onClick={() => setOpenIndex(isOpen ? null : idx)}>
+                {item.title}
+                <Arrow isOpen={isOpen}>▾</Arrow>
+              </DropdownToggle>
+              {isOpen && (
+                <Submenu>
+                  {item.submenu.map((sub, subIdx) =>
+                    sub.href ? (
+                      <li key={subIdx}>
+                        <NextLink href={sub.href} passHref>
+                          <a>{sub.title}</a>
+                        </NextLink>
+                      </li>
+                    ) : null
+                  )}
+                </Submenu>
+              )}
             </NavItem>
           );
         }
@@ -154,11 +162,29 @@ const NavItem = styled.li`
     font-size: 3rem;
     text-transform: uppercase;
     display: block;
-    color: currentColor;
+    color: rgb(var(--text));
     text-decoration: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
   }
+`;
+
+const DropdownToggle = styled.span`
+  font-size: 3rem;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(var(--text));
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+`;
+
+const Arrow = styled.span<{ isOpen: boolean }>`
+  margin-left: 1rem;
+  font-size: 2rem;
+  transform: rotate(${(p) => (p.isOpen ? '180deg' : '0deg')});
+  transition: transform 0.3s ease;
 `;
 
 const Submenu = styled.ul`
@@ -173,6 +199,13 @@ const Submenu = styled.ul`
       font-size: 2rem;
       color: rgb(var(--text));
       text-decoration: none;
+      padding: 0.5rem 1rem;
+      display: block;
+      border-radius: 0.4rem;
+
+      &:hover {
+        background: rgba(var(--primary), 0.1);
+      }
     }
   }
 `;
