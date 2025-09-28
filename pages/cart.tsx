@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
+import { useCartContext } from 'context/CartContext';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function CartPage() {
-  const { cart, totalPrice, updateQuantity, removeFromCart } = useCart();
+  const { cart, totalPrice, updateQuantity, removeFromCart } = useCartContext();
 
   return (
     <Wrapper>
