@@ -11,19 +11,38 @@ export type CartItem = {
 
 const STORAGE_KEY = 'flor-cart';
 
+function loadCart(): CartItem[] {
+  const cookieData = Cookies.get(STORAGE_KEY);
+  const localData = localStorage.getItem(STORAGE_KEY);
+  const stored = cookieData && cookieData.length > 2 ? cookieData : localData;
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed)) return parsed;
+    } catch (e) {
+      console.error('Ошибка парсинга корзины:', e);
+    }
+  }
+  return [];
+}
+
+function saveCart(cart: CartItem[]) {
+  const serialized = JSON.stringify(cart);
+  Cookies.set(STORAGE_KEY, serialized, { expires: 7 });
+  localStorage.setItem(STORAGE_KEY, serialized);
+}
+
 export function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [addedItem, setAddedItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
-    const stored = Cookies.get(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
-    if (stored) setCart(JSON.parse(stored));
+    setCart(loadCart());
   }, []);
 
   useEffect(() => {
-    const serialized = JSON.stringify(cart);
-    Cookies.set(STORAGE_KEY, serialized, { expires: 7 });
-    localStorage.setItem(STORAGE_KEY, serialized);
+    saveCart(cart);
   }, [cart]);
 
   function addToCart(item: Omit<CartItem, 'quantity'>) {
