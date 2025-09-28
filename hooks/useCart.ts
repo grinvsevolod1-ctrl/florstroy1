@@ -9,17 +9,21 @@ export type CartItem = {
   quantity: number;
 };
 
+const STORAGE_KEY = 'flor-cart';
+
 export function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [addedItem, setAddedItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
-    const stored = Cookies.get('flor-cart');
+    const stored = Cookies.get(STORAGE_KEY) || localStorage.getItem(STORAGE_KEY);
     if (stored) setCart(JSON.parse(stored));
   }, []);
 
   useEffect(() => {
-    Cookies.set('flor-cart', JSON.stringify(cart), { expires: 7 });
+    const serialized = JSON.stringify(cart);
+    Cookies.set(STORAGE_KEY, serialized, { expires: 7 });
+    localStorage.setItem(STORAGE_KEY, serialized);
   }, [cart]);
 
   function addToCart(item: Omit<CartItem, 'quantity'>) {
