@@ -101,15 +101,15 @@ export default function Navbar({ items }: NavbarProps) {
           <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
         </ButtonGroup>
         <IconGroup>
-          <IconWrapper>
+          <IconCircle>
             <ColorSwitcher />
-          </IconWrapper>
-          <IconWrapper>
+          </IconCircle>
+          <IconCircle>
             <CartIcon />
-          </IconWrapper>
-          <IconWrapper onClick={toggle}>
+          </IconCircle>
+          <IconCircle onClick={toggle}>
             <HamburgerIcon aria-label="Toggle menu" />
-          </IconWrapper>
+          </IconCircle>
         </IconGroup>
       </Content>
     </NavbarContainer>
@@ -253,17 +253,24 @@ const IconGroup = styled.div`
   gap: 1rem;
 `;
 
-const IconWrapper = styled.div`
-  width: 2.4rem;
-  height: 2.4rem;
+const IconCircle = styled.div`
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: rgba(var(--text), 0.05);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: rgba(var(--primary), 0.1);
+  }
 
   svg {
-    width: 100%;
-    height: 100%;
+    width: 2.4rem;
+    height: 2.4rem;
     fill: rgb(var(--text));
   }
 `;
