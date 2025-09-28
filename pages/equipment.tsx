@@ -1,85 +1,20 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
-import { equipmentItems } from 'data/equipment'; // аналогично materialItems
-import { motion } from 'framer-motion';
+import Page from 'components/Page';
+import EquipmentGrid from 'views/EquipmentPage/EquipmentGrid';
 
 export default function EquipmentPage() {
-  const { addToCart } = useCart();
-
   return (
-    <Wrapper>
-      <Title>Оборудование</Title>
-      <Grid>
-        {equipmentItems.map((item) => (
-          <Card
-            key={item.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <Image src={item.image} alt={item.title} />
-            <Name>{item.title}</Name>
-            <Price>{item.price} ₽</Price>
-            <Button onClick={() => addToCart(item)}>Добавить в корзину</Button>
-          </Card>
-        ))}
-      </Grid>
-    </Wrapper>
+    <Page
+      title="Оборудование для бетонных полов"
+      description="Витрина оборудования Florstroy: затирочные машины, шлифовальные системы, дозаторы, инструменты. Закажите напрямую без регистрации."
+    >
+      <Wrapper>
+        <EquipmentGrid />
+      </Wrapper>
+    </Page>
   );
 }
 
 const Wrapper = styled.div`
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: auto;
-`;
-
-const Title = styled.h1`
-  font-size: 3rem;
-  margin-bottom: 3rem;
-  text-align: center;
-`;
-
-const Grid = styled.div`
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-`;
-
-const Card = styled(motion.div)`
-  background: rgb(var(--background));
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  text-align: center;
-`;
-
-const Image = styled.img`
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 1rem;
-`;
-
-const Name = styled.h2`
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
-`;
-
-const Price = styled.div`
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
-`;
-
-const Button = styled.button`
-  background: rgb(var(--primary));
-  color: white;
-  border: none;
-  padding: 0.8rem 1.2rem;
-  font-size: 1.2rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
+  padding-bottom: 15rem;
 `;
