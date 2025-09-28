@@ -137,4 +137,10 @@ const Total = styled.div`
 
 const CheckoutButton = styled.button`
   background: black;
-  color: white
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+`;
