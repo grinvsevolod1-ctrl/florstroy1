@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useCart } from 'hooks/useCart';
+import { useState } from 'react';
 
 const materials = [
   {
@@ -27,6 +28,13 @@ const materials = [
 
 export default function MaterialGrid() {
   const { addToCart } = useCart();
+  const [animateId, setAnimateId] = useState<string | null>(null);
+
+  function handleAdd(item) {
+    addToCart(item);
+    setAnimateId(item.id);
+    setTimeout(() => setAnimateId(null), 300);
+  }
 
   return (
     <Grid>
@@ -36,7 +44,9 @@ export default function MaterialGrid() {
           <Title>{item.title}</Title>
           <Description>{item.description}</Description>
           <Price>{item.price} ₽</Price>
-          <OrderButton onClick={() => addToCart(item)}>Заказать</OrderButton>
+          <OrderButton animate={animateId === item.id} onClick={() => handleAdd(item)}>
+            ➕ В корзину
+          </OrderButton>
         </Card>
       ))}
     </Grid>
@@ -80,7 +90,7 @@ const Price = styled.div`
   margin: 1rem 0;
 `;
 
-const OrderButton = styled.button`
+const OrderButton = styled.button<{ animate?: boolean }>`
   background: rgb(var(--primary));
   color: white;
   border: none;
@@ -88,8 +98,7 @@ const OrderButton = styled.button`
   font-size: 1.4rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: transform 0.3s;
 
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
+  ${({ animate }) => animate && 'transform: scale(1.1);'}
 `;
