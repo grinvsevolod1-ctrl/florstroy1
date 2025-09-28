@@ -41,8 +41,7 @@ export default function Navbar({ items }: NavbarProps) {
     }
 
     const currentScrollY = currPos.y;
-    const isScrollingUp = currentScrollY > lastScrollY.current;
-    const scrollDifference = Math.abs(lastScrollY.current - currentScrollY);
+    const isScrollingUp = currentScrollY > lastScroll = Math.abs(lastScrollY.current - currentScrollY);
     const hasScrolledWholeStep = scrollDifference >= stepSize.current;
     const isInNonCollapsibleArea = lastScrollY.current > -50;
 
@@ -73,9 +72,28 @@ export default function Navbar({ items }: NavbarProps) {
           </LogoWrapper>
         </NextLink>
         <NavItemList>
-          {items.map((singleItem) => (
-            <NavItem key={singleItem.href} {...singleItem} />
-          ))}
+          {items.map((item) =>
+            item.submenu ? (
+              <DropdownWrapper key={item.title}>
+                <DropdownToggle>{item.title}</DropdownToggle>
+                <DropdownMenu>
+                  {item.submenu.map((sub) => (
+                    <li key={sub.href}>
+                      <NextLink href={sub.href!} passHref>
+                        <a>{sub.title}</a>
+                      </NextLink>
+                    </li>
+                  ))}
+                </DropdownMenu>
+              </DropdownWrapper>
+            ) : (
+              <NavItemWrapper key={item.href}>
+                <NextLink href={item.href!} passHref>
+                  <a>{item.title}</a>
+                </NextLink>
+              </NavItemWrapper>
+            )
+          )}
         </NavItemList>
         <ButtonGroup>
           <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
@@ -91,36 +109,35 @@ export default function Navbar({ items }: NavbarProps) {
   );
 }
 
-function NavItem({ href, title }: SingleNavItem) {
-  return (
-    <NavItemWrapper>
-      <NextLink href={href} passHref>
-        <a>{title}</a>
-      </NextLink>
-    </NavItemWrapper>
-  );
-}
+const NavbarContainer = styled.div<NavbarContainerProps>`
+  display: flex;
+  position: sticky;
+  top: 0;
+  padding: 1.5rem 0;
+  width: 100%;
+  height: 8rem;
+  z-index: var(--z-navbar);
+  background-color: rgb(var(--navbarBackground));
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
+  visibility: ${(p) => (p.hidden ? 'hidden' : 'visible')};
+  transform: ${(p) => (p.hidden ? `translateY(-8rem)` : 'translateY(0)')};
+  transition: transform 0.15s ease-in-out, visibility 0.15s ease-in-out;
+`;
 
-const NavItemList = styled.div`
+const Content = styled(Container)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const NavItemList = styled.ul`
   display: flex;
   list-style: none;
+  align-items: center;
 
   ${media('<desktop')} {
     display: none;
   }
-`;
-
-const HamburgerMenuWrapper = styled.div`
-  ${media('>=desktop')} {
-    display: none;
-  }
-`;
-
-const LogoWrapper = styled.a`
-  display: flex;
-  margin-right: auto;
-  text-decoration: none;
-  color: rgb(var(--logoColor));
 `;
 
 const NavItemWrapper = styled.li`
@@ -142,32 +159,64 @@ const NavItemWrapper = styled.li`
   }
 `;
 
-const NavbarContainer = styled.div<NavbarContainerProps>`
-  display: flex;
-  position: sticky;
-  top: 0;
-  padding: 1.5rem 0;
-  width: 100%;
-  height: 8rem;
-  z-index: var(--z-navbar);
+const DropdownWrapper = styled.li`
+  position: relative;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  line-height: 2;
+  margin-right: 2rem;
 
-  background-color: rgb(var(--navbarBackground));
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
-  visibility: ${(p) => (p.hidden ? 'hidden' : 'visible')};
-  transform: ${(p) => (p.hidden ? `translateY(-8rem)` : 'translateY(0)')};
-
-  transition: transform 0.15s ease-in-out, visibility 0.15s ease-in-out;
+  &:hover ul {
+    display: block;
+  }
 `;
 
-const Content = styled(Container)`
+const DropdownToggle = styled.span`
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+  color: rgb(var(--text), 0.75);
+  letter-spacing: 0.025em;
+  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
 `;
 
-const ColorSwitcherContainer = styled.div`
-  width: 4rem;
-  margin: 0 1rem;
+const DropdownMenu = styled.ul`
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  list-style: none;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+
+  li {
+    padding: 0.5rem 1.5rem;
+
+    a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
+    &:hover {
+      background: #f0f0f0;
+    }
+  }
+`;
+
+const LogoWrapper = styled.a`
+  display: flex;
+  margin-right: auto;
+  text-decoration: none;
+  color: rgb(var(--logoColor));
+`;
+
+const HamburgerMenuWrapper = styled.div`
+  ${media('>=desktop')} {
+    display: none;
+  }
 `;
 
 const ButtonGroup = styled.div`
@@ -193,4 +242,9 @@ const ContactButton = styled.button`
   &:hover {
     background: rgb(var(--primary), 0.85);
   }
+`;
+
+const ColorSwitcherContainer = styled.div`
+  width: 4rem;
+  margin: 0 1rem;
 `;
