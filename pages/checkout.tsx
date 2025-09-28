@@ -1,152 +1,68 @@
 import styled from 'styled-components';
-import { useCartContext } from 'context/CartContext';
 import { useState } from 'react';
 
-export default function CheckoutPage() {
-  const { cart, totalPrice, clearCart } = useCartContext();
-  const contactOptions = ['Телефон', 'Telegram', 'Viber', 'WhatsApp'];
-  const [contactIndex, setContactIndex] = useState(0);
-  const [name, setName] = useState('');
-  const [contactValue, setContactValue] = useState('');
-  const [comment, setComment] = useState('');
+export default function Checkout() {
+  const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  const contactMethod = contactOptions[contactIndex];
-
-  function validateContact(value: string): boolean {
-    if (contactMethod === 'Телефон') {
-      return /^[\d\s+()-]{6,}$/.test(value);
-    }
-    return /^@?[a-zA-Z0-9_]{3,}$/.test(value);
-  }
-
-  function handleContactChange(e: React.ChangeEvent<HTMLInputElement>) {
-    let value = e.target.value;
-
-    if (contactMethod === 'Телефон') {
-      value = value.replace(/[^\d+()\s-]/g, ''); // разрешаем стереть +7
-    }
-
-    if (['Telegram', 'Viber', 'WhatsApp'].includes(contactMethod)) {
-      if (value.length === 0) value = '@';
-      if (!value.startsWith('@')) value = '@' + value.replace(/^@+/, '');
-    }
-
-    setContactValue(value);
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError('');
-
-    if (!validateContact(contactValue)) {
-      setError(`Неверный формат для ${contactMethod.toLowerCase()}`);
+    if (!validateEmail(email)) {
+      setError('Введите корректный email');
       return;
     }
 
-    try {
-      await fetch('/api/sendOrder', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          cart,
-          name,
-          contactMethod,
-          contactValue,
-          comment,
-        }),
-      });
-
-      clearCart();
-      setSubmitted(true);
-    } catch (error) {
-      console.error('Ошибка отправки:', error);
-    }
+    setSubmitted(true);
+    setError('');
   }
 
-  if (submitted) {
-    return (
-      <Wrapper>
-        <Title>Спасибо за заказ!</Title>
-        <Text>Мы свяжемся с вами в ближайшее время.</Text>
-      </Wrapper>
-    );
+  function validateEmail(email: string) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   return (
     <Wrapper>
       <Title>Оформление заказа</Title>
-      {cart.length === 0 ? (
-        <Text>Ваша корзина пуста.</Text>
+
+      {submitted ? (
+        <Success>
+          <SuccessIcon viewBox="0 0 24 24">
+            <path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+          </SuccessIcon>
+          <h3>Спасибо за заказ!</h3>
+          <p>Мы отправили подтверждение на <strong>{email}</strong>.</p>
+        </Success>
       ) : (
-        <>
-          <ItemList>
-            {cart.map((item) => (
-              <Item key={item.id}>
-                <span>{item.title}</span>
-                <span>{item.quantity} × {item.price} ₽</span>
-              </Item>
-            ))}
-          </ItemList>
-          <Total>Итого: {totalPrice} ₽</Total>
-          <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
+          <Field>
+            <Label>
+              <PhoneIcon viewBox="0 0 24 24">
+                <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 3.5a1 1 0 011-1H6.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.3z" />
+              </PhoneIcon>
+              Телефон
+            </Label>
+            <Input type="tel" placeholder="+7 (___) ___-__-__" required />
+          </Field>
+
+          <Field>
+            <Label>
+              <EmailIcon viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
+              </EmailIcon>
+              Email <span>*</span>
+            </Label>
             <Input
-              type="text"
-              placeholder="Ваше имя"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
+            {error && <Error>{error}</Error>}
+          </Field>
 
-            <ContactMethod>
-              <button
-                type="button"
-                onClick={() => setContactIndex((i) => (i > 0 ? i - 1 : contactOptions.length - 1))}
-              >
-                ←
-              </button>
-              <IconLabel>
-                {contactMethod === 'Телефон' && '📞'}
-                {contactMethod === 'Telegram' && '📲'}
-                {contactMethod === 'Viber' && '💬'}
-                {contactMethod === 'WhatsApp' && '🟢'}
-              </IconLabel>
-              <span>{contactMethod}</span>
-              <button
-                type="button"
-                onClick={() => setContactIndex((i) => (i < contactOptions.length - 1 ? i + 1 : 0))}
-              >
-                →
-              </button>
-            </ContactMethod>
-
-            <Input
-              type="text"
-              placeholder={`Ваш ${contactMethod.toLowerCase()}`}
-              value={contactValue}
-              onChange={handleContactChange}
-              required
-            />
-
-            <Hint>
-              {contactMethod === 'Телефон' && 'Введите номер в любом формате, например: +7 (999) 123-45-67'}
-              {contactMethod === 'Telegram' && 'Введите имя пользователя, например: @username'}
-              {contactMethod === 'Viber' && 'Введите имя или номер, например: @vibername'}
-              {contactMethod === 'WhatsApp' && 'Введите номер или имя, например: @whatsappuser'}
-            </Hint>
-
-            {error && <ErrorText>{error}</ErrorText>}
-
-            <Textarea
-              placeholder="Комментарий к заказу"
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-            />
-
-            <SubmitButton type="submit">Подтвердить заказ</SubmitButton>
-          </Form>
-        </>
+          <Submit>Оформить заказ</Submit>
+        </Form>
       )}
     </Wrapper>
   );
@@ -154,109 +70,99 @@ export default function CheckoutPage() {
 
 const Wrapper = styled.div`
   max-width: 600px;
-  margin: 4rem auto;
-  padding: 2rem;
+  margin: auto;
+  padding: 3rem 2rem;
+  background: rgb(var(--background));
+  color: rgb(var(--text));
 `;
 
-const Title = styled.h1`
+const Title = styled.h2`
   font-size: 2.4rem;
   margin-bottom: 2rem;
-`;
-
-const Text = styled.p`
-  font-size: 1.6rem;
-  color: rgb(var(--text), 0.7);
-`;
-
-const ItemList = styled.div`
-  margin-bottom: 2rem;
-`;
-
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  font-size: 1.4rem;
-  margin-bottom: 0.5rem;
-`;
-
-const Total = styled.div`
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+  text-align: center;
 `;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
+`;
+
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  span {
+    color: red;
+    margin-left: 0.4rem;
+  }
 `;
 
 const Input = styled.input`
+  margin-top: 0.5rem;
   padding: 1rem;
   font-size: 1.4rem;
   border: 1px solid rgba(var(--text), 0.2);
-  border-radius: 0.5rem;
+  border-radius: 0.4rem;
+  background: rgb(var(--background));
+  color: rgb(var(--text));
 `;
 
-const Textarea = styled.textarea`
-  padding: 1rem;
-  font-size: 1.4rem;
-  border: 1px solid rgba(var(--text), 0.2);
-  border-radius: 0.5rem;
-  resize: vertical;
-  min-height: 6rem;
-`;
-
-const ContactMethod = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  font-size: 1.4rem;
-
-  button {
-    background: rgb(var(--primary));
-    color: white;
-    border: none;
-    padding: 0.4rem 1rem;
-    font-size: 1.2rem;
-    border-radius: 0.3rem;
-    cursor: pointer;
-  }
-
-  span {
-    font-weight: bold;
-    min-width: 8rem;
-    text-align: center;
-  }
-`;
-
-const IconLabel = styled.div`
-  font-size: 1.6rem;
-`;
-
-const Hint = styled.div`
-  font-size: 1.2rem;
-  color: rgb(var(--text), 0.6);
-  margin-top: -1rem;
-`;
-
-const ErrorText = styled.div`
-  color: red;
-  font-size: 1.2rem;
-  margin-top: -1rem;
-`;
-
-const SubmitButton = styled.button`
+const Submit = styled.button`
   background: rgb(var(--primary));
   color: white;
+  font-size: 1.6rem;
+  padding: 1.2rem;
   border: none;
-  padding: 1rem 2rem;
-  font-size: 1.4rem;
-  border-radius: 0.5rem;
+  border-radius: 0.6rem;
   cursor: pointer;
+  font-weight: bold;
 
   &:hover {
     background: rgb(var(--primary), 0.85);
   }
+`;
+
+const Error = styled.div`
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+`;
+
+const Success = styled.div`
+  text-align: center;
+
+  h3 {
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+  }
+`;
+
+const PhoneIcon = styled.svg`
+  width: 24px;
+  height: 24px;
+`;
+
+const EmailIcon = styled.svg`
+  width: 24px;
+  height: 24px;
+`;
+
+const SuccessIcon = styled.svg`
+  width: 80px;
+  height: 80px;
+  margin: auto;
 `;
