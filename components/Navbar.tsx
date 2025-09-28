@@ -254,8 +254,8 @@ const IconGroup = styled.div`
 `;
 
 const IconWrapper = styled.div`
-  width: 2.8rem;
-  height: 2.8rem;
+  width: 2.4rem;
+  height: 2.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,10 +265,5 @@ const IconWrapper = styled.div`
     width: 100%;
     height: 100%;
     fill: rgb(var(--text));
-  }
-
-  @media (max-width: 768px) {
-    width: 2.4rem;
-    height: 2.4rem;
   }
 `;
