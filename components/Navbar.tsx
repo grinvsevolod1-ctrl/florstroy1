@@ -12,7 +12,6 @@ import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
-import OrderModal from 'components/OrderModal'; // ✅ добавлено
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
 
@@ -25,7 +24,6 @@ export default function Navbar({ items }: NavbarProps) {
   const { toggle } = Drawer.useDrawer();
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
-  const [isOrderOpen, setIsOrderOpen] = useState(false); // ✅ состояние модалки
 
   let lastScrollY = useRef(0);
   const lastRoute = useRef('');
@@ -101,7 +99,6 @@ export default function Navbar({ items }: NavbarProps) {
         </NavItemList>
         <ButtonGroup>
           <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-          <OrderButton onClick={() => setIsOrderOpen(true)}>Оформить заказ</OrderButton> {/* ✅ */}
         </ButtonGroup>
         <ColorSwitcherContainer>
           <ColorSwitcher />
@@ -112,7 +109,6 @@ export default function Navbar({ items }: NavbarProps) {
         <HamburgerMenuWrapper>
           <HamburgerIcon aria-label="Toggle menu" onClick={toggle} />
         </HamburgerMenuWrapper>
-        {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />} {/* ✅ */}
       </Content>
     </NavbarContainer>
   );
@@ -253,10 +249,6 @@ const ContactButton = styled.button`
   &:hover {
     background: rgb(var(--primary), 0.85);
   }
-`;
-
-const OrderButton = styled(ContactButton)`
-  background: rgb(var(--accent));
 `;
 
 const ColorSwitcherContainer = styled.div`
