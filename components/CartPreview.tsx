@@ -1,7 +1,8 @@
 import styled, { keyframes } from 'styled-components';
 import { useCartContext } from 'context/CartContext';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 type Props = {
   isOpen: boolean;
@@ -10,37 +11,47 @@ type Props = {
 
 export default function CartPreview({ isOpen, onClose }: Props) {
   const { cart, totalPrice, updateQuantity, removeFromCart } = useCartContext();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (isOpen) window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [isOpen]);
 
-  if (!isOpen || cart.length === 0) return null;
+  if (!mounted || !isOpen) return null;
 
-  return (
+  return createPortal(
     <MobileOverlay onClick={onClose}>
       <MobileCard onClick={(e) => e.stopPropagation()}>
         <CloseButton onClick={onClose}>✕</CloseButton>
         <MobileHeader>Корзина</MobileHeader>
-        <MobileList>
-          {cart.map((item) => (
-            <MobileItem key={item.id}>
-              <span>{item.title}</span>
-              <QuantityControls>
-                <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                <span>{item.quantity}</span>
-                <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
-              </QuantityControls>
-              <RemoveButton onClick={() => removeFromCart(item.id)}>✕</RemoveButton>
-            </MobileItem>
-          ))}
-        </MobileList>
-        <MobileTotal>Итого: {totalPrice} ₽</MobileTotal>
-        <Link href="/checkout" passHref>
-          <MobileButton>Оформить заказ</MobileButton>
-        </Link>
+
+        {cart.length === 0 ? (
+          <EmptyText>Ваша корзина пуста</EmptyText>
+        ) : (
+          <>
+            <MobileList>
+              {cart.map((item) => (
+                <MobileItem key={item.id}>
+                  <span>{item.title}</span>
+                  <QuantityControls>
+                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                  </QuantityControls>
+                  <RemoveButton onClick={() => removeFromCart(item.id)}>✕</RemoveButton>
+                </MobileItem>
+              ))}
+            </MobileList>
+            <MobileTotal>Итого: {totalPrice} ₽</MobileTotal>
+            <Link href="/checkout" passHref>
+              <MobileButton>Оформить заказ</MobileButton>
+            </Link>
+          </>
+        )}
       </MobileCard>
-    </MobileOverlay>
+    </MobileOverlay>,
+    document.body
   );
 }
 
@@ -53,7 +64,7 @@ const MobileOverlay = styled.div`
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -77,6 +88,13 @@ const MobileHeader = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
+`;
+
+const EmptyText = styled.div`
+  font-size: 1.4rem;
+  text-align: center;
+  padding: 2rem 0;
+  color: rgb(var(--text), 0.6);
 `;
 
 const MobileList = styled.ul`
