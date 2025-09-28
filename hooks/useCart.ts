@@ -11,6 +11,7 @@ export type CartItem = {
 
 export function useCart() {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [addedItem, setAddedItem] = useState<CartItem | null>(null);
 
   useEffect(() => {
     const stored = Cookies.get('flor-cart');
@@ -25,16 +26,28 @@ export function useCart() {
     setCart((prev) => {
       const existing = prev.find((i) => i.id === item.id);
       if (existing) {
-        return prev.map((i) =>
+        const updated = prev.map((i) =>
           i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
         );
+        setAddedItem({ ...existing, quantity: existing.quantity + 1 });
+        return updated;
       }
-      return [...prev, { ...item, quantity: 1 }];
+      const newItem = { ...item, quantity: 1 };
+      setAddedItem(newItem);
+      return [...prev, newItem];
     });
   }
 
   function removeFromCart(id: string) {
     setCart((prev) => prev.filter((item) => item.id !== id));
+  }
+
+  function updateQuantity(id: string, quantity: number) {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
+      )
+    );
   }
 
   function clearCart() {
@@ -44,5 +57,15 @@ export function useCart() {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  return { cart, addToCart, removeFromCart, clearCart, totalItems, totalPrice };
+  return {
+    cart,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    totalItems,
+    totalPrice,
+    addedItem,
+    setAddedItem,
+  };
 }
