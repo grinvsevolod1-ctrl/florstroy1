@@ -60,7 +60,8 @@ const MobileOverlay = styled.div`
 `;
 
 const MobileCard = styled.div`
-  background: white;
+  background: rgb(var(--background));
+  color: rgb(var(--text));
   width: 90%;
   max-width: 400px;
   padding: 2rem;
