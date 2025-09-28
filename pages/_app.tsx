@@ -17,12 +17,13 @@ import CalculatorModal from 'components/CalculatorModal';
 import FeedbackModal from 'components/FeedbackModal';
 import WaveCta from 'components/WaveCta';
 import CartToast from 'components/CartToast';
-import OrderModal from 'components/OrderModal'; // ✅ добавлено
+import OrderModal from 'components/OrderModal';
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
 import { FeedbackModalProvider, useFeedbackModalContext } from 'contexts/feedback-modal.context';
 
+import { CartProvider } from 'context/CartContext'; // ✅ добавлено
 import { NavItems } from 'types';
 
 const navItems: NavItems = [
@@ -40,7 +41,7 @@ const navItems: NavItems = [
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [isOrderOpen, setIsOrderOpen] = useState(false); // ✅ состояние модалки
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
 
   return (
     <>
@@ -66,13 +67,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
-    <NewsletterModalContextProvider>
-      <CalculatorModalProvider>
-        <FeedbackModalProvider>
-          <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
-        </FeedbackModalProvider>
-      </CalculatorModalProvider>
-    </NewsletterModalContextProvider>
+    <CartProvider> {/* ✅ обёртка корзины */}
+      <NewsletterModalContextProvider>
+        <CalculatorModalProvider>
+          <FeedbackModalProvider>
+            <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+          </FeedbackModalProvider>
+        </CalculatorModalProvider>
+      </NewsletterModalContextProvider>
+    </CartProvider>
   );
 }
 
@@ -91,7 +94,7 @@ function Modals({ isOrderOpen, setIsOrderOpen }: ModalsProps) {
       {isModalOpened && <ApplicationModal onClose={() => setIsModalOpened(false)} />}
       {isCalculatorOpened && <CalculatorModal onClose={() => setIsCalculatorOpened(false)} />}
       {isOpen && <FeedbackModal />}
-      {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />} {/* ✅ модалка заказа */}
+      {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />}
     </>
   );
 }
