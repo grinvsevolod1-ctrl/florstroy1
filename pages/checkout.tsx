@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { NavItems } from 'types';
-import ClientOnly from './ClientOnly';
 import CloseIcon from './CloseIcon';
 import OriginalDrawer from './Drawer';
 
