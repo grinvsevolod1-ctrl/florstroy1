@@ -56,10 +56,13 @@ export function useCart() {
 
   function clearCart() {
     setCart([]);
+    localStorage.removeItem(STORAGE_KEY);
+    Cookies.remove(STORAGE_KEY);
   }
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const finalPrice = totalPrice;
 
   return {
     cart,
@@ -69,6 +72,7 @@ export function useCart() {
     clearCart,
     totalItems,
     totalPrice,
+    finalPrice,
     addedItem,
     setAddedItem,
   };
