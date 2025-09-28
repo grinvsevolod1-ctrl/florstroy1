@@ -5,15 +5,13 @@ import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { ScrollPositionEffectProps, useScrollPosition } from 'hooks/useScrollPosition';
-import { NavItems, SingleNavItem } from 'types';
+import { NavItems } from 'types';
 import { media } from 'utils/media';
 import Container from './Container';
 import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
-import CartIcon from './CartIcon'; // создадим иконку
-
-<CartIcon />
+import CartIcon from './CartIcon'; // 👈 иконка корзины
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
 
@@ -45,7 +43,7 @@ export default function Navbar({ items }: NavbarProps) {
 
     const currentScrollY = currPos.y;
     const scrollDifference = Math.abs(lastScrollY.current - currentScrollY);
-const isScrollingUp = currentScrollY > lastScrollY.current;
+    const isScrollingUp = currentScrollY > lastScrollY.current;
     const hasScrolledWholeStep = scrollDifference >= stepSize.current;
     const isInNonCollapsibleArea = lastScrollY.current > -50;
 
@@ -105,6 +103,9 @@ const isScrollingUp = currentScrollY > lastScrollY.current;
         <ColorSwitcherContainer>
           <ColorSwitcher />
         </ColorSwitcherContainer>
+        <CartIconWrapper>
+          <CartIcon />
+        </CartIconWrapper>
         <HamburgerMenuWrapper>
           <HamburgerIcon aria-label="Toggle menu" onClick={toggle} />
         </HamburgerMenuWrapper>
@@ -189,7 +190,7 @@ const DropdownMenu = styled.ul`
   position: absolute;
   top: 100%;
   left: 0;
-  background: white;
+  background: rgb(var(--background));
   list-style: none;
   padding: 0.5rem 0;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -200,12 +201,12 @@ const DropdownMenu = styled.ul`
 
     a {
       text-decoration: none;
-      color: #333;
+      color: rgb(var(--text));
       font-weight: 500;
     }
 
     &:hover {
-      background: #f0f0f0;
+      background: rgba(var(--primary), 0.1);
     }
   }
 `;
@@ -251,4 +252,17 @@ const ContactButton = styled.button`
 const ColorSwitcherContainer = styled.div`
   width: 4rem;
   margin: 0 1rem;
+`;
+
+const CartIconWrapper = styled.div`
+  margin-left: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: rgb(var(--text));
+  }
 `;
