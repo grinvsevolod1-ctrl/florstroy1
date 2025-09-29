@@ -37,7 +37,7 @@ const navItems: NavItems = [
     ],
   },
   { title: 'Контакты', href: '/contact' },
-
+  { title: '📞 +7 965 168-63-58', href: 'tel:+79651686358' },
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -67,18 +67,17 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
-    <CartProvider>
+    <CartProvider> {/* ✅ обёртка корзины */}
       <NewsletterModalContextProvider>
         <CalculatorModalProvider>
           <FeedbackModalProvider>
-            {children} {/* ❗️ NavigationDrawer удалён отсюда */}
+            <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
           </FeedbackModalProvider>
         </CalculatorModalProvider>
       </NewsletterModalContextProvider>
     </CartProvider>
   );
 }
-
 
 type ModalsProps = {
   isOrderOpen: boolean;
