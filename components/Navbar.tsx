@@ -8,10 +8,10 @@ import { ScrollPositionEffectProps, useScrollPosition } from 'hooks/useScrollPos
 import { NavItems } from 'types';
 import { media } from 'utils/media';
 import Container from './Container';
-import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
+import NavigationDrawer from './NavigationDrawer';
 import { useMediaQuery } from 'react-responsive';
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
@@ -22,7 +22,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
-  const { toggle } = Drawer.useDrawer();
+  const { toggle } = NavigationDrawer.useDrawer(); // доступ к toggle через OriginalDrawer внутри NavigationDrawer
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
   const isMobile = useMediaQuery({ maxWidth: 1023 });
@@ -118,7 +118,7 @@ export default function Navbar({ items }: NavbarProps) {
           </IconGroup>
         </Content>
       </NavbarContainer>
-      {isMobile && <Drawer />}
+      {isMobile && <NavigationDrawer items={items} />}
     </>
   );
 }
