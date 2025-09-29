@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
+import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { ScrollPositionEffectProps, useScrollPosition } from 'hooks/useScrollPosition';
 import { NavItems } from 'types';
 import { media } from 'utils/media';
@@ -10,6 +11,7 @@ import Container from './Container';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
+import CartPreview from './CartPreview';
 import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
@@ -22,8 +24,10 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
-  const { toggle, open } = OriginalDrawer.useDrawer();
+  const { toggle } = OriginalDrawer.useDrawer();
+  const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   let lastScrollY = useRef(0);
@@ -66,13 +70,8 @@ export default function Navbar({ items }: NavbarProps) {
   const isNavbarHidden = scrollingDirection === 'down';
   const isTransparent = scrollingDirection === 'none';
 
-  const handleCartClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    toggle(); // ✅ открывает корзину
-  };
-
-  const handleMenuClick = () => {
-    open(); // ✅ открывает бургер-меню
+  const handleCartClick = () => {
+    setIsCartOpen(true);
   };
 
   return (
@@ -109,33 +108,16 @@ export default function Navbar({ items }: NavbarProps) {
             )}
           </NavItemList>
           <RightSide>
-            <DesktopOnly>
-              <ContactInfo>
-                <ContactLine href="mailto:info@florstroy.ru">
-                  <ContactIcon viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
-                  </ContactIcon>
-                  <ContactLabel>Email:</ContactLabel>
-                  <ContactValue>info@florstroy.ru</ContactValue>
-                </ContactLine>
-                <ContactLine href="tel:+79651686358">
-                  <ContactIcon viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.8z" />
-                  </ContactIcon>
-                  <ContactLabel>Телефон:</ContactLabel>
-                  <ContactValue>+7 965 168-63-58</ContactValue>
-                </ContactLine>
-              </ContactInfo>
-            </DesktopOnly>
+            <ButtonGroup>
+              <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
+            </ButtonGroup>
             <IconGroup>
               <IconCircle>
                 <ColorSwitcher />
               </IconCircle>
-              <IconCircle offsetX="-2px" offsetY="-2px" onClick={handleCartClick}>
-                <CartIcon />
-              </IconCircle>
+              <CartIcon onClick={handleCartClick} />
               <MobileOnly>
-                <IconCircle offsetY="2px" onClick={handleMenuClick}>
+                <IconCircle offsetY="2px" onClick={toggle}>
                   <HamburgerIcon aria-label="Toggle menu" />
                 </IconCircle>
               </MobileOnly>
@@ -143,12 +125,11 @@ export default function Navbar({ items }: NavbarProps) {
           </RightSide>
         </Content>
       </NavbarContainer>
-      <NavigationDrawer items={items} /> {/* ✅ подключено локально */}
+      <NavigationDrawer items={items} />
+      {isCartOpen && <CartPreview isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />}
     </>
   );
 }
-
-// Styled Components
 
 const NavbarContainer = styled.div<NavbarContainerProps>`
   display: flex;
@@ -175,14 +156,13 @@ const Content = styled(Container)`
 const RightSide = styled.div`
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1rem;
 `;
 
 const NavItemList = styled.ul`
   display: flex;
   list-style: none;
   align-items: center;
-  margin-left: -1rem;
 
   ${media('<desktop')} {
     display: none;
@@ -237,16 +217,20 @@ const DropdownMenu = styled.ul`
   background: rgb(var(--background));
   list-style: none;
   padding: 0.5rem 0;
-  box-shadow: 0.5rem 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+
+  li {
+    padding: 0.5rem 1.5rem;
 
     a {
       text-decoration: none;
       color: rgb(var(--text));
       font-weight: 500;
+    }
 
-      &:hover {
-        background: rgba(var(--primary), 0.1);
-      }
+    &:hover {
+      background: rgba(var(--primary), 0.1);
     }
   }
 `;
@@ -256,6 +240,33 @@ const LogoWrapper = styled.a`
   margin-right: auto;
   text-decoration: none;
   color: rgb(var(--logoColor));
+`;
+
+const ButtonGroup = styled.div`
+  margin-left: 2rem;
+  display: flex;
+  gap: 1rem;
+
+  ${media('<desktop')} {
+    display: none;
+  }
+`;
+
+const ContactButton = styled.button`
+  background: rgb(var(--primary));
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: rgb(var(--primary), 0.85);
+  }
 `;
 
 const IconGroup = styled.div`
@@ -298,53 +309,4 @@ const MobileOnly = styled.div`
   ${media('>=desktop')} {
     display: none;
   }
-`;
-
-const DesktopOnly = styled.div`
-  ${media('<desktop')} {
-    display: none;
-  }
-`;
-
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  font-size: 1.3rem;
-  color: rgb(var(--text));
-  text-align: left;
-  min-width: 240px;
-`;
-
-const ContactLine = styled.a`
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-  transition: background 0.2s ease;
-  padding: 0.4rem 0.6rem;
-  border-radius: 0.4rem;
-
-  &:hover {
-    background: rgba(var(--primary), 0.05);
-  }
-`;
-
-const ContactIcon = styled.svg`
-  width: 1.8rem;
-  height: 1.8rem;
-  fill: rgb(var(--primary));
-  flex-shrink: 0;
-`;
-
-const ContactLabel = styled.span`
-  font-weight: 600;
-  color: rgb(var(--text), 0.6);
-  min-width: 90px;
-`;
-
-const ContactValue = styled.span`
-  font-weight: 500;
-  color: rgb(var(--primary));
-  white-space: nowrap;
 `;
