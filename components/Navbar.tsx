@@ -114,6 +114,7 @@ export default function Navbar({ items }: NavbarProps) {
         </Content>
       </NavbarContainer>
       <NavigationDrawer items={items} />
+
       {isCartOpen && <CartPreview isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />}
     </>
   );
