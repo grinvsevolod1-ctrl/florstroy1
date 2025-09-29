@@ -68,6 +68,10 @@ export default function Navbar({ items }: NavbarProps) {
   const isNavbarHidden = scrollingDirection === 'down';
   const isTransparent = scrollingDirection === 'none';
 
+  const handleCartClick = () => {
+    if (!isMobile) toggle();
+  };
+
   return (
     <>
       <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
@@ -108,7 +112,7 @@ export default function Navbar({ items }: NavbarProps) {
             <IconCircle>
               <ColorSwitcher />
             </IconCircle>
-            <IconCircle offsetX="-2px" offsetY="-2px">
+            <IconCircle offsetX="-2px" offsetY="-2px" onClick={handleCartClick}>
               <CartIcon />
             </IconCircle>
             <MobileOnly>
@@ -259,6 +263,10 @@ const IconGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  ${media('>=desktop')} {
+    margin-right: 2rem;
+  }
 `;
 
 const IconCircle = styled.div<{ offsetX?: string; offsetY?: string }>`
