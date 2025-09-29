@@ -67,17 +67,18 @@ function MyApp({ Component, pageProps }: AppProps) {
 
 function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
-    <CartProvider> {/* ✅ обёртка корзины */}
+    <CartProvider>
       <NewsletterModalContextProvider>
         <CalculatorModalProvider>
           <FeedbackModalProvider>
-            <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+            {children} {/* ❗️ NavigationDrawer удалён отсюда */}
           </FeedbackModalProvider>
         </CalculatorModalProvider>
       </NewsletterModalContextProvider>
     </CartProvider>
   );
 }
+
 
 type ModalsProps = {
   isOrderOpen: boolean;
