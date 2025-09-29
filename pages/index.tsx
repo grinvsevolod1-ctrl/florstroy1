@@ -15,13 +15,20 @@ import ScrollableBlogPosts from 'views/HomePage/ScrollableBlogPosts';
 export default function Homepage({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
-      <Head>
-        <title>{EnvVars.SITE_NAME}</title>
-        <meta
-          name="description"
-          content="FlorStroy — надёжные строительные решения, проекты под ключ, отзывы клиентов и быстрая заявка."
-        />
-      </Head>
+     <Head>
+  <title>FlorStroy — профессиональное устройство бетонных полов</title>
+  <meta name="description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+  <meta property="og:title" content="FlorStroy — профессиональное устройство бетонных полов" />
+  <meta property="og:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+  <meta property="og:url" content="https://florstroy.ru/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://florstroy.ru/og-images/preview.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FlorStroy — профессиональное устройство бетонных полов" />
+  <meta name="twitter:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+  <meta name="twitter:image" content="https://florstroy.ru/og-images/preview.jpg" />
+</Head>
+
       <HomepageWrapper>
         <WhiteBackgroundContainer>
           <Hero />
