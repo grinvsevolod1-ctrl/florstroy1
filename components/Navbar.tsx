@@ -12,6 +12,7 @@ import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
 import NavigationDrawer from './NavigationDrawer';
+import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
@@ -22,7 +23,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
-  const { toggle } = NavigationDrawer.useDrawer(); // доступ к toggle через OriginalDrawer внутри NavigationDrawer
+  const { toggle } = OriginalDrawer.useDrawer();
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
   const isMobile = useMediaQuery({ maxWidth: 1023 });
