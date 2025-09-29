@@ -68,6 +68,10 @@ export default function Navbar({ items }: NavbarProps) {
   const isNavbarHidden = scrollingDirection === 'down';
   const isTransparent = scrollingDirection === 'none';
 
+  const handleCartClick = () => {
+    toggle(); // работает и на десктопе, и на мобильном
+  };
+
   return (
     <>
       <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
@@ -101,25 +105,27 @@ export default function Navbar({ items }: NavbarProps) {
               )
             )}
           </NavItemList>
-          <ButtonGroup>
-            <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-          </ButtonGroup>
-          <IconGroup>
-            <IconCircle>
-              <ColorSwitcher />
-            </IconCircle>
-            <IconCircle offsetX="-2px" offsetY="-2px">
-              <CartIcon />
-            </IconCircle>
-            <MobileOnly>
-              <IconCircle offsetY="2px" onClick={toggle}>
-                <HamburgerIcon aria-label="Toggle menu" />
+          <RightSide>
+            <ButtonGroup>
+              <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
+            </ButtonGroup>
+            <IconGroup>
+              <IconCircle>
+                <ColorSwitcher />
               </IconCircle>
-            </MobileOnly>
-          </IconGroup>
+              <IconCircle offsetX="-2px" offsetY="-2px" onClick={handleCartClick}>
+                <CartIcon />
+              </IconCircle>
+              <MobileOnly>
+                <IconCircle offsetY="2px" onClick={toggle}>
+                  <HamburgerIcon aria-label="Toggle menu" />
+                </IconCircle>
+              </MobileOnly>
+            </IconGroup>
+          </RightSide>
         </Content>
       </NavbarContainer>
-      {isMobile && <NavigationDrawer items={items} />}
+      <NavigationDrawer items={items} />
     </>
   );
 }
@@ -141,8 +147,15 @@ const NavbarContainer = styled.div<NavbarContainerProps>`
 
 const Content = styled(Container)`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+`;
+
+const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const NavItemList = styled.ul`
@@ -259,6 +272,10 @@ const IconGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
+
+  @media (min-width: 1024px) {
+    margin-right: 2rem;
+  }
 `;
 
 const IconCircle = styled.div<{ offsetX?: string; offsetY?: string }>`
