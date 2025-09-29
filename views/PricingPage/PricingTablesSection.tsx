@@ -8,7 +8,6 @@ export default function PricingTablesSection() {
   const { setIsOpen, setSelectedService } = useFeedbackModalContext();
 
   const handleOpenModal = (serviceTitle: string) => {
-    console.log(`Открыта форма для: ${serviceTitle}`);
     setSelectedService(serviceTitle);
     setIsOpen(true);
   };
@@ -31,12 +30,23 @@ export default function PricingTablesSection() {
           <Card key={index}>
             <CardContent>
               <CardTitle>{card.title}</CardTitle>
-              <CardDescription>{card.description}</CardDescription>
-              <BenefitsList>
-                {card.benefits.map((item, i) => (
-                  <BenefitItem key={i}>{item}</BenefitItem>
+              <CardDescription>
+                {card.description.map((block, i) => (
+                  <DescriptionBlock key={i}>
+                    {block.heading && <BlockHeading>{block.heading}</BlockHeading>}
+                    {block.paragraphs.map((p, j) => (
+                      <Paragraph key={j}>{p}</Paragraph>
+                    ))}
+                    {block.list && (
+                      <StyledList>
+                        {block.list.map((item, k) => (
+                          <li key={k}>{item}</li>
+                        ))}
+                      </StyledList>
+                    )}
+                  </DescriptionBlock>
                 ))}
-              </BenefitsList>
+              </CardDescription>
             </CardContent>
             <CardPriceRow>
               <CardPrice>
@@ -57,41 +67,81 @@ export default function PricingTablesSection() {
 const cards = [
   {
     title: 'Спортивные покрытия',
-    description: 'Для игровых площадок, стадионов и детских зон',
     priceWith: 'от 2200',
     priceWithout: 'от 1600',
-    benefits: [
-      'Одно- и двухслойные системы',
-      'SBR и EPDM гранулят',
-      'Толщина от 10 до 20 мм',
-      'Устройство по бетону, асфальту или грунту',
-      'Устойчивость к погоде и износу',
+    description: [
+      {
+        heading: 'Устройство спортивных покрытий',
+        paragraphs: [
+          'Покрытие применяется на открытых игровых, спортивных и детских площадках, школьных стадионах, беговых дорожках.',
+        ],
+      },
+      {
+        heading: 'Варианты устройства покрытий:',
+        list: [
+          'Однослойное полимерное покрытие с применением резиновой крошки (SBR) или каучукового гранулянта (EPDM). Минимальная толщина по твёрдому бетонному или асфальтовому покрытию — 10 мм, по грунтовому основанию — 20 мм.',
+          'Двухслойное полимерное покрытие с применением резиновой крошки (SBR) и каучукового гранулянта (EPDM). Минимальная толщина финишного слоя — 5 мм.',
+          'Двухслойное полимерное покрытие с применением спрей-системы. Средняя толщина — 12 мм.',
+        ],
+        paragraphs: [
+          'Покрытие устраивают на открытых площадках по предварительно подготовленному бетонному, асфальтовому или грунтовому основанию.',
+        ],
+      },
     ],
   },
   {
     title: 'Промышленные бетонные полы',
-    description: 'Надёжные решения для производств и складов',
     priceWith: 'от 1800',
     priceWithout: 'от 1300',
-    benefits: [
-      'Высокая механическая и химическая прочность',
-      'Ровная нескользкая поверхность',
-      'Быстрый монтаж',
-      'Устойчивость к температуре и влаге',
-      'Лёгкий ремонт и долговечность',
+    description: [
+      {
+        heading: 'Устройство бетонных промышленных полов',
+        paragraphs: [
+          'В условиях производства полы должны выдерживать ежедневные интенсивные нагрузки, вес оборудования и техники, быть устойчивыми к химическим веществам, применяемым на производстве.',
+          'Промышленные бетонные полы, устройством которых занимается наша компания, обладают всеми необходимыми характеристиками, чтобы выдержать ежедневные интенсивные нагрузки.',
+        ],
+      },
+      {
+        heading: 'Преимущества:',
+        list: [
+          'Высокая прочность — механическая и химическая.',
+          'Ровная нескользкая поверхность.',
+          'Долговечность.',
+          'Устойчивость к температурным воздействиям.',
+          'Ремонтопригодность: ремонт производится легко и быстро, внешний вид сохраняется.',
+          'Быстрый монтаж и низкая цена заливки за квадратный метр.',
+        ],
+        paragraphs: [],
+      },
     ],
   },
   {
     title: 'Полимерные наливные полы',
-    description: 'Финишное покрытие для коммерческих помещений',
     priceWith: 'от 2000',
     priceWithout: 'от 1500',
-    benefits: [
-      'Бесшовность и герметичность',
-      'Устойчивость к агрессивным средам',
-      'Антистатичность и антипроводимость',
-      'Простота ремонта и ухода',
-      'Износостойкость и ударопрочность',
+    description: [
+      {
+        heading: 'Устройство полимерных полов',
+        paragraphs: [
+          'Полимерные покрытия — это самовыравнивающийся материал. Он прочный и износостойкий, не боится экстремальных механических нагрузок, повышенной влажности, контактов с водой, кислотами и щелочами, стойко переносит температурные колебания.',
+          'Полимерный наливной пол укладывают в производственных, складских, торговых и офисных помещениях.',
+        ],
+      },
+      {
+        heading: 'Преимущества:',
+        list: [
+          'Бесшовность.',
+          'Беспыльность.',
+          'Герметичность.',
+          'Стойкость к агрессивным средам.',
+          'Простота ремонта.',
+          'Низкая стоимость обслуживания.',
+          'Ударостойкость.',
+          'Антистатичность и антипроводимость.',
+          'Лёгкость в уборке.',
+        ],
+        paragraphs: [],
+      },
     ],
   },
 ];
@@ -159,37 +209,37 @@ const CardTitle = styled.h3`
   font-size: 2.2rem;
   font-weight: 600;
   color: rgb(var(--text));
-  margin-bottom: 1rem;
-`;
-
-const CardDescription = styled.p`
-  font-size: 1.6rem;
-  font-weight: 400;
-  color: rgb(var(--text));
   margin-bottom: 2rem;
 `;
 
-const BenefitsList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2rem 0;
-`;
-
-const BenefitItem = styled.li`
-  position: relative;
-  padding-left: 2.4rem;
-  margin-bottom: 1rem;
+const CardDescription = styled.div`
   font-size: 1.5rem;
   color: rgb(var(--text));
+  line-height: 1.6;
+`;
 
-  &::before {
-    content: '✔';
-    position: absolute;
-    left: 0;
-    top: 0;
-    color: rgb(var(--primary));
-    font-size: 1.4rem;
-    line-height: 1.6rem;
+const DescriptionBlock = styled.div`
+  margin-bottom: 2.4rem;
+`;
+
+const BlockHeading = styled.h4`
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: rgb(var(--primary));
+`;
+
+const Paragraph = styled.p`
+  margin-bottom: 1rem;
+`;
+
+const StyledList = styled.ul`
+  padding-left: 2rem;
+  margin: 1rem 0;
+  list-style: disc;
+
+  li {
+    margin-bottom: 0.6rem;
   }
 `;
 
@@ -218,7 +268,6 @@ const Currency = styled.span`
   position: relative;
   top: -1px;
 `;
-
 
 const FeedbackButton = styled.button`
   padding: 0.6rem 1.2rem;
