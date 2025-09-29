@@ -22,7 +22,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
-  const { toggle } = OriginalDrawer.useDrawer();
+  const drawer = OriginalDrawer.useDrawer();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
@@ -66,8 +66,13 @@ export default function Navbar({ items }: NavbarProps) {
   const isNavbarHidden = scrollingDirection === 'down';
   const isTransparent = scrollingDirection === 'none';
 
-  const handleCartClick = () => {
-    toggle();
+  const handleCartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    drawer.toggle(); // открывает корзину, не бургер
+  };
+
+  const handleMenuClick = () => {
+    drawer.open(); // открывает бургер-меню
   };
 
   return (
@@ -130,7 +135,7 @@ export default function Navbar({ items }: NavbarProps) {
                 <CartIcon />
               </IconCircle>
               <MobileOnly>
-                <IconCircle offsetY="2px" onClick={toggle}>
+                <IconCircle offsetY="2px" onClick={handleMenuClick}>
                   <HamburgerIcon aria-label="Toggle menu" />
                 </IconCircle>
               </MobileOnly>
@@ -236,13 +241,7 @@ const DropdownMenu = styled.ul`
   z-index: 10;
 
   li {
-    padding: 0.5rem 1.5rem;
-
-    a {
-      text-decoration: none;
-      color: rgb(var(--text));
-      font-weight: 500;
-    }
+    padding: 0.5    }
   }
 `;
 
