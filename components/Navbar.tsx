@@ -83,46 +83,34 @@ export default function Navbar({ items }: NavbarProps) {
               <Logo />
             </LogoWrapper>
           </NextLink>
-          <NavItemList>
-            {items.map((item) =>
-              item.submenu ? (
-                <DropdownWrapper key={item.title}>
-                  <DropdownToggle>{item.title}</DropdownToggle>
-                  <DropdownMenu>
-                    {item.submenu.map((sub) => (
-                      <li key={sub.href}>
-                        <NextLink href={sub.href!} passHref>
-                          <a>{sub.title}</a>
-                        </NextLink>
-                      </li>
-                    ))}
-                  </DropdownMenu>
-                </DropdownWrapper>
-              ) : (
-                <NavItemWrapper key={item.href}>
-                  <NextLink href={item.href!} passHref>
-                    <a>{item.title}</a>
-                  </NextLink>
-                </NavItemWrapper>
-              )
-            )}
-          </NavItemList>
-          <RightSide>
-            <ButtonGroup>
-              <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-            </ButtonGroup>
-            <IconGroup>
-              <IconCircle>
-                <ColorSwitcher />
-              </IconCircle>
-              <CartIcon onClick={handleCartClick} />
-              <MobileOnly>
-                <IconCircle offsetY="2px" onClick={toggle}>
-                  <HamburgerIcon aria-label="Toggle menu" />
-                </IconCircle>
-              </MobileOnly>
-            </IconGroup>
-          </RightSide>
+         <NavItemList>
+  {items.map((item) =>
+    item.href ? (
+      <NavItemWrapper key={item.href}>
+        <NextLink href={item.href} passHref>
+          <a>{item.title}</a>
+        </NextLink>
+      </NavItemWrapper>
+    ) : null
+  )}
+</NavItemList>
+
+       <RightSide>
+  <ButtonGroup>
+    <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
+  </ButtonGroup>
+  <IconGroup>
+    <IconCircle>
+      <ColorSwitcher />
+    </IconCircle>
+    <MobileOnly>
+      <IconCircle offsetY="2px" onClick={toggle}>
+        <HamburgerIcon aria-label="Toggle menu" />
+      </IconCircle>
+    </MobileOnly>
+  </IconGroup>
+</RightSide>
+
         </Content>
       </NavbarContainer>
       <NavigationDrawer items={items} />
