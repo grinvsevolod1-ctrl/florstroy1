@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useCartContext } from 'context/CartContext';
 import Image from 'next/image';
 import Link from 'next/link';
 
