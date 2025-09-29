@@ -20,15 +20,36 @@ import OrderModal from 'components/OrderModal';
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
-import { FeedbackModalProvider, useFeedbackModalContext } from 'contexts/feedback-modal.context';
+import { FeedbackModalModalContext } from 'contexts/feedback-modal.context';
 
 import { NavItems } from 'types';
 
 const navItems: NavItems = [
   { title: 'Проекты', href: '/blog' },
-  { title: 'Услуги', href: '/pricing' }, // ✅ одиночная вкладка
+  { title: 'Услуги', href: '/pricing' },
   { title: 'Контакты', href: '/contact' },
-  { title: '📞 +7 965 168-63-58', href: 'tel:+79651686358' },
+  {
+    title: (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: '1.5' }}>
+        <a href="tel:+79651686358" style={{ textDecoration: 'none', color: 'inherit' }}>📞 +7 965 168-63-58</a>
+        <a href="mailto:info@florstroy.ru" style={{ textDecoration: 'none', color: 'inherit' }}>✉️ info@florstroy.ru</a>
+      </div>
+    ),
+    href: '#',
+  },
+  {
+    title: (
+      <a
+        href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        📍 Адрес: Россия, Московская область, Одинцово, Можайское шоссе д.8
+      </a>
+    ),
+    href: '#',
+  },
 ];
 
 function MyApp({ Component, pageProps }: AppProps) {
