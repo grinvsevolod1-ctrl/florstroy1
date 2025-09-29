@@ -13,6 +13,7 @@ type Props = {
 export default function CartPreview({ isOpen, onClose }: Props) {
   const { cart, totalPrice, updateQuantity, removeFromCart } = useCartContext();
   const [mounted, setMounted] = useState(false);
+  const [comment, setComment] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -56,23 +57,43 @@ export default function CartPreview({ isOpen, onClose }: Props) {
             <List>
               {cart.map((item) => (
                 <Item key={item.id}>
-                  <Title>{item.title}</Title>
-                  <Controls>
-                    <QtyButton onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</QtyButton>
-                    <Qty>{item.quantity}</Qty>
-                    <QtyButton onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</QtyButton>
-                    <Remove onClick={() => removeFromCart(item.id)}>
-                      <RemoveIcon viewBox="0 0 24 24">
-                        <path fill="currentColor" d="M18 6L6 18M6 6l12 12" />
-                      </RemoveIcon>
-                    </Remove>
-                  </Controls>
+                  <Image src={item.image} alt={item.title} />
+                  <Info>
+                    <Title>{item.title}</Title>
+                    <Controls>
+                      <QtyButton onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</QtyButton>
+                      <Qty>{item.quantity}</Qty>
+                      <QtyButton onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</QtyButton>
+                      <Remove onClick={() => removeFromCart(item.id)}>
+                        <RemoveIcon viewBox="0 0 24 24">
+                          <path fill="currentColor" d="M18 6L6 18M6 6l12 12" />
+                        </RemoveIcon>
+                      </Remove>
+                    </Controls>
+                  </Info>
                 </Item>
               ))}
             </List>
+
+            <Comment>
+              <label htmlFor="comment">Комментарий к заказу:</label>
+              <textarea
+                id="comment"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                placeholder="Например, удобное время для связи или доставка"
+              />
+            </Comment>
+
             <Footer>
               <Total>Итого: {totalPrice} ₽</Total>
-              <Link href="/checkout" passHref>
+              <Link
+                href={{
+                  pathname: '/checkout',
+                  query: { comment },
+                }}
+                passHref
+              >
                 <Checkout>Оформить</Checkout>
               </Link>
             </Footer>
@@ -103,7 +124,7 @@ const Card = styled.div`
   background: rgb(var(--background));
   color: rgb(var(--text));
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 8px 24px rgba(0,0,0,0.2);
@@ -151,7 +172,6 @@ const Empty = styled.div`
 
 const List = styled.ul`
   flex-grow: 1;
-  font-size: 1.4rem;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -159,16 +179,26 @@ const List = styled.ul`
 
 const Item = styled.li`
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+`;
+
+const Image = styled.img`
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 0.4rem;
+`;
+
+const Info = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.span`
-  flex: 1;
   font-size: 1.3rem;
-  word-break: break-word;
+  margin-bottom: 0.4rem;
 `;
 
 const Controls = styled.div`
@@ -205,6 +235,28 @@ const RemoveIcon = styled.svg`
   color: rgb(var(--accent));
 `;
 
+const Comment = styled.div`
+  margin-top: 2rem;
+
+  label {
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(var(--text), 0.2);
+    background: rgb(var(--background));
+    color: rgb(var(--text));
+  }
+`;
+
 const Footer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -217,7 +269,6 @@ const Total = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
 `;
-
 const Checkout = styled.a`
   background: rgb(var(--primary));
   color: white;
@@ -226,4 +277,10 @@ const Checkout = styled.a`
   border-radius: 0.5rem;
   text-decoration: none;
   font-size: 1.4rem;
+  font-weight: bold;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgb(var(--primary), 0.85);
+  }
 `;
