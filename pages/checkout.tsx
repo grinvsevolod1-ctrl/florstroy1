@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCartContext } from 'context/CartContext';
 
 export default function Checkout() {
@@ -34,6 +34,15 @@ export default function Checkout() {
       setError('Ошибка отправки заказа');
     }
   }
+
+  useEffect(() => {
+    if (submitted) {
+      const timer = setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [submitted]);
 
   return (
     <Wrapper>
@@ -82,6 +91,7 @@ export default function Checkout() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoFocus
             />
             {error && <Error>{error}</Error>}
           </Field>
@@ -97,6 +107,10 @@ const Wrapper = styled.div`
   max-width: 600px;
   margin: auto;
   padding: 3rem 2rem;
+
+  @media (max-width: 600px) {
+    padding: 2rem 1rem;
+  }
 `;
 
 const Title = styled.h2`
@@ -176,6 +190,7 @@ const Submit = styled.button`
   border-radius: 0.6rem;
   cursor: pointer;
   font-weight: bold;
+  transition: background 0.2s ease;
 
   &:hover {
     background: rgb(var(--primary), 0.85);
@@ -190,6 +205,7 @@ const Error = styled.div`
 
 const Success = styled.div`
   text-align: center;
+  animation: fadeIn 0.4s ease;
 
   h3 {
     font-size: 2rem;
@@ -199,6 +215,17 @@ const Success = styled.div`
   p {
     font-size: 1.4rem;
     margin-top: 0.5rem;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 
