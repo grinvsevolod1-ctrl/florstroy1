@@ -1,3 +1,4 @@
+// NavigationDrawer.tsx
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -28,6 +29,17 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
               <div className="my-drawer-container">
                 <DrawerCloseButton />
                 <NavItemsList items={items} />
+                <ContactInfo>
+                  <a href="tel:+79651686358">📞 +7 965 168-63-58</a>
+                  <a href="mailto:info@florstroy.ru">✉️ info@florstroy.ru</a>
+                  <a
+                    href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    📍 Одинцово, Можайское шоссе д.8
+                  </a>
+                </ContactInfo>
                 <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
               </div>
             </div>
@@ -146,8 +158,32 @@ const NavItem = styled.li`
   }
 `;
 
+const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  text-align: center;
+
+  a {
+    color: rgb(var(--text));
+    text-decoration: none;
+    margin: 0.4rem 0;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+`;
+
 const ContactButton = styled.button`
-  margin-top: auto;
   margin-bottom: 2rem;
   background: rgb(var(--primary));
   color: white;
@@ -160,5 +196,10 @@ const ContactButton = styled.button`
 
   &:hover {
     background: rgb(var(--primary), 0.85);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+    padding: 1rem 1.6rem;
   }
 `;
