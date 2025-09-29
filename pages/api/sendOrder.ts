@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') return res.status(405).end();
 
-  const { cart, name, contactMethod, contactValue, email, comment } = req.body;
+  const { cart, name = 'Клиент', contactMethod, contactValue, email, comment } = req.body;
   const referer = req.headers.referer || 'не указан';
 
   if (!cart || !Array.isArray(cart) || cart.length === 0) {
@@ -31,27 +31,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 👤 Имя: ${name}
 ${contactLabel}: ${contactValue}
 📧 Email для подтверждения: ${email || 'не указан'}
-💬 Комментарий: ${comment}
+💬 Комментарий: ${comment || '—'}
 🌐 Источник: ${referer}
 
 📦 Товары:
 ${itemsText}
 
 💰 Итого: ${totalPrice} ₽
-  `;
+`;
 
   try {
     console.log('Заказ получен:', { name, contactMethod, contactValue, email, comment, cart });
 
     // Telegram
-    await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: process.env.TELEGRAM_CHAT_ID,
-        text,
-      }),
-    });
+    try {
+      await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: process.env.TELEGRAM_CHAT_ID,
+          text,
+        }),
+      });
+    } catch (tgError) {
+      console.warn('Ошибка Telegram:', tgError);
+    }
 
     // Email
     const transporter = nodemailer.createTransport({
@@ -70,7 +74,7 @@ ${itemsText}
       to: 'info@florstroy.ru',
       subject: 'Новый заказ с сайта florstroy.ru',
       text,
-      html: `<pre>${text}</pre>`,
+      html: `<pre style="font-size:14px;line-height:1.5">${text}</pre>`,
     });
 
     // Автоответ клиенту
@@ -80,7 +84,12 @@ ${itemsText}
         to: email,
         subject: 'Ваш заказ принят',
         text: `Здравствуйте, ${name}!\n\nМы получили ваш заказ на сумму ${totalPrice} ₽.\nМенеджер свяжется с вами в ближайшее время.`,
-        html: `<p>Здравствуйте, ${name}!</p><p>Мы получили ваш заказ на сумму <strong>${totalPrice} ₽</strong>.</p><p>Менеджер свяжется с вами в ближайшее время.</p><p>С уважением,<br/>команда Florstroy</p>`
+        html: `
+          <p>Здравствуйте, ${name}!</p>
+          <p>Мы получили ваш заказ на сумму <strong>${totalPrice} ₽</strong>.</p>
+          <p>Менеджер свяжется с вами в ближайшее время.</p>
+          <p style="margin-top:2rem">С уважением,<br/>команда Florstroy</p>
+        `,
       });
     }
 
