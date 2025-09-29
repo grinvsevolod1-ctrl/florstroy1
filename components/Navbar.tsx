@@ -11,6 +11,7 @@ import Container from './Container';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
+import CartPreview from './CartPreview';
 import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
@@ -26,6 +27,7 @@ export default function Navbar({ items }: NavbarProps) {
   const { toggle } = OriginalDrawer.useDrawer();
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   let lastScrollY = useRef(0);
@@ -69,7 +71,7 @@ export default function Navbar({ items }: NavbarProps) {
   const isTransparent = scrollingDirection === 'none';
 
   const handleCartClick = () => {
-    toggle(); // работает и на десктопе, и на мобильном
+    setIsCartOpen(true);
   };
 
   return (
@@ -113,9 +115,7 @@ export default function Navbar({ items }: NavbarProps) {
               <IconCircle>
                 <ColorSwitcher />
               </IconCircle>
-              <IconCircle offsetX="-2px" offsetY="-2px" onClick={handleCartClick}>
-                <CartIcon />
-              </IconCircle>
+              <CartIcon onClick={handleCartClick} />
               <MobileOnly>
                 <IconCircle offsetY="2px" onClick={toggle}>
                   <HamburgerIcon aria-label="Toggle menu" />
@@ -126,6 +126,7 @@ export default function Navbar({ items }: NavbarProps) {
         </Content>
       </NavbarContainer>
       <NavigationDrawer items={items} />
+      {isCartOpen && <CartPreview isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />}
     </>
   );
 }
