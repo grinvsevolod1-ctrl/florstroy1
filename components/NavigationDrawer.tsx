@@ -6,17 +6,12 @@ import { NavItems } from 'types';
 import ClientOnly from './ClientOnly';
 import CloseIcon from './CloseIcon';
 import OriginalDrawer from './Drawer';
+import { media } from 'utils/media';
 
 type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
 
 export default function NavigationDrawer({ children, items }: NavigationDrawerProps) {
   const { close } = OriginalDrawer.useDrawer();
-
-  function copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(() => {
-      console.log(`Скопировано: ${text}`);
-    });
-  }
 
   return (
     <OriginalDrawer.Drawer>
@@ -27,22 +22,23 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
               <div className="my-drawer-container">
                 <DrawerCloseButton />
                 <NavItemsList items={items} />
-                <ContactBlock>
-                  <ContactLine onClick={() => copyToClipboard('info@florstroy.ru')}>
-                    <ContactIcon viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
-                    </ContactIcon>
-                    <ContactLabel>Email:</ContactLabel>
-                    <ContactValue>info@florstroy.ru</ContactValue>
-                  </ContactLine>
-                  <ContactLine onClick={() => copyToClipboard('+79651686358')}>
-                    <ContactIcon viewBox="0 0 24 24">
-                      <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.8z" />
-                    </ContactIcon>
-                    <ContactLabel>Телефон:</ContactLabel>
-                    <ContactValue>+7 965 168-63-58</ContactValue>
-                  </ContactLine>
-                </ContactBlock>
+                <MobileOnly>
+                  <ContactBlock>
+                    <ContactTitle>Связаться с нами</ContactTitle>
+                    <ContactLine href="mailto:info@florstroy.ru">
+                      <ContactIcon viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
+                      </ContactIcon>
+                      <ContactValue>info@florstroy.ru</ContactValue>
+                    </ContactLine>
+                    <ContactLine href="tel:+79651686358">
+                      <ContactIcon viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.8z" />
+                      </ContactIcon>
+                      <ContactValue>+7 965 168-63-58</ContactValue>
+                    </ContactLine>
+                  </ContactBlock>
+                </MobileOnly>
               </div>
             </div>
           </OriginalDrawer.Target>
@@ -226,19 +222,34 @@ const Submenu = styled.ul`
   }
 `;
 
+const MobileOnly = styled.div`
+  ${media('>=desktop')} {
+    display: none;
+  }
+`;
+
 const ContactBlock = styled.div`
   margin-top: 2rem;
-  padding: 1rem 2rem;
+  padding: 2rem;
+  text-align: center;
   border-top: 1px solid rgba(var(--text), 0.1);
   width: 100%;
 `;
 
-const ContactLine = styled.div`
+const ContactTitle = styled.div`
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: rgb(var(--text));
+`;
+
+const ContactLine = styled.a`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.6rem;
-  cursor: pointer;
-  margin-bottom: 0.8rem;
+  margin-bottom: 1rem;
+  text-decoration: none;
 
   &:hover {
     background: rgba(var(--primary), 0.05);
@@ -249,12 +260,6 @@ const ContactIcon = styled.svg`
   width: 1.6rem;
   height: 1.6rem;
   fill: rgb(var(--primary));
-`;
-
-const ContactLabel = styled.span`
-  font-weight: 600;
-  color: rgb(var(--text), 0.6);
-  min-width: 80px;
 `;
 
 const ContactValue = styled.span`
