@@ -140,12 +140,7 @@ const Card = styled.div`
   position: relative;
   animation: ${fadeIn} 0.3s ease-out;
 
- @media (max-width: 768px) {
-  width: 90%;
-  max-width: 420px;
-  border-radius: 1rem;
-  padding: 2rem;
-}
+
 
 `;
 
