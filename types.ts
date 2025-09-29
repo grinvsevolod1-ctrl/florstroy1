@@ -1,10 +1,10 @@
 // types.ts
 
 export type SingleNavItem = {
-  title: string | JSX.Element;
+  title: string;
   href?: string;
   outlined?: boolean;
-  submenu?: SingleNavItem[]; // 👈 вложенное меню
+  submenu?: SingleNavItem[];
 };
 
 export type NavItems = SingleNavItem[];
