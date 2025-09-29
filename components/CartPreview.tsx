@@ -33,8 +33,21 @@ export default function CartPreview({ isOpen, onClose }: Props) {
   return createPortal(
     <Overlay onClick={onClose}>
       <Card onClick={(e) => e.stopPropagation()}>
-        <Close onClick={onClose}>✕</Close>
-        <Header>Корзина</Header>
+        <Close onClick={onClose}>
+          <CloseIcon viewBox="0 0 24 24">
+            <path fill="currentColor" d="M18 6L6 18M6 6l12 12" />
+          </CloseIcon>
+        </Close>
+        <Header>
+          <CartIcon viewBox="0 0 24 24">
+            <path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 
+              0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 
+              14l.84-2h8.99c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 
+              0 0021.99 3H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 
+              13.37 5.48 15 7 15h12v-2H7.16z" />
+          </CartIcon>
+          Корзина
+        </Header>
 
         {cart.length === 0 ? (
           <Empty>Ваша корзина пуста</Empty>
@@ -45,18 +58,24 @@ export default function CartPreview({ isOpen, onClose }: Props) {
                 <Item key={item.id}>
                   <Title>{item.title}</Title>
                   <Controls>
-                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</button>
-                    <span>{item.quantity}</span>
-                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</button>
+                    <QtyButton onClick={() => updateQuantity(item.id, item.quantity - 1)}>-</QtyButton>
+                    <Qty>{item.quantity}</Qty>
+                    <QtyButton onClick={() => updateQuantity(item.id, item.quantity + 1)}>+</QtyButton>
+                    <Remove onClick={() => removeFromCart(item.id)}>
+                      <RemoveIcon viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M18 6L6 18M6 6l12 12" />
+                      </RemoveIcon>
+                    </Remove>
                   </Controls>
-                  <Remove onClick={() => removeFromCart(item.id)}>✕</Remove>
                 </Item>
               ))}
             </List>
-            <Total>Итого: {totalPrice} ₽</Total>
-            <Link href="/checkout" passHref>
-              <Checkout>Оформить заказ</Checkout>
-            </Link>
+            <Footer>
+              <Total>Итого: {totalPrice} ₽</Total>
+              <Link href="/checkout" passHref>
+                <Checkout>Оформить</Checkout>
+              </Link>
+            </Footer>
           </>
         )}
       </Card>
@@ -98,6 +117,29 @@ const Header = styled.h2`
   font-size: 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+`;
+
+const CartIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+`;
+
+const Close = styled.button`
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+`;
+
+const CloseIcon = styled.svg`
+  width: 20px;
+  height: 20px;
 `;
 
 const Empty = styled.div`
@@ -132,57 +174,56 @@ const Title = styled.span`
 const Controls = styled.div`
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.4rem;
+`;
 
-  button {
-    background: rgb(var(--primary));
-    color: white;
-    border: none;
-    padding: 0.3rem 0.8rem;
-    font-size: 1.2rem;
-    border-radius: 0.3rem;
-    cursor: pointer;
-  }
+const QtyButton = styled.button`
+  background: rgb(var(--primary));
+  color: white;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  font-size: 1.2rem;
+  border-radius: 0.3rem;
+  cursor: pointer;
+`;
 
-  span {
-    font-size: 1.2rem;
-    min-width: 2rem;
-    text-align: center;
-  }
+const Qty = styled.span`
+  font-size: 1.2rem;
+  min-width: 2rem;
+  text-align: center;
 `;
 
 const Remove = styled.button`
   background: transparent;
   border: none;
-  color: rgb(var(--accent));
-  font-size: 1.2rem;
   cursor: pointer;
+`;
+
+const RemoveIcon = styled.svg`
+  width: 16px;
+  height: 16px;
+  color: rgb(var(--accent));
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
 `;
 
 const Total = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
-  margin: 2rem 0 1rem;
-  text-align: center;
 `;
 
 const Checkout = styled.a`
   background: rgb(var(--primary));
   color: white;
   text-align: center;
-  padding: 1rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 0.5rem;
   text-decoration: none;
   font-size: 1.4rem;
-`;
-
-const Close = styled.button`
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.6rem;
-  color: rgb(var(--text));
-  cursor: pointer;
 `;
