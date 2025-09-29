@@ -301,3 +301,50 @@ const MobileOnly = styled.div`
     display: none;
   }
 `;
+const ContactInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 1.3rem;
+  color: rgb(var(--text));
+  text-align: left;
+  min-width: 240px;
+
+  ${media('<desktop')} {
+    display: flex;
+    margin-top: 1rem;
+  }
+`;
+const ContactLine = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.4rem;
+
+  &:hover {
+    background: rgba(var(--primary), 0.05);
+  }
+`;
+
+const ContactIcon = styled.svg`
+  width: 1.6rem;
+  height: 1.6rem;
+  fill: rgb(var(--primary));
+  flex-shrink: 0;
+`;
+
+const ContactLabel = styled.span`
+  font-weight: 600;
+  color: rgb(var(--text), 0.6);
+  min-width: 80px;
+`;
+
+const ContactValue = styled.span`
+  font-weight: 500;
+  color: rgb(var(--primary));
+  white-space: nowrap;
+`;
+
