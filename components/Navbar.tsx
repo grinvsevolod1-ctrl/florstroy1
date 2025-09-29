@@ -70,6 +70,12 @@ export default function Navbar({ items }: NavbarProps) {
     toggle();
   };
 
+  function copyToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      console.log(`Скопировано: ${text}`);
+    });
+  }
+
   return (
     <>
       <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
@@ -105,13 +111,19 @@ export default function Navbar({ items }: NavbarProps) {
           </NavItemList>
           <RightSide>
             <ContactInfo>
-              <ContactLine>
+              <ContactLine onClick={() => copyToClipboard('info@florstroy.ru')}>
+                <ContactIcon viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
+                </ContactIcon>
                 <ContactLabel>Email:</ContactLabel>
-                <ContactLink href="mailto:info@florstroy.ru">info@florstroy.ru</ContactLink>
+                <ContactValue>info@florstroy.ru</ContactValue>
               </ContactLine>
-              <ContactLine>
+              <ContactLine onClick={() => copyToClipboard('+79651686358')}>
+                <ContactIcon viewBox="0 0 24 24">
+                  <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.8z" />
+                </ContactIcon>
                 <ContactLabel>Телефон:</ContactLabel>
-                <ContactLink href="tel:+79651686358">+7 965 168-63-58</ContactLink>
+                <ContactValue>+7 965 168-63-58</ContactValue>
               </ContactLine>
             </ContactInfo>
             <IconGroup>
@@ -246,40 +258,6 @@ const LogoWrapper = styled.a`
   margin-right: auto;
   text-decoration: none;
   color: rgb(var(--logoColor));
-`;
-
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  font-size: 1.3rem;
-  color: rgb(var(--text));
-  text-align: right;
-
-  ${media('<desktop')} {
-    display: none;
-  }
-`;
-
-const ContactLine = styled.div`
-  display: flex;
-  gap: 0.6rem;
-  justify-content: flex-end;
-`;
-
-const ContactLabel = styled.span`
-  font-weight: 600;
-  color: rgb(var(--text), 0.6);
-`;
-
-const ContactLink = styled.a`
-  color: rgb(var(--primary));
-  text-decoration: none;
-  font-weight: 500;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const IconGroup = styled.div`
