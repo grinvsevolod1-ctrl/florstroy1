@@ -14,7 +14,11 @@ import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
 
-// ...импорты остаются без изменений...
+const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
+
+type NavbarProps = { items: NavItems };
+type ScrollingDirections = 'up' | 'down' | 'none';
+type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
@@ -65,12 +69,6 @@ export default function Navbar({ items }: NavbarProps) {
   const handleCartClick = () => {
     toggle();
   };
-
-  function copyToClipboard(text: string) {
-    navigator.clipboard.writeText(text).then(() => {
-      console.log(`Скопировано: ${text}`);
-    });
-  }
 
   return (
     <>
@@ -282,14 +280,7 @@ const MobileOnly = styled.div`
     display: none;
   }
 `;
-
-// Эти стили пригодятся в NavigationDrawer
-
-
-
-
-
-
+// Reusable contact styles (если используешь в NavigationDrawer или отдельном компоненте)
 
 const ContactLine = styled.div`
   display: flex;
