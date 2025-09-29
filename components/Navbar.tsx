@@ -22,7 +22,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
-  const drawer = OriginalDrawer.useDrawer();
+  const { toggle, open } = OriginalDrawer.useDrawer();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
@@ -68,11 +68,11 @@ export default function Navbar({ items }: NavbarProps) {
 
   const handleCartClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    drawer.toggle(); // открывает корзину, не бургер
+    toggle(); // ✅ открывает модальное окно корзины
   };
 
   const handleMenuClick = () => {
-    drawer.open(); // открывает бургер-меню
+    open(); // ✅ открывает бургер-меню
   };
 
   return (
@@ -240,8 +240,6 @@ const DropdownMenu = styled.ul`
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   z-index: 10;
 
-  li {
-    padding: 0.5    }
   }
 `;
 
