@@ -12,6 +12,7 @@ import Drawer from './Drawer';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
+import { useMediaQuery } from 'react-responsive';
 
 const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
 
@@ -24,6 +25,7 @@ export default function Navbar({ items }: NavbarProps) {
   const { toggle } = Drawer.useDrawer();
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
+  const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   let lastScrollY = useRef(0);
   const lastRoute = useRef('');
@@ -66,53 +68,58 @@ export default function Navbar({ items }: NavbarProps) {
   const isTransparent = scrollingDirection === 'none';
 
   return (
-    <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
-      <Content>
-        <NextLink href="/" passHref>
-          <LogoWrapper>
-            <Logo />
-          </LogoWrapper>
-        </NextLink>
-        <NavItemList>
-          {items.map((item) =>
-            item.submenu ? (
-              <DropdownWrapper key={item.title}>
-                <DropdownToggle>{item.title}</DropdownToggle>
-                <DropdownMenu>
-                  {item.submenu.map((sub) => (
-                    <li key={sub.href}>
-                      <NextLink href={sub.href!} passHref>
-                        <a>{sub.title}</a>
-                      </NextLink>
-                    </li>
-                  ))}
-                </DropdownMenu>
-              </DropdownWrapper>
-            ) : (
-              <NavItemWrapper key={item.href}>
-                <NextLink href={item.href!} passHref>
-                  <a>{item.title}</a>
-                </NextLink>
-              </NavItemWrapper>
-            )
-          )}
-        </NavItemList>
-        <ButtonGroup>
-          <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-        </ButtonGroup>
-        <IconGroup>
-          <IconCircle>
-            <ColorSwitcher />
-          </IconCircle>
-          <IconCircle offsetX="-2px" offsetY="-2px">
-            <CartIcon />
-          </IconCircle>
-          <IconCircle offsetY="2px" onClick={toggle}>
-            <HamburgerIcon aria-label="Toggle menu" />
-          </IconCircle>
-        </IconGroup>
-      </Content>
-    </NavbarContainer>
+    <>
+      <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
+        <Content>
+          <NextLink href="/" passHref>
+            <LogoWrapper>
+              <Logo />
+            </LogoWrapper>
+          </NextLink>
+          <NavItemList>
+            {items.map((item) =>
+              item.submenu ? (
+                <DropdownWrapper key={item.title}>
+                  <DropdownToggle>{item.title}</DropdownToggle>
+                  <DropdownMenu>
+                    {item.submenu.map((sub) => (
+                      <li key={sub.href}>
+                        <NextLink href={sub.href!} passHref>
+                          <a>{sub.title}</a>
+                        </NextLink>
+                      </li>
+                    ))}
+                  </DropdownMenu>
+                </DropdownWrapper>
+              ) : (
+                <NavItemWrapper key={item.href}>
+                  <NextLink href={item.href!} passHref>
+                    <a>{item.title}</a>
+                  </NextLink>
+                </NavItemWrapper>
+              )
+            )}
+          </NavItemList>
+          <ButtonGroup>
+            <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
+          </ButtonGroup>
+          <IconGroup>
+            <IconCircle>
+              <ColorSwitcher />
+            </IconCircle>
+            <IconCircle offsetX="-2px" offsetY="-2px">
+              <CartIcon />
+            </IconCircle>
+            <MobileOnly>
+              <IconCircle offsetY="2px" onClick={toggle}>
+                <HamburgerIcon aria-label="Toggle menu" />
+              </IconCircle>
+            </MobileOnly>
+          </IconGroup>
+        </Content>
+      </NavbarContainer>
+      {isMobile && <Drawer />}
+    </>
   );
 }
 
@@ -276,5 +283,11 @@ const IconCircle = styled.div<{ offsetX?: string; offsetY?: string }>`
     position: relative;
     top: ${(p) => p.offsetY || '0'};
     left: ${(p) => p.offsetX || '0'};
+  }
+`;
+
+const MobileOnly = styled.div`
+  ${media('>=desktop')} {
+    display: none;
   }
 `;
