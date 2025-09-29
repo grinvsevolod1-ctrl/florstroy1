@@ -25,8 +25,15 @@ export default function CartPreview({ isOpen, onClose }: Props) {
     const handleRouteChange = (url: string) => {
       if (url.includes('/checkout')) onClose();
     };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
     router.events.on('routeChangeStart', handleRouteChange);
-    return () => router.events.off('routeChangeStart', handleRouteChange);
+    document.addEventListener('keydown', handleEsc);
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange);
+      document.removeEventListener('keydown', handleEsc);
+    };
   }, []);
 
   if (!mounted || !isOpen) return null;
@@ -132,6 +139,15 @@ const Card = styled.div`
   flex-direction: column;
   position: relative;
   animation: ${fadeIn} 0.3s ease-out;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    border-radius: 0;
+    padding: 1.5rem;
+    justify-content: flex-start;
+  }
 `;
 
 const Header = styled.h2`
@@ -269,6 +285,7 @@ const Total = styled.div`
   font-size: 1.6rem;
   font-weight: bold;
 `;
+
 const Checkout = styled.a`
   background: rgb(var(--primary));
   color: white;
