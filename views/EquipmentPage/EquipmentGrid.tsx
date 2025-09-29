@@ -1,14 +1,24 @@
 import styled from 'styled-components';
-import { useCart } from 'hooks/useCart';
-import { equipmentItems } from 'data/equipment';
+import { useCartContext } from 'context/CartContext';
 import { motion } from 'framer-motion';
 
-export default function EquipmentGrid() {
-  const { addToCart } = useCart();
+type EquipmentItem = {
+  id: string;
+  title: string;
+  price: number;
+  image: string;
+};
+
+type Props = {
+  items: EquipmentItem[];
+};
+
+export default function EquipmentGrid({ items }: Props) {
+  const { addToCart } = useCartContext();
 
   return (
     <Grid>
-      {equipmentItems.map((item) => (
+      {items.map((item) => (
         <Card
           key={item.id}
           initial={{ opacity: 0, y: 20 }}
