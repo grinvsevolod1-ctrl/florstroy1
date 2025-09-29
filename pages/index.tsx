@@ -41,19 +41,16 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
             </p>
             <StyledList>
               <li>
-                <strong>Однослойное покрытие</strong> — с применением резиновой крошки (SBR) или каучукового гранулянта (EPDM).
-                <br />
-                Толщина: 10 мм по твёрдому основанию, 20 мм по грунту.
+                <strong>Бетонные полы с упрочненным верхним слоем.
+                
               </li>
               <li>
-                <strong>Двухслойное покрытие</strong> — с SBR и EPDM.
+                <strong>Полимерные полы
                 <br />
                 Толщина финишного слоя: от 5 мм.
               </li>
               <li>
-                <strong>Спрей-система</strong> — двухслойное покрытие с распылением.
-                <br />
-                Средняя толщина: около 12 мм.
+                <strong>Полы для паркингов
               </li>
             </StyledList>
             <p>
