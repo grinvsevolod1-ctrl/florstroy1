@@ -10,8 +10,6 @@ import { media } from 'utils/media';
 import Container from './Container';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
-import CartIcon from './CartIcon';
-import CartPreview from './CartPreview';
 import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
@@ -27,7 +25,6 @@ export default function Navbar({ items }: NavbarProps) {
   const { toggle } = OriginalDrawer.useDrawer();
   const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   let lastScrollY = useRef(0);
@@ -70,10 +67,6 @@ export default function Navbar({ items }: NavbarProps) {
   const isNavbarHidden = scrollingDirection === 'down';
   const isTransparent = scrollingDirection === 'none';
 
-  const handleCartClick = () => {
-    setIsCartOpen(true);
-  };
-
   return (
     <>
       <NavbarContainer hidden={isNavbarHidden} transparent={isTransparent}>
@@ -83,42 +76,40 @@ export default function Navbar({ items }: NavbarProps) {
               <Logo />
             </LogoWrapper>
           </NextLink>
-         <NavItemList>
-  {items.map((item) =>
-    item.href ? (
-      <NavItemWrapper key={item.href}>
-        <NextLink href={item.href} passHref>
-          <a>{item.title}</a>
-        </NextLink>
-      </NavItemWrapper>
-    ) : null
-  )}
-</NavItemList>
-
-       <RightSide>
-  <ButtonGroup>
-    <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-  </ButtonGroup>
-  <IconGroup>
-    <IconCircle>
-      <ColorSwitcher />
-    </IconCircle>
-    <MobileOnly>
-      <IconCircle offsetY="2px" onClick={toggle}>
-        <HamburgerIcon aria-label="Toggle menu" />
-      </IconCircle>
-    </MobileOnly>
-  </IconGroup>
-</RightSide>
-
+          <NavItemList>
+            {items.map((item) =>
+              item.href ? (
+                <NavItemWrapper key={item.href}>
+                  <NextLink href={item.href} passHref>
+                    <a>{item.title}</a>
+                  </NextLink>
+                </NavItemWrapper>
+              ) : null
+            )}
+          </NavItemList>
+          <RightSide>
+            <ButtonGroup>
+              <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
+            </ButtonGroup>
+            <IconGroup>
+              <IconCircle>
+                <ColorSwitcher />
+              </IconCircle>
+              <MobileOnly>
+                <IconCircle offsetY="2px" onClick={toggle}>
+                  <HamburgerIcon aria-label="Toggle menu" />
+                </IconCircle>
+              </MobileOnly>
+            </IconGroup>
+          </RightSide>
         </Content>
       </NavbarContainer>
       <NavigationDrawer items={items} />
-
-      {isCartOpen && <CartPreview isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />}
     </>
   );
 }
+
+// Styled Components
 
 const NavbarContainer = styled.div<NavbarContainerProps>`
   display: flex;
@@ -174,53 +165,6 @@ const NavItemWrapper = styled.li`
 
   &:not(:last-child) {
     margin-right: 2rem;
-  }
-`;
-
-const DropdownWrapper = styled.li`
-  position: relative;
-  font-size: 1.3rem;
-  text-transform: uppercase;
-  line-height: 2;
-  margin-right: 2rem;
-
-  &:hover ul {
-    display: block;
-  }
-`;
-
-const DropdownToggle = styled.span`
-  display: flex;
-  color: rgb(var(--text), 0.75);
-  letter-spacing: 0.025em;
-  padding: 0.75rem 1.5rem;
-  font-weight: 700;
-  cursor: pointer;
-`;
-
-const DropdownMenu = styled.ul`
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: rgb(var(--background));
-  list-style: none;
-  padding: 0.5rem 0;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 10;
-
-  li {
-    padding: 0.5rem 1.5rem;
-
-    a {
-      text-decoration: none;
-      color: rgb(var(--text));
-      font-weight: 500;
-    }
-
-    &:hover {
-      background: rgba(var(--primary), 0.1);
-    }
   }
 `;
 
