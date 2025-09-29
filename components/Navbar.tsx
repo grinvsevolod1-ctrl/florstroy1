@@ -1,3 +1,4 @@
+// Navbar.tsx
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -76,6 +77,7 @@ export default function Navbar({ items }: NavbarProps) {
               <Logo />
             </LogoWrapper>
           </NextLink>
+
           <NavItemList>
             {items.map((item) =>
               item.href ? (
@@ -87,10 +89,24 @@ export default function Navbar({ items }: NavbarProps) {
               ) : null
             )}
           </NavItemList>
+
           <RightSide>
+            <ContactBlock>
+              <a href="tel:+79651686358">📞 +7 965 168-63-58</a>
+              <a href="mailto:info@florstroy.ru">✉️ info@florstroy.ru</a>
+              <a
+                href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                📍 Одинцово, Можайское шоссе д.8
+              </a>
+            </ContactBlock>
+
             <ButtonGroup>
               <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
             </ButtonGroup>
+
             <IconGroup>
               <IconCircle>
                 <ColorSwitcher />
@@ -104,6 +120,7 @@ export default function Navbar({ items }: NavbarProps) {
           </RightSide>
         </Content>
       </NavbarContainer>
+
       <NavigationDrawer items={items} />
     </>
   );
@@ -117,7 +134,7 @@ const NavbarContainer = styled.div<NavbarContainerProps>`
   top: 0;
   padding: 1.5rem 0;
   width: 100%;
-  height: 8rem;
+  height: auto;
   z-index: var(--z-navbar);
   background-color: rgb(var(--navbarBackground));
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 5%);
@@ -131,12 +148,6 @@ const Content = styled(Container)`
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-`;
-
-const RightSide = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 `;
 
 const NavItemList = styled.ul`
@@ -175,8 +186,36 @@ const LogoWrapper = styled.a`
   color: rgb(var(--logoColor));
 `;
 
+const RightSide = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+`;
+
+const ContactBlock = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  line-height: 1.8;
+  text-align: right;
+
+  a {
+    color: rgb(var(--text));
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  ${media('<desktop')} {
+    display: none;
+  }
+`;
+
 const ButtonGroup = styled.div`
-  margin-left: 2rem;
   display: flex;
   gap: 1rem;
 
