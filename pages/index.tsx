@@ -39,20 +39,33 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
               Покрытие применяется на открытых игровых, спортивных и детских площадках, школьных стадионах и беговых дорожках.
               Устройство возможно по бетонному, асфальтовому или грунтовому основанию.
             </p>
-            <StyledList>
-              <li>
-                <strong>Бетонные полы с упрочненным верхним слоем.
-                
-              </li>
-              <li>
-                <strong>Полимерные полы
-                <br />
-                Толщина финишного слоя: от 5 мм.
-              </li>
-              <li>
-                <strong>Полы для паркингов
-              </li>
-            </StyledList>
+
+            <ServiceCards>
+              <ServiceCard>
+                <CardTitle>Бетонные полы</CardTitle>
+                <CardText>
+                  Бетонный пол с упрочнителем — часто используемая конструкция пола для зданий промышленного назначения.
+                  Подходит для большинства помещений без повышенных требований к покрытию пола.
+                </CardText>
+              </ServiceCard>
+
+              <ServiceCard>
+                <CardTitle>Полимерные полы</CardTitle>
+                <CardText>
+                  Для объектов, подверженных воздействию химически агрессивных сред, постоянным ударным нагрузкам,
+                  активному движению транспорта. Удовлетворяет любым санитарным требованиям.
+                </CardText>
+              </ServiceCard>
+
+              <ServiceCard>
+                <CardTitle>Полы для площадок и паркингов</CardTitle>
+                <CardText>
+                  Для эксплуатации под открытым небом. Выдерживают перепады температуры, процессы заморозки/разморозки,
+                  воздействие «дорожной» химии.
+                </CardText>
+              </ServiceCard>
+            </ServiceCards>
+
             <p>
               <Link href="/contact">Свяжитесь с нами</Link> для консультации и расчёта стоимости.
             </p>
@@ -127,6 +140,37 @@ const StyledList = styled.ul`
   strong {
     font-weight: 600;
   }
+`;
+
+const ServiceCards = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  margin: 4rem 0;
+`;
+
+const ServiceCard = styled.div`
+  background: white;
+  border-radius: 1.2rem;
+  padding: 2.5rem;
+  box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+`;
+
+const CardTitle = styled.h3`
+  font-size: 2rem;
+  margin-bottom: 1.2rem;
+  color: var(--primary);
+`;
+
+const CardText = styled.p`
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: rgb(var(--text));
 `;
 
 export async function getStaticProps() {
