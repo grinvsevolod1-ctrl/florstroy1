@@ -1,6 +1,5 @@
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+import NextLink from 'next/link';
 import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { NavItems } from 'types';
@@ -11,13 +10,7 @@ import OriginalDrawer from './Drawer';
 type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
 
 export default function NavigationDrawer({ children, items }: NavigationDrawerProps) {
-  const { setIsModalOpened } = useNewsletterModalContext();
   const { close } = OriginalDrawer.useDrawer();
-
-  function handleContactClick() {
-    close();
-    setIsModalOpened(true);
-  }
 
   function copyToClipboard(text: string) {
     navigator.clipboard.writeText(text).then(() => {
@@ -34,7 +27,6 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
               <div className="my-drawer-container">
                 <DrawerCloseButton />
                 <NavItemsList items={items} />
-                <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
                 <ContactBlock>
                   <ContactLine onClick={() => copyToClipboard('info@florstroy.ru')}>
                     <ContactIcon viewBox="0 0 24 24">
@@ -232,19 +224,6 @@ const Submenu = styled.ul`
       }
     }
   }
-`;
-
-const ContactButton = styled.button`
-  margin-top: auto;
-  margin-bottom: 2rem;
-  background: rgb(var(--primary));
-  color: white;
-  font-size: 1.6rem;
-  padding: 1.2rem 2rem;
-  border: none;
-  border-radius: 0.6rem;
-  font-weight: bold;
-  cursor: pointer;
 `;
 
 const ContactBlock = styled.div`
