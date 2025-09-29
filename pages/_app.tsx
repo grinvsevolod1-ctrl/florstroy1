@@ -1,3 +1,4 @@
+// _app.tsx
 import 'swiper/css';
 import 'swiper/css/bundle';
 import 'swiper/css/navigation';
@@ -20,7 +21,7 @@ import OrderModal from 'components/OrderModal';
 
 import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
-import { FeedbackModalModalContext } from 'contexts/feedback-modal.context';
+import { FeedbackModalProvider, useFeedbackModalContext } from 'contexts/feedback-modal.context';
 
 import { NavItems } from 'types';
 
@@ -45,7 +46,7 @@ const navItems: NavItems = [
         rel="noopener noreferrer"
         style={{ textDecoration: 'none', color: 'inherit' }}
       >
-        📍 Адрес: Россия, Московская область, Одинцово, Можайское шоссе д.8
+        📍 Россия, Московская область, Одинцово, Можайское шоссе д.8
       </a>
     ),
     href: '#',
