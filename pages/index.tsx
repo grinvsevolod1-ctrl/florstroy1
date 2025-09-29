@@ -34,7 +34,7 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
         <WhiteBackgroundContainer>
           <Hero />
 
-          <BasicSection imageUrl="/15.jpeg" title="Наши услуги" overTitle="Устройство спортивных покрытий">
+          <BasicSection imageUrl="/17.jpeg" title="Наши услуги" overTitle="Устройство бетонных покрытий">
             <p>
               Покрытие применяется на открытых игровых, спортивных и детских площадках, школьных стадионах и беговых дорожках.
               Устройство возможно по бетонному, асфальтовому или грунтовому основанию.
