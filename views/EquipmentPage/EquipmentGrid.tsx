@@ -1,34 +1,60 @@
 import styled from 'styled-components';
 import { useCartContext } from 'context/CartContext';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
 
 type EquipmentItem = {
   id: string;
   title: string;
+  description: string;
   price: number;
   image: string;
 };
 
-type Props = {
-  items: EquipmentItem[];
-};
+const equipment: EquipmentItem[] = [
+  {
+    id: 'machine-001',
+    title: 'Затирочная машина',
+    description: 'Для финишной обработки бетонных полов, высокая производительность.',
+    price: 45000,
+    image: '/equipment/trowel.jpg',
+  },
+  {
+    id: 'vacuum-002',
+    title: 'Промышленный пылесос',
+    description: 'Мощный, подходит для строительной пыли и жидкостей.',
+    price: 32000,
+    image: '/equipment/vacuum.jpg',
+  },
+  {
+    id: 'laser-003',
+    title: 'Лазерный нивелир',
+    description: 'Точная разметка уровней, дальность до 30 м.',
+    price: 8500,
+    image: '/equipment/laser.jpg',
+  },
+];
 
-export default function EquipmentGrid({ items }: Props) {
+export default function EquipmentGrid() {
   const { addToCart } = useCartContext();
+  const [animateId, setAnimateId] = useState<string | null>(null);
+
+  function handleAdd(item: EquipmentItem) {
+    addToCart(item);
+    setAnimateId(item.id);
+    setTimeout(() => setAnimateId(null), 300);
+  }
 
   return (
     <Grid>
-      {items.map((item) => (
-        <Card
-          key={item.id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
+      {equipment.map((item) => (
+        <Card key={item.id}>
           <Image src={item.image} alt={item.title} />
           <Title>{item.title}</Title>
+          <Description>{item.description}</Description>
           <Price>{item.price} ₽</Price>
-          <Button onClick={() => addToCart(item)}>Добавить в корзину</Button>
+          <OrderButton animate={animateId === item.id} onClick={() => handleAdd(item)}>
+            ➕ В корзину
+          </OrderButton>
         </Card>
       ))}
     </Grid>
@@ -37,44 +63,50 @@ export default function EquipmentGrid({ items }: Props) {
 
 const Grid = styled.div`
   display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
 `;
 
-const Card = styled(motion.div)`
+const Card = styled.div`
   background: rgb(var(--background));
   border-radius: 1rem;
   padding: 2rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
   text-align: center;
 `;
 
 const Image = styled.img`
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 1rem;
+  width: 100%;
+  height: 18rem;
+  object-fit: cover;
+  border-radius: 0.8rem;
 `;
 
-const Title = styled.h2`
-  font-size: 1.6rem;
-  margin-bottom: 0.5rem;
+const Title = styled.h3`
+  font-size: 2rem;
+  margin-top: 1.5rem;
+`;
+
+const Description = styled.p`
+  font-size: 1.4rem;
+  color: rgb(var(--text), 0.7);
 `;
 
 const Price = styled.div`
-  font-size: 1.4rem;
-  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin: 1rem 0;
 `;
 
-const Button = styled.button`
+const OrderButton = styled.button<{ animate?: boolean }>`
   background: rgb(var(--primary));
   color: white;
   border: none;
-  padding: 0.8rem 1.2rem;
-  font-size: 1.2rem;
-  border-radius: 0.4rem;
+  padding: 1rem 2rem;
+  font-size: 1.4rem;
+  border-radius: 0.5rem;
   cursor: pointer;
+  transition: transform 0.3s;
 
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
+  ${({ animate }) => animate && 'transform: scale(1.1);'}
 `;
