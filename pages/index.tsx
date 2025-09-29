@@ -3,7 +3,6 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import BasicSection from 'components/BasicSection';
 import Link from 'components/Link';
-import { EnvVars } from 'env';
 import { getAllPosts } from 'utils/postsFetcher';
 import Cta from 'views/HomePage/Cta';
 import Features from 'views/HomePage/Features';
@@ -11,23 +10,25 @@ import FeaturesGallery from 'views/HomePage/FeaturesGallery';
 import Hero from 'views/HomePage/Hero';
 import ScrollableBlogPosts from 'views/HomePage/ScrollableBlogPosts';
 
-
 export default function Homepage({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
-     <Head>
-  <title>FlorStroy — профессиональное устройство бетонных полов</title>
-  <meta name="description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
-  <meta property="og:title" content="FlorStroy — профессиональное устройство бетонных полов" />
-  <meta property="og:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
-  <meta property="og:url" content="https://florstroy.ru/" />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://florstroy.ru/og-images/preview.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="FlorStroy — профессиональное устройство бетонных полов" />
-  <meta name="twitter:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
-  <meta name="twitter:image" content="https://florstroy.ru/og-images/preview.jpg" />
-</Head>
+      <Head>
+        <title>FlorStroy — профессиональное устройство бетонных полов</title>
+        <meta name="description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+        <meta property="og:title" content="FlorStroy — профессиональное устройство бетонных полов" />
+        <meta property="og:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+        <meta property="og:url" content="https://florstroy.ru/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://florstroy.ru/test-article/13.jpeg" />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="FlorStroy — профессиональное устройство бетонных полов" />
+        <meta name="twitter:description" content="Стяжка, топпинг, эпоксидные покрытия, армирование, гидроизоляция. Работаем по Москве и области." />
+        <meta name="twitter:image" content="https://florstroy.ru/test-article/13.jpeg" />
+      </Head>
 
       <HomepageWrapper>
         <WhiteBackgroundContainer>
@@ -73,7 +74,7 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
               <li>Ударостойкость и лёгкость ремонта</li>
               <li>Низкая стоимость обслуживания</li>
             </StyledList>
-             <p>
+            <p>
               <Link href="/contact">Свяжитесь с нами</Link> для консультации и расчёта стоимости.
             </p>
           </BasicSection>
@@ -83,7 +84,6 @@ export default function Homepage({ posts }: InferGetStaticPropsType<typeof getSt
           <Cta />
           <FeaturesGallery />
           <Features />
-
           <ScrollableBlogPosts posts={posts} />
         </DarkerBackgroundContainer>
       </HomepageWrapper>
