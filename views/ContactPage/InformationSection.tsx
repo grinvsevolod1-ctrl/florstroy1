@@ -17,8 +17,8 @@ export default function InformationSection() {
           <InfoList>
             <li><strong>ИНН:</strong> 5032389646 </li>
             <li><strong>Адрес:</strong> Россия, Московская область, Одинцово, Можайское шоссе д.8</li>
-            <li><strong>Телефон:</strong> <a href="tel:+74956624994">+7 495 662 49 94</a></li>
-            <li><strong>Телефон:</strong> <a href="tel:+79681868828">+7 968 186 88 28</a></li>
+            <li><strong>Телефон:</strong> <a href="tel:+79651686358">+7 965 168 63 58</a></li>
+            
             <li><strong>Email:</strong> <a href="mailto:info@fabrikastroy.ru">info@florstroy.ru</a></li>
           </InfoList>
 
