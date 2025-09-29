@@ -1,7 +1,7 @@
 import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { NavItems } from 'types';
 import ClientOnly from './ClientOnly';
@@ -42,7 +42,6 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
 function NavItemsList({ items }: { items: NavItems }) {
   const { close } = OriginalDrawer.useDrawer();
   const router = useRouter();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   useEffect(() => {
     function handleRouteChangeComplete() {
@@ -55,43 +54,15 @@ function NavItemsList({ items }: { items: NavItems }) {
 
   return (
     <ul>
-      {items.map((item, idx) => {
-        const isOpen = openIndex === idx;
-
-        if (item.submenu) {
-          return (
-            <NavItem key={idx}>
-              <DropdownToggle onClick={() => setOpenIndex(isOpen ? null : idx)}>
-                {item.title}
-                <Arrow isOpen={isOpen}>▾</Arrow>
-              </DropdownToggle>
-              {isOpen && (
-                <Submenu>
-                  {item.submenu.map((sub, subIdx) =>
-                    sub.href ? (
-                      <li key={subIdx}>
-                        <NextLink href={sub.href} passHref>
-                          <a>{sub.title}</a>
-                        </NextLink>
-                      </li>
-                    ) : null
-                  )}
-                </Submenu>
-              )}
-            </NavItem>
-          );
-        }
-
-        if (!item.href) return null;
-
-        return (
+      {items.map((item, idx) =>
+        item.href ? (
           <NavItem key={idx}>
             <NextLink href={item.href} passHref>
               <a>{item.title}</a>
             </NextLink>
           </NavItem>
-        );
-      })}
+        ) : null
+      )}
     </ul>
   );
 }
@@ -102,6 +73,8 @@ function DrawerCloseButton() {
 
   return <CloseIcon className="close-icon" _ref={ref} {...a11yProps} />;
 }
+
+// Styled Components
 
 const Wrapper = styled.div`
   .my-drawer {
@@ -158,7 +131,7 @@ const Wrapper = styled.div`
 const NavItem = styled.li`
   text-align: center;
 
-  > a, > span {
+  a {
     font-size: 3rem;
     text-transform: uppercase;
     display: block;
@@ -166,46 +139,9 @@ const NavItem = styled.li`
     text-decoration: none;
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
-  }
-`;
 
-const DropdownToggle = styled.span`
-  font-size: 3rem;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: rgb(var(--text));
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-`;
-
-const Arrow = styled.span<{ isOpen: boolean }>`
-  margin-left: 1rem;
-  font-size: 2rem;
-  transform: rotate(${(p) => (p.isOpen ? '180deg' : '0deg')});
-  transition: transform 0.3s ease;
-`;
-
-const Submenu = styled.ul`
-  margin-top: 1rem;
-  list-style: none;
-  padding: 0;
-
-  li {
-    margin: 0.5rem 0;
-
-    a {
-      font-size: 2rem;
-      color: rgb(var(--text));
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      display: block;
-      border-radius: 0.4rem;
-
-      &:hover {
-        background: rgba(var(--primary), 0.1);
-      }
+    &:hover {
+      background: rgba(var(--primary), 0.05);
     }
   }
 `;
@@ -221,4 +157,8 @@ const ContactButton = styled.button`
   border-radius: 0.6rem;
   font-weight: bold;
   cursor: pointer;
+
+  &:hover {
+    background: rgb(var(--primary), 0.85);
+  }
 `;
