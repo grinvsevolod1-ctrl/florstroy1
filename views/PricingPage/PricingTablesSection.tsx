@@ -92,7 +92,7 @@ const cards = [
   {
     title: 'Промышленные бетонные полы',
     priceWith: 'от 1800',
-    priceWithout: 'от 1300',
+    priceWithout: 'от 750',
     description: [
       {
         heading: 'Устройство бетонных промышленных полов',
@@ -118,7 +118,7 @@ const cards = [
   {
     title: 'Полимерные наливные полы',
     priceWith: 'от 2000',
-    priceWithout: 'от 1500',
+    priceWithout: 'от 1000',
     description: [
       {
         heading: 'Устройство полимерных полов',
