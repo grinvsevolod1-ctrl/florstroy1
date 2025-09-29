@@ -14,11 +14,7 @@ import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
 
-const ColorSwitcher = dynamic(() => import('../components/ColorSwitcher'), { ssr: false });
-
-type NavbarProps = { items: NavItems };
-type ScrollingDirections = 'up' | 'down' | 'none';
-type NavbarContainerProps = { hidden: boolean; transparent: boolean };
+// ...импорты остаются без изменений...
 
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
@@ -110,22 +106,6 @@ export default function Navbar({ items }: NavbarProps) {
             )}
           </NavItemList>
           <RightSide>
-            <ContactInfo>
-              <ContactLine onClick={() => copyToClipboard('info@florstroy.ru')}>
-                <ContactIcon viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
-                </ContactIcon>
-                <ContactLabel>Email:</ContactLabel>
-                <ContactValue>info@florstroy.ru</ContactValue>
-              </ContactLine>
-              <ContactLine onClick={() => copyToClipboard('+79651686358')}>
-                <ContactIcon viewBox="0 0 24 24">
-                  <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1 1 0 011.11-.21c1.21.49 2.53.76 3.88.76a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 22 2 13.93 2 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.35.26 2.67.76 3.88a1 1 0 01-.21 1.11l-2.43 2.8z" />
-                </ContactIcon>
-                <ContactLabel>Телефон:</ContactLabel>
-                <ContactValue>+7 965 168-63-58</ContactValue>
-              </ContactLine>
-            </ContactInfo>
             <IconGroup>
               <IconCircle>
                 <ColorSwitcher />
@@ -181,6 +161,7 @@ const NavItemList = styled.ul`
   display: flex;
   list-style: none;
   align-items: center;
+  margin-left: -1rem;
 
   ${media('<desktop')} {
     display: none;
@@ -301,20 +282,15 @@ const MobileOnly = styled.div`
     display: none;
   }
 `;
-const ContactInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  font-size: 1.3rem;
-  color: rgb(var(--text));
-  text-align: left;
-  min-width: 240px;
 
-  ${media('<desktop')} {
-    display: flex;
-    margin-top: 1rem;
-  }
-`;
+// Эти стили пригодятся в NavigationDrawer
+
+
+
+
+
+
+
 const ContactLine = styled.div`
   display: flex;
   align-items: center;
@@ -347,4 +323,3 @@ const ContactValue = styled.span`
   color: rgb(var(--primary));
   white-space: nowrap;
 `;
-
