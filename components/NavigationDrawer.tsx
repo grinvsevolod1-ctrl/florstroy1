@@ -1,164 +1,112 @@
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useRef } from 'react';
-import styled from 'styled-components';
+// _app.tsx
+import 'swiper/css';
+import 'swiper/css/bundle';
+import 'swiper/css/navigation';
+import 'swiper/css/autoplay';
+
+import { AppProps } from 'next/dist/shared/lib/router/router';
+import Head from 'next/head';
+import { ColorModeScript } from 'nextjs-color-mode';
+import React, { PropsWithChildren, useState } from 'react';
+
+import Footer from 'components/Footer';
+import { GlobalStyle } from 'components/GlobalStyles';
+import Navbar from 'components/Navbar';
+import NavigationDrawer from 'components/NavigationDrawer';
+import ApplicationModal from 'components/ApplicationModal';
+import CalculatorModal from 'components/CalculatorModal';
+import FeedbackModal from 'components/FeedbackModal';
+import WaveCta from 'components/WaveCta';
+import OrderModal from 'components/OrderModal';
+
+import { NewsletterModalContextProvider, useNewsletterModalContext } from 'contexts/newsletter-modal.context';
+import { CalculatorModalProvider, useCalculatorModalContext } from 'contexts/calculator-modal.context';
+import { FeedbackModalProvider, useFeedbackModalContext } from 'contexts/feedback-modal.context';
+
 import { NavItems } from 'types';
-import ClientOnly from './ClientOnly';
-import CloseIcon from './CloseIcon';
-import OriginalDrawer from './Drawer';
 
-type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
+const navItems: NavItems = [
+  { title: 'Проекты', href: '/blog' },
+  { title: 'Услуги', href: '/pricing' },
+  { title: 'Контакты', href: '/contact' },
+  {
+    title: (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', lineHeight: '1.5' }}>
+        <a href="tel:+79651686358" style={{ textDecoration: 'none', color: 'inherit' }}>📞 +7 965 168-63-58</a>
+        <a href="mailto:info@florstroy.ru" style={{ textDecoration: 'none', color: 'inherit' }}>✉️ info@florstroy.ru</a>
+      </div>
+    ),
+    href: '#',
+  },
+  {
+    title: (
+      <a
+        href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+      >
+        📍 Россия, Московская область, Одинцово, Можайское шоссе д.8
+      </a>
+    ),
+    href: '#',
+  },
+];
 
-export default function NavigationDrawer({ children, items }: NavigationDrawerProps) {
-  const { setIsModalOpened } = useNewsletterModalContext();
-  const { close } = OriginalDrawer.useDrawer();
-
-  function handleContactClick() {
-    close();
-    setIsModalOpened(true);
-  }
+function MyApp({ Component, pageProps }: AppProps) {
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
 
   return (
-    <OriginalDrawer.Drawer>
-      <Wrapper>
-        <ClientOnly>
-          <OriginalDrawer.Target openClass="drawer-opened" closedClass="drawer-closed">
-            <div className="my-drawer">
-              <div className="my-drawer-container">
-                <DrawerCloseButton />
-                <NavItemsList items={items} />
-                <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
-              </div>
-            </div>
-          </OriginalDrawer.Target>
-        </ClientOnly>
-      </Wrapper>
-      {children}
-    </OriginalDrawer.Drawer>
+    <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="icon" type="image/png" href="/favicon.ico" />
+      </Head>
+      <ColorModeScript />
+      <GlobalStyle />
+
+      <Providers>
+        <Modals isOrderOpen={isOrderOpen} setIsOrderOpen={setIsOrderOpen} />
+        <Navbar items={navItems} />
+        <Component {...pageProps} />
+        <WaveCta />
+        <Footer />
+      </Providers>
+    </>
   );
 }
 
-function NavItemsList({ items }: { items: NavItems }) {
-  const { close } = OriginalDrawer.useDrawer();
-  const router = useRouter();
-
-  useEffect(() => {
-    function handleRouteChangeComplete() {
-      close();
-    }
-
-    router.events.on('routeChangeComplete', handleRouteChangeComplete);
-    return () => router.events.off('routeChangeComplete', handleRouteChangeComplete);
-  }, [close, router]);
-
+function Providers<T>({ children }: PropsWithChildren<T>) {
   return (
-    <ul>
-      {items.map((item, idx) =>
-        item.href ? (
-          <NavItem key={idx}>
-            <NextLink href={item.href} passHref>
-              <a>{item.title}</a>
-            </NextLink>
-          </NavItem>
-        ) : null
-      )}
-    </ul>
+    <NewsletterModalContextProvider>
+      <CalculatorModalProvider>
+        <FeedbackModalProvider>
+          <NavigationDrawer items={navItems}>{children}</NavigationDrawer>
+        </FeedbackModalProvider>
+      </CalculatorModalProvider>
+    </NewsletterModalContextProvider>
   );
 }
 
-function DrawerCloseButton() {
-  const ref = useRef(null);
-  const a11yProps = OriginalDrawer.useA11yCloseButton(ref);
+type ModalsProps = {
+  isOrderOpen: boolean;
+  setIsOrderOpen: (v: boolean) => void;
+};
 
-  return <CloseIcon className="close-icon" _ref={ref} {...a11yProps} />;
+function Modals({ isOrderOpen, setIsOrderOpen }: ModalsProps) {
+  const { isModalOpened, setIsModalOpened } = useNewsletterModalContext();
+  const { isCalculatorOpened, setIsCalculatorOpened } = useCalculatorModalContext();
+  const { isOpen, setIsOpen } = useFeedbackModalContext();
+
+  return (
+    <>
+      {isModalOpened && <ApplicationModal onClose={() => setIsModalOpened(false)} />}
+      {isCalculatorOpened && <CalculatorModal onClose={() => setIsCalculatorOpened(false)} />}
+      {isOpen && <FeedbackModal />}
+      {isOrderOpen && <OrderModal onClose={() => setIsOrderOpen(false)} />}
+    </>
+  );
 }
 
-// Styled Components
-
-const Wrapper = styled.div`
-  .my-drawer {
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-drawer);
-    background: rgb(var(--background));
-    transition: margin-left 0.3s cubic-bezier(0.82, 0.085, 0.395, 0.895);
-    overflow: hidden;
-  }
-
-  .my-drawer-container {
-    position: relative;
-    height: 100%;
-    margin: auto;
-    max-width: 70rem;
-    padding: 0 1.2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .close-icon {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-  }
-
-  .drawer-closed {
-    margin-left: -100%;
-  }
-
-  .drawer-opened {
-    margin-left: 0;
-  }
-
-  ul {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    & > *:not(:last-child) {
-      margin-bottom: 3rem;
-    }
-  }
-`;
-
-const NavItem = styled.li`
-  text-align: center;
-
-  a {
-    font-size: 3rem;
-    text-transform: uppercase;
-    display: block;
-    color: rgb(var(--text));
-    text-decoration: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-
-    &:hover {
-      background: rgba(var(--primary), 0.05);
-    }
-  }
-`;
-
-const ContactButton = styled.button`
-  margin-top: auto;
-  margin-bottom: 2rem;
-  background: rgb(var(--primary));
-  color: white;
-  font-size: 1.6rem;
-  padding: 1.2rem 2rem;
-  border: none;
-  border-radius: 0.6rem;
-  font-weight: bold;
-  cursor: pointer;
-
-  &:hover {
-    background: rgb(var(--primary), 0.85);
-  }
-`;
+export default MyApp;
