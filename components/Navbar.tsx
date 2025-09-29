@@ -3,7 +3,6 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
 import { ScrollPositionEffectProps, useScrollPosition } from 'hooks/useScrollPosition';
 import { NavItems } from 'types';
 import { media } from 'utils/media';
@@ -11,7 +10,6 @@ import Container from './Container';
 import { HamburgerIcon } from './HamburgerIcon';
 import Logo from './Logo';
 import CartIcon from './CartIcon';
-import CartPreview from './CartPreview';
 import NavigationDrawer from './NavigationDrawer';
 import OriginalDrawer from './Drawer';
 import { useMediaQuery } from 'react-responsive';
@@ -25,9 +23,7 @@ type NavbarContainerProps = { hidden: boolean; transparent: boolean };
 export default function Navbar({ items }: NavbarProps) {
   const router = useRouter();
   const { toggle } = OriginalDrawer.useDrawer();
-  const { setIsModalOpened } = useNewsletterModalContext();
   const [scrollingDirection, setScrollingDirection] = useState<ScrollingDirections>('none');
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 1023 });
 
   let lastScrollY = useRef(0);
@@ -71,7 +67,7 @@ export default function Navbar({ items }: NavbarProps) {
   const isTransparent = scrollingDirection === 'none';
 
   const handleCartClick = () => {
-    setIsCartOpen(true);
+    toggle();
   };
 
   return (
@@ -108,14 +104,23 @@ export default function Navbar({ items }: NavbarProps) {
             )}
           </NavItemList>
           <RightSide>
-            <ButtonGroup>
-              <ContactButton onClick={() => setIsModalOpened(true)}>Оставить заявку</ContactButton>
-            </ButtonGroup>
+            <ContactInfo>
+              <ContactLine>
+                <ContactLabel>Email:</ContactLabel>
+                <ContactLink href="mailto:info@florstroy.ru">info@florstroy.ru</ContactLink>
+              </ContactLine>
+              <ContactLine>
+                <ContactLabel>Телефон:</ContactLabel>
+                <ContactLink href="tel:+79651686358">+7 965 168-63-58</ContactLink>
+              </ContactLine>
+            </ContactInfo>
             <IconGroup>
               <IconCircle>
                 <ColorSwitcher />
               </IconCircle>
-              <CartIcon onClick={handleCartClick} />
+              <IconCircle offsetX="-2px" offsetY="-2px" onClick={handleCartClick}>
+                <CartIcon />
+              </IconCircle>
               <MobileOnly>
                 <IconCircle offsetY="2px" onClick={toggle}>
                   <HamburgerIcon aria-label="Toggle menu" />
@@ -126,10 +131,11 @@ export default function Navbar({ items }: NavbarProps) {
         </Content>
       </NavbarContainer>
       <NavigationDrawer items={items} />
-      {isCartOpen && <CartPreview isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />}
     </>
   );
 }
+
+// Styled Components
 
 const NavbarContainer = styled.div<NavbarContainerProps>`
   display: flex;
@@ -156,7 +162,7 @@ const Content = styled(Container)`
 const RightSide = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
 `;
 
 const NavItemList = styled.ul`
@@ -242,30 +248,37 @@ const LogoWrapper = styled.a`
   color: rgb(var(--logoColor));
 `;
 
-const ButtonGroup = styled.div`
-  margin-left: 2rem;
+const ContactInfo = styled.div`
   display: flex;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 1.3rem;
+  color: rgb(var(--text));
+  text-align: right;
 
   ${media('<desktop')} {
     display: none;
   }
 `;
 
-const ContactButton = styled.button`
-  background: rgb(var(--primary));
-  color: white;
-  border: none;
-  padding: 1rem 2rem;
-  font-size: 1.3rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: background 0.3s;
+const ContactLine = styled.div`
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+`;
+
+const ContactLabel = styled.span`
+  font-weight: 600;
+  color: rgb(var(--text), 0.6);
+`;
+
+const ContactLink = styled.a`
+  color: rgb(var(--primary));
+  text-decoration: none;
+  font-weight: 500;
 
   &:hover {
-    background: rgb(var(--primary), 0.85);
+    text-decoration: underline;
   }
 `;
 
