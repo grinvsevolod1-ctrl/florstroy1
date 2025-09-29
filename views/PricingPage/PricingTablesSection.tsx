@@ -8,7 +8,7 @@ export default function PricingTablesSection() {
   const { setIsOpen, setSelectedService } = useFeedbackModalContext();
 
   const handleOpenModal = (serviceTitle: string) => {
-    console.log(Открыта форма для: ${serviceTitle});
+    console.log(`Открыта форма для: ${serviceTitle}`);
     setSelectedService(serviceTitle);
     setIsOpen(true);
   };
@@ -153,7 +153,7 @@ const Card = styled.div`
   }
 `;
 
-const CardContent = styled.div;
+const CardContent = styled.div``;
 
 const CardTitle = styled.h3`
   font-size: 2.2rem;
