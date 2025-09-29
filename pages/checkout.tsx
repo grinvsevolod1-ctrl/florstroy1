@@ -1,224 +1,219 @@
-import { useNewsletterModalContext } from 'contexts/newsletter-modal.context';
-import NextLink from 'next/link';
-import { useRouter } from 'next/router';
-import { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { NavItems } from 'types';
-import ClientOnly from './ClientOnly';
-import CloseIcon from './CloseIcon';
-import OriginalDrawer from './Drawer';
+import { useState } from 'react';
+import { useCartContext } from 'context/CartContext';
 
-type NavigationDrawerProps = PropsWithChildren<{ items: NavItems }>;
+export default function Checkout() {
+  const { cart, totalPrice } = useCartContext();
+  const [email, setEmail] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
 
-export default function NavigationDrawer({ children, items }: NavigationDrawerProps) {
-  const { setIsModalOpened } = useNewsletterModalContext();
-  const { close } = OriginalDrawer.useDrawer();
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Введите корректный email');
+      return;
+    }
 
-  function handleContactClick() {
-    close();
-    setIsModalOpened(true);
+    try {
+      await fetch('/api/sendOrder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          cart,
+          name: 'Клиент',
+          contactMethod: 'Email',
+          contactValue: email,
+          email,
+          comment: '',
+        }),
+      });
+      setSubmitted(true);
+      setError('');
+    } catch {
+      setError('Ошибка отправки заказа');
+    }
   }
 
   return (
-    <OriginalDrawer.Drawer>
-      <Wrapper>
-        <ClientOnly>
-          <OriginalDrawer.Target openClass="drawer-opened" closedClass="drawer-closed">
-            <div className="my-drawer">
-              <div className="my-drawer-container">
-                <DrawerCloseButton />
-                <NavItemsList items={items} />
-                <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
-              </div>
-            </div>
-          </OriginalDrawer.Target>
-        </ClientOnly>
-      </Wrapper>
-      {children}
-    </OriginalDrawer.Drawer>
+    <Wrapper>
+      <Title>Оформление заказа</Title>
+
+      {submitted ? (
+        <Success>
+          <SuccessIcon viewBox="0 0 24 24">
+            <path fill="green" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+          </SuccessIcon>
+          <h3>Спасибо за заказ!</h3>
+          <p>Подтверждение отправлено на <strong>{email}</strong>.</p>
+        </Success>
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <CartBlock>
+            <CartIcon viewBox="0 0 24 24">
+              <path fill="currentColor" d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 
+              0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.16 
+              14l.84-2h8.99c.75 0 1.41-.41 1.75-1.03l3.58-6.49A.996.996 
+              0 0021.99 3H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 
+              13.37 5.48 15 7 15h12v-2H7.16z" />
+            </CartIcon>
+            <h3>Корзина</h3>
+            <ul>
+              {cart.map((item) => (
+                <li key={item.id}>
+                  <strong>{item.title}</strong> × {item.quantity} — {item.price * item.quantity} ₽
+                </li>
+              ))}
+            </ul>
+            <Total>Итого: {totalPrice} ₽</Total>
+          </CartBlock>
+
+          <Field>
+            <Label>
+              <EmailIcon viewBox="0 0 24 24">
+                <path fill="currentColor" d="M20 4H4a2 2 0 0 0-2 2v12a2 
+                  2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 
+                  2v.01L12 13 4 6.01V6h16zM4 18V8l8 5 8-5v10H4z" />
+              </EmailIcon>
+              Email <span>*</span>
+            </Label>
+            <Input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            {error && <Error>{error}</Error>}
+          </Field>
+
+          <Submit>Оформить заказ</Submit>
+        </Form>
+      )}
+    </Wrapper>
   );
-}
-
-function NavItemsList({ items }: { items: NavItems }) {
-  const { close } = OriginalDrawer.useDrawer();
-  const router = useRouter();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    function handleRouteChangeComplete() {
-      close();
-    }
-
-    router.events.on('routeChangeComplete', handleRouteChangeComplete);
-    return () => router.events.off('routeChangeComplete', handleRouteChangeComplete);
-  }, [close, router]);
-
-  return (
-    <ul>
-      {items.map((item, idx) => {
-        const isOpen = openIndex === idx;
-
-        if (item.submenu) {
-          return (
-            <NavItem key={idx}>
-              <DropdownToggle onClick={() => setOpenIndex(isOpen ? null : idx)}>
-                {item.title}
-                <Arrow isOpen={isOpen}>▾</Arrow>
-              </DropdownToggle>
-              {isOpen && (
-                <Submenu>
-                  {item.submenu.map((sub, subIdx) =>
-                    sub.href ? (
-                      <li key={subIdx}>
-                        <NextLink href={sub.href} passHref>
-                          <a>{sub.title}</a>
-                        </NextLink>
-                      </li>
-                    ) : null
-                  )}
-                </Submenu>
-              )}
-            </NavItem>
-          );
-        }
-
-        if (!item.href) return null;
-
-        return (
-          <NavItem key={idx}>
-            <NextLink href={item.href} passHref>
-              <a>{item.title}</a>
-            </NextLink>
-          </NavItem>
-        );
-      })}
-    </ul>
-  );
-}
-
-function DrawerCloseButton() {
-  const ref = useRef(null);
-  const a11yProps = OriginalDrawer.useA11yCloseButton(ref);
-
-  return <CloseIcon className="close-icon" _ref={ref} {...a11yProps} />;
 }
 
 const Wrapper = styled.div`
-  .my-drawer {
-    width: 100%;
-    height: 100%;
-    z-index: var(--z-drawer);
-    background: rgb(var(--background));
-    transition: margin-left 0.3s cubic-bezier(0.82, 0.085, 0.395, 0.895);
-    overflow: hidden;
-  }
+  max-width: 600px;
+  margin: auto;
+  padding: 3rem 2rem;
+`;
 
-  .my-drawer-container {
-    position: relative;
-    height: 100%;
-    margin: auto;
-    max-width: 70rem;
-    padding: 0 1.2rem;
+const Title = styled.h2`
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  text-align: center;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+`;
+
+const CartBlock = styled.div`
+  background: rgba(var(--text), 0.03);
+  padding: 2rem;
+  border-radius: 1rem;
+
+  h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-  }
-
-  .close-icon {
-    position: absolute;
-    right: 2rem;
-    top: 2rem;
-  }
-
-  .drawer-closed {
-    margin-left: -100%;
-  }
-
-  .drawer-opened {
-    margin-left: 0;
+    gap: 0.6rem;
   }
 
   ul {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0;
-    margin: 0;
     list-style: none;
+    padding: 0;
+    margin-bottom: 1rem;
 
-    & > *:not(:last-child) {
-      margin-bottom: 3rem;
+    li {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
     }
   }
 `;
 
-const NavItem = styled.li`
-  text-align: center;
-
-  > a, > span {
-    font-size: 3rem;
-    text-transform: uppercase;
-    display: block;
-    color: rgb(var(--text));
-    text-decoration: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem 1rem;
-  }
+const Total = styled.div`
+  font-weight: bold;
+  font-size: 1.4rem;
 `;
 
-const DropdownToggle = styled.span`
-  font-size: 3rem;
-  text-transform: uppercase;
+const Field = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Label = styled.label`
+  font-weight: bold;
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
-  justify-content: center;
-  color: rgb(var(--text));
-  cursor: pointer;
-  padding: 0.5rem 1rem;
-`;
+  gap: 0.6rem;
 
-const Arrow = styled.span<{ isOpen: boolean }>`
-  margin-left: 1rem;
-  font-size: 2rem;
-  transform: rotate(${(p) => (p.isOpen ? '180deg' : '0deg')});
-  transition: transform 0.3s ease;
-`;
-
-const Submenu = styled.ul`
-  margin-top: 1rem;
-  list-style: none;
-  padding: 0;
-
-  li {
-    margin: 0.5rem 0;
-
-    a {
-      font-size: 2rem;
-      color: rgb(var(--text));
-      text-decoration: none;
-      padding: 0.5rem 1rem;
-      display: block;
-      border-radius: 0.4rem;
-
-      &:hover {
-        background: rgba(var(--primary), 0.1);
-      }
-    }
+  span {
+    color: red;
+    margin-left: 0.4rem;
   }
 `;
 
-const ContactButton = styled.button`
-  margin-top: auto;
-  margin-bottom: 2rem;
+const Input = styled.input`
+  margin-top: 0.5rem;
+  padding: 1rem;
+  font-size: 1.4rem;
+  border: 1px solid rgba(var(--text), 0.2);
+  border-radius: 0.4rem;
+`;
+
+const Submit = styled.button`
   background: rgb(var(--primary));
   color: white;
   font-size: 1.6rem;
-  padding: 1.2rem 2rem;
+  padding: 1.2rem;
   border: none;
   border-radius: 0.6rem;
-  font-weight: bold;
   cursor: pointer;
+  font-weight: bold;
+
+  &:hover {
+    background: rgb(var(--primary), 0.85);
+  }
+`;
+
+const Error = styled.div`
+  color: red;
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+`;
+
+const Success = styled.div`
+  text-align: center;
+
+  h3 {
+    font-size: 2rem;
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+  }
+`;
+
+const EmailIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+`;
+
+const CartIcon = styled.svg`
+  width: 20px;
+  height: 20px;
+`;
+
+const SuccessIcon = styled.svg`
+  width: 80px;
+  height: 80px;
+  margin: auto;
 `;
