@@ -37,7 +37,7 @@ export default function NavigationDrawer({ children, items }: NavigationDrawerPr
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    📍 Одинцово, Можайское шоссе д.8
+                    📍 Одинцово, Можайское шоссе д.8А
                   </a>
                 </ContactInfo>
                 <ContactButton onClick={handleContactClick}>📩 Связаться</ContactButton>
