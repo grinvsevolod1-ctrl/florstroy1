@@ -95,7 +95,7 @@ export default function Navbar({ items }: NavbarProps) {
               <a href="tel:+79651686358">📞 +7 965 168-63-58</a>
               <a href="mailto:info@florstroy.ru">✉️ info@florstroy.ru</a>
               <a
-                href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8"
+                href="https://yandex.ru/maps/?text=Россия%2C%20Московская%20область%2C%20Одинцово%2C%20Можайское%20шоссе%20д.8А"
                 target="_blank"
                 rel="noopener noreferrer"
               >
