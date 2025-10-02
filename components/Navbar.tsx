@@ -99,7 +99,7 @@ export default function Navbar({ items }: NavbarProps) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                📍 Одинцово, Можайское шоссе д.8А
+                📍 Одинцово, Можайское шоссе д.8Г
               </a>
             </ContactBlock>
 
