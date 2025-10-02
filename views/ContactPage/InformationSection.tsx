@@ -39,16 +39,15 @@ export default function InformationSection() {
         <MapBlock>
           <YMaps>
             <Map defaultState={{ center: [55.6785, 37.2631], zoom: 15 }} width="100%" height="400px">
-              <Placemark geometry={[55.6785, 37.2631]} />
-            </Map>
+  <Placemark geometry={[55.6785, 37.2631]} />
+</Map>
           </YMaps>
           <MapButton
-            href="https://yandex.by/maps/10743/odincovo/house/mozhayskoye_shosse_8/Z04YdAFpSkUCQFtvfXp2cHxqYw==/?ll=37.269305%2C55.671097&z=16"
-            target="_blank"
-          >
-            Открыть в Яндекс.Картах
-          </MapButton>
-        </MapBlock>
+  href="https://yandex.ru/maps/10743/odincovo/house/mozhayskoye_shosse_8g/Z04YdAFpSUACQFtvfXp2cHxqYw==/?ll=37.263100%2C55.678500&z=16"
+  target="_blank"
+>
+  Открыть в Яндекс.Картах
+</MapButton>
       </Grid>
     </Wrapper>
   );
