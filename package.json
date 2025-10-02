@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@accessible/drawer": "^3.0.2",
@@ -41,7 +42,8 @@
     "url-loader": "^4.1.1",
     "use-clipboard-copy": "^0.2.0",
     "use-resize-observer": "^9.1.0",
-    "js-cookie": "^3.0.5"
+    "js-cookie": "^3.0.5",
+    "next-sitemap": "^4.1.7"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.11.0",
