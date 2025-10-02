@@ -19,7 +19,7 @@ export default function InformationSection() {
             <li><strong>Адрес:</strong> Россия, Московская область, Одинцово, Можайское шоссе д.8Г</li>
             <li><strong>Телефон:</strong> <a href="tel:+79651686358">+7 965 168 63 58</a></li>
             
-            <li><strong>Email:</strong> <a href="mailto:info@fabrikastroy.ru">info@florstroy.ru</a></li>
+            <li><strong>Email:</strong> <a href="mailto:info@florstroy.ru">info@florstroy.ru</a></li>
           </InfoList>
 
           <Socials>
