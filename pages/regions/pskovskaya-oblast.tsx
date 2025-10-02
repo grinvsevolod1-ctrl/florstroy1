@@ -10,20 +10,36 @@ export default function PskovskayaOblastPage() {
         <title>Устройство полов в Псковской области | FlorStroy</title>
         <meta name="description" content="Наливные, бетонные и полимерные полы в Псковской области. FlorStroy — надёжный подрядчик по устройству полов." />
         <link rel="canonical" href="https://florstroy.ru/regions/pskovskaya-oblast" />
+        <script type="application/ld+json">{`
+          {
+            "@context": "https://schema.org",
+            "@type": "LocalBusiness",
+            "name": "FlorStroy",
+            "url": "https://florstroy.ru/regions/pskovskaya-oblast",
+            "address": {
+              "@type": "PostalAddress",
+              "addressRegion": "Псковская область",
+              "addressCountry": "Россия"
+            },
+            "telephone": "+7 (495) 000-00-00",
+            "description": "Устройство наливных, бетонных и полимерных полов в Псковской области",
+            "areaServed": "Псковская область"
+          }
+        `}</script>
       </Head>
 
       <RegionWrapper>
         <BasicSection imageUrl="/test-article/6.jpeg" title="Промышленные полы" overTitle="Псковская область">
           <p>
-            Работаем по всей Псковской области: Псков, Великие Луки, Остров, Печоры, Дно и другие населённые пункты.
+            FlorStroy — подрядчик по устройству полов в Пскове, Великих Луках, Острове, Печорах, Дно и других населённых пунктах области. Выполняем наливные, бетонные и полимерные покрытия.
           </p>
           <StyledList>
             <li>Наливные полы для промышленных объектов</li>
             <li>Бетонные основания с упрочнителем</li>
-            <li>Полимерные покрытия для открытых площадок</li>
+            <li>Полимерные покрытия для открытых площадок и паркингов</li>
           </StyledList>
           <p>
-            Надёжность, скорость, прозрачность — всё как ты любишь.
+            Устройство полов включает: проектирование, подготовку основания, армирование, гидроизоляцию, заливку, финишную обработку. Работаем с гарантией, соблюдаем сроки, предоставляем фотоотчёты.
           </p>
           <p>
             <Link href="/contact">Свяжитесь с нами</Link> для консультации и расчёта стоимости.
