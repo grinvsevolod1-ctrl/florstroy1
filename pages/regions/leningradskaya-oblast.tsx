@@ -56,4 +56,12 @@ const RegionWrapper = styled.div`
 `;
 
 const StyledList = styled.ul`
-  margin: 2
+  margin: 2rem 0;
+  padding-left: 2rem;
+  font-size: 1.6rem;
+  line-height: 1.6;
+
+  li {
+    margin-bottom: 1.2rem;
+  }
+`;
