@@ -6,7 +6,11 @@ export default function Logo({ ...rest }) {
   useEffect(() => {
     const match = window.matchMedia('(prefers-color-scheme: dark)');
     setIsDarkMode(match.matches);
-    const handler = (e) => setIsDarkMode(e.matches);
+
+    const handler = (e: MediaQueryListEvent) => {
+      setIsDarkMode(e.matches);
+    };
+
     match.addEventListener('change', handler);
     return () => match.removeEventListener('change', handler);
   }, []);
@@ -18,8 +22,8 @@ export default function Logo({ ...rest }) {
         alignItems: 'center',
         gap: '1rem',
         padding: '0.5rem 1rem',
-        borderRadius: '12px', // большее закругление
-        backgroundColor: isDarkMode ? '#000' : '#fff', // фон под тему
+        borderRadius: '16px', // большее закругление
+        backgroundColor: isDarkMode ? '#000' : '#fff',
         color: isDarkMode ? '#fff' : '#000',
         transition: 'background-color 0.3s ease, color 0.3s ease',
       }}
@@ -31,9 +35,9 @@ export default function Logo({ ...rest }) {
         width={48}
         height={48}
         style={{
-          borderRadius: '12px', // закругление изображения
+          borderRadius: '16px', // закругление изображения
           objectFit: 'contain',
-          backgroundColor: isDarkMode ? '#000' : '#fff', // фон SVG под тему
+          backgroundColor: isDarkMode ? '#000' : '#fff',
           padding: '4px',
         }}
       />
