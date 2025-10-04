@@ -33,6 +33,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="yandex-verification" content="986f667f9ff97b14" />
+          <meta name="yandex-verification" content="021aaf25ce264d6e" />
           <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
             rel="stylesheet"
