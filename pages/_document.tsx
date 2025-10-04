@@ -32,7 +32,11 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+          <meta name="yandex-verification" content="986f667f9ff97b14" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body className="next-light-theme">
           <Main />
