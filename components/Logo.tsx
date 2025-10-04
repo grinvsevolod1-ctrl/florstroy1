@@ -5,6 +5,10 @@ export default function Logo({ ...rest }) {
         display: 'flex',
         alignItems: 'center',
         gap: '1rem',
+        padding: '0.5rem 1rem',
+        borderRadius: '6px',
+        backgroundColor: 'transparent',
+        color: '#f0f0f0', // светлый текст для тёмной темы
       }}
       {...rest}
     >
@@ -14,7 +18,9 @@ export default function Logo({ ...rest }) {
         width={48}
         height={48}
         style={{
-          borderRadius: '50%',
+          borderRadius: '6px', // лёгкое закругление
+          objectFit: 'contain',
+          backgroundColor: 'transparent',
         }}
       />
       <span
