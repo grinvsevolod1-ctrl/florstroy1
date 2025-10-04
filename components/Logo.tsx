@@ -2,7 +2,7 @@ export default function Logo({ ...rest }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }} {...rest}>
       <img
-        src="/favicon.png"
+        src="/favicon.svg"
         alt="FlorStroy Logo"
         width={40}
         height={40}
