@@ -25,15 +25,10 @@ module.exports = withBundleAnalyzer(
       dangerouslyAllowSVG: true,
       contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     },
-    swcMinify: true,
     compiler: {
       styledComponents: true,
     },
     compress: true,
-    i18n: {
-      locales: ["ru"],
-      defaultLocale: "ru",
-    },
     eslint: {
       ignoreDuringBuilds: true,
     },
