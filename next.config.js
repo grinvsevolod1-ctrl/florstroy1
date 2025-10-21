@@ -68,10 +68,8 @@ module.exports = withBundleAnalyzer(
     webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
       config.module.rules.push({
         test: /\.svg$/,
-        issuer: {
-          and: [/\.(js|ts)x?$/],
-        },
-        use: [{ loader: "@svgr/webpack" }, { loader: "url-loader" }],
+        issuer: /\.[jt]sx?$/,
+        use: ["@svgr/webpack"],
       })
 
       return config

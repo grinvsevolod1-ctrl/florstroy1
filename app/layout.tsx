@@ -22,6 +22,9 @@ export const metadata = {
     "наливные полы",
     "эпоксидные полы",
     "полиуретановые полы",
+    "бетонные полы цена",
+    "промышленные полы под ключ",
+    "упрочнение бетонных полов",
   ],
   authors: [{ name: "FlorStroy" }],
   creator: "FlorStroy",
@@ -79,6 +82,133 @@ export const metadata = {
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://florstroy.ru/#organization",
+        name: "FlorStroy",
+        url: "https://florstroy.ru",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://florstroy.ru/logo.png",
+          width: 250,
+          height: 60,
+        },
+        description: "Профессиональное устройство бетонных и промышленных полов",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Москва",
+          addressRegion: "Московская область",
+          addressCountry: "RU",
+        },
+        geo: {
+          "@type": "GeoCoordinates",
+          latitude: 55.751244,
+          longitude: 37.618423,
+        },
+        areaServed: [
+          {
+            "@type": "City",
+            name: "Москва",
+          },
+          {
+            "@type": "State",
+            name: "Московская область",
+          },
+          {
+            "@type": "State",
+            name: "Ленинградская область",
+          },
+          {
+            "@type": "State",
+            name: "Псковская область",
+          },
+          {
+            "@type": "State",
+            name: "Смоленская область",
+          },
+        ],
+        sameAs: ["https://vk.com/florstroy", "https://t.me/florstroy"],
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://florstroy.ru/#localbusiness",
+        name: "FlorStroy",
+        image: "https://florstroy.ru/og-image.jpg",
+        priceRange: "$$",
+        telephone: "+7 (XXX) XXX-XX-XX",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Москва",
+          addressCountry: "RU",
+        },
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            opens: "09:00",
+            closes: "18:00",
+          },
+        ],
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://florstroy.ru/#website",
+        url: "https://florstroy.ru",
+        name: "FlorStroy",
+        description: "Устройство бетонных и промышленных полов",
+        publisher: {
+          "@id": "https://florstroy.ru/#organization",
+        },
+        inLanguage: "ru-RU",
+      },
+      {
+        "@type": "Service",
+        "@id": "https://florstroy.ru/#service",
+        serviceType: "Устройство бетонных полов",
+        provider: {
+          "@id": "https://florstroy.ru/#organization",
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "Россия",
+        },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Услуги по устройству полов",
+          itemListElement: [
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Топпинговые полы",
+                description: "Устройство топпинговых бетонных полов",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Полимерные полы",
+                description: "Устройство полимерных покрытий",
+              },
+            },
+            {
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: "Шлифовка бетона",
+                description: "Профессиональная шлифовка бетонных полов",
+              },
+            },
+          ],
+        },
+      },
+    ],
+  }
+
   return (
     <html lang="ru">
       <head>
@@ -90,6 +220,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="geo.placename" content="Москва" />
         <meta name="geo.position" content="55.751244;37.618423" />
         <meta name="ICBM" content="55.751244, 37.618423" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </head>
       <body>{children}</body>
     </html>

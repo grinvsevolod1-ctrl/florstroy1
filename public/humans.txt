@@ -1,0 +1,15 @@
+/* TEAM */
+Developer: FlorStroy Development Team
+Site: https://florstroy.ru
+Location: Moscow, Russia
+
+/* SITE */
+Last update: 2025/01/21
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React, Next.js, TypeScript
+Software: VS Code, Git
+
+/* THANKS */
+Next.js Team
+Vercel
+Open Source Community
