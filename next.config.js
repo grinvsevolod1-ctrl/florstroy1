@@ -1,73 +1,33 @@
-const CopyPlugin = require("copy-webpack-plugin")
+const CopyPlugin = require('copy-webpack-plugin');
 
-const withBundleAnalyzer = require("@next/bundle-analyzer")({
-  enabled: process.env.ANALYZE === "true",
-})
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
 
-const withMDX = require("@next/mdx")({
-  extension: /\.mdx?$/,
-  options: {
-    remarkPlugins: [],
-    rehypePlugins: [],
+module.exports = withBundleAnalyzer({
+  reactStrictMode: true,
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  images: {
+    domains: ['github.blog'],
+    deviceSizes: [320, 640, 1080, 1200],
+    imageSizes: [64, 128],
   },
-})
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // ✅ временно отключает блокировку сборки
+  },
+  webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      issuer: {
+        and: [/\.(js|ts)x?$/],
+      },
+      use: [{ loader: '@svgr/webpack' }, { loader: 'url-loader' }],
+    });
 
-module.exports = withBundleAnalyzer(
-  withMDX({
-    reactStrictMode: true,
-    pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
-    images: {
-      domains: ["github.blog", "florstroy.ru"],
-      deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
-      imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-      formats: ["image/webp"],
-      minimumCacheTTL: 60,
-      dangerouslyAllowSVG: true,
-      contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    },
-    compiler: {
-      styledComponents: true,
-    },
-    compress: true,
-    eslint: {
-      ignoreDuringBuilds: true,
-    },
-    typescript: {
-      ignoreBuildErrors: true,
-    },
-    async headers() {
-      return [
-        {
-          source: "/:path*",
-          headers: [
-            {
-              key: "X-DNS-Prefetch-Control",
-              value: "on",
-            },
-            {
-              key: "X-Frame-Options",
-              value: "SAMEORIGIN",
-            },
-            {
-              key: "X-Content-Type-Options",
-              value: "nosniff",
-            },
-            {
-              key: "Referrer-Policy",
-              value: "origin-when-cross-origin",
-            },
-          ],
-        },
-      ]
-    },
-    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
-      config.module.rules.push({
-        test: /\.svg$/,
-        issuer: /\.[jt]sx?$/,
-        use: ["@svgr/webpack"],
-      })
-
-      return config
-    },
-  }),
-)
+    return config;
+  },
+});

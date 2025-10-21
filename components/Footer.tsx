@@ -1,8 +1,8 @@
-import NextLink from "next/link"
-import { ViberIcon, TelegramIcon, WhatsappIcon } from "react-share"
-import styled from "styled-components"
-import Container from "components/Container"
-import { media } from "utils/media"
+import NextLink from 'next/link';
+import { ViberIcon, TelegramIcon, WhatsappIcon } from 'react-share';
+import styled from 'styled-components';
+import Container from 'components/Container';
+import { media } from 'utils/media';
 
 export default function Footer() {
   return (
@@ -67,7 +67,7 @@ export default function Footer() {
         </BottomBar>
       </Container>
     </FooterWrapper>
-  )
+  );
 }
 
 function ListItem({ title, href }: { title: string; href: string }) {
@@ -77,19 +77,19 @@ function ListItem({ title, href }: { title: string; href: string }) {
         <a>{title}</a>
       </NextLink>
     </ListItemWrapper>
-  )
+  );
 }
 
 const projectLinks = [
-  { title: "Монолитная бетонная плита с армированием", href: "/blog/test-article-11" },
-  { title: "Устройство бетонной площадки", href: "/blog/test-article-12" },
-  { title: "Устройство бетонной плиты в аграрном объекте", href: "/blog/test-article-13" },
-  { title: "Устройство бетонного основания в помещении", href: "/blog/test-article-14" },
-  { title: "Устройство спортивного покрытия в крытом комплексе", href: "/blog/test-article-17" },
-  { title: "Устройство бетонного пола в складском комплексе", href: "/blog/test-article-18" },
-  { title: "Устройство резинового покрытия на игровой площадке", href: "/blog/test-article-20" },
-  { title: "Механизированная укладка бетонной плиты", href: "/blog/test-article-21" },
-]
+  { title: 'Монолитная бетонная плита с армированием', href: '/blog/test-article-11' },
+  { title: 'Устройство бетонной площадки', href: '/blog/test-article-12' },
+  { title: 'Устройство бетонной плиты в аграрном объекте', href: '/blog/test-article-13' },
+  { title: 'Устройство бетонного основания в помещении', href: '/blog/test-article-14' },
+  { title: 'Устройство спортивного покрытия в крытом комплексе', href: '/blog/test-article-17' },
+  { title: 'Устройство бетонного пола в складском комплексе', href: '/blog/test-article-18' },
+  { title: 'Устройство резинового покрытия на игровой площадке', href: '/blog/test-article-20' },
+  { title: 'Механизированная укладка бетонной плиты', href: '/blog/test-article-21' },
+];
 
 // Стили
 
@@ -98,19 +98,14 @@ const FooterWrapper = styled.div`
   padding-bottom: 4rem;
   background: rgb(var(--secondary));
   color: rgb(var(--textSecondary));
-
-  ${media("<=tablet")} {
-    padding-top: 6rem;
-    padding-bottom: 3rem;
-  }
-`
+`;
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
-`
+`;
 
 const ListHeader = styled.p`
   font-weight: bold;
@@ -121,7 +116,7 @@ const ListHeader = styled.p`
     color: rgb(var(--textSecondary));
     text-decoration: none;
   }
-`
+`;
 
 const ListWrapper = styled.div`
   display: flex;
@@ -129,27 +124,27 @@ const ListWrapper = styled.div`
   margin-bottom: 5rem;
   margin-right: 5rem;
 
-  ${media("<=tablet")} {
+  ${media('<=tablet')} {
     flex: 0 40%;
     margin-right: 1.5rem;
   }
 
-  ${media("<=phone")} {
+  ${media('<=phone')} {
     flex: 0 100%;
     margin-right: 0rem;
   }
-`
+`;
 
 const ProjectColumns = styled.div`
   display: flex;
   gap: 4rem;
   flex-wrap: wrap;
 
-  ${media("<=tablet")} {
+  ${media('<=tablet')} {
     flex-direction: column;
     gap: 2rem;
   }
-`
+`;
 
 const Column = styled.div`
   display: flex;
@@ -158,7 +153,7 @@ const Column = styled.div`
   & > *:not(:first-child) {
     margin-top: 1rem;
   }
-`
+`;
 
 const ListItemWrapper = styled.p`
   font-size: 1.6rem;
@@ -166,28 +161,14 @@ const ListItemWrapper = styled.p`
   a {
     text-decoration: none;
     color: rgba(var(--textSecondary), 0.75);
-    transition: all 0.3s ease;
-    display: inline-block;
-
-    &:hover {
-      color: rgba(var(--textSecondary), 1);
-      transform: translateX(5px);
-    }
   }
-`
+`;
 
 const ShareBar = styled.div`
-  display: flex;
-  gap: 1rem;
-
-  a {
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-    }
+  & > *:not(:first-child) {
+    margin-left: 1rem;
   }
-`
+`;
 
 const Copyright = styled.p`
   font-size: 1.5rem;
@@ -199,11 +180,11 @@ const Copyright = styled.p`
     text-decoration: none;
   }
 
-  ${media("<=tablet")} {
+  ${media('<=tablet')} {
     text-align: center;
     margin-top: 2rem;
   }
-`
+`;
 
 const BottomBar = styled.div`
   margin-top: 6rem;
@@ -211,7 +192,7 @@ const BottomBar = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  ${media("<=tablet")} {
+  ${media('<=tablet')} {
     flex-direction: column;
   }
-`
+`;
