@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Главная страница -->
+  <url>
+    <loc>https://florstroy.ru/</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/" />
+  </url>
+
+  <!-- Основные страницы -->
+  <url>
+    <loc>https://florstroy.ru/pricing</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/pricing" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/blog</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/blog" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/contact</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/contact" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/features</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/features" />
+  </url>
+
+  <!-- Региональные страницы (важны для локального SEO) -->
+  <url>
+    <loc>https://florstroy.ru/regions/moskovskaya-oblast</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/regions/moskovskaya-oblast" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/regions/leningradskaya-oblast</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/regions/leningradskaya-oblast" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/regions/smolenskaya-oblast</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/regions/smolenskaya-oblast" />
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/regions/pskovskaya-oblast</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hrefLang="ru" href="https://florstroy.ru/regions/pskovskaya-oblast" />
+  </url>
+
+  <!-- Политики -->
+  <url>
+    <loc>https://florstroy.ru/privacy-policy</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <url>
+    <loc>https://florstroy.ru/cookies-policy</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Статьи блога -->
+  <url>
+    <loc>https://florstroy.ru/blog/test-article</loc>
+    <lastmod>2025-01-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://florstroy.ru/test-article/13.jpeg</image:loc>
+      <image:title>Устройство бетонных полов</image:title>
+    </image:image>
+  </url>
+
+</urlset>
